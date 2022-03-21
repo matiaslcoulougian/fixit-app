@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import {Link} from 'react-router-dom'
 
 
 export function Login() {
@@ -35,7 +36,8 @@ export function Login() {
         <input ref={emailRef} type="text" placeholder="Email" />
         <input ref={passwordRef} type="text" placeholder="Password" />
         <button>Login</button>
-        <p>Don't have an account? </p>
+        <p>Don't have an account? </p><Link to="/register"><p>Register now!</p>
+        </Link>
         
     </div>
   )

@@ -5,6 +5,11 @@
     
 }
 
+.centered{
+    align-items: center;
+    text-align: center;
+}
+
 .app-title{
     text-align: center;
     margin: auto;

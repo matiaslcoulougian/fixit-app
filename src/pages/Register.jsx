@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import {Link} from 'react-router-dom'
 
 export function Register() {
     const [firstName, setFirstName] = useState('');
@@ -58,6 +59,8 @@ export function Register() {
         
         <button onClick={handleRegister}>Register</button>
         <p>Already have an account? </p>
+        <Link to="/login"><p>Log in now!</p>
+        </Link>
         
     </div>
   )
