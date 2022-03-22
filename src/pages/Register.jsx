@@ -1,63 +1,72 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import {Link} from 'react-router-dom'
+import {REGISTER} from "../queries/mutations";
+import {useMutation} from "@apollo/client";
+import AlertComponent from "../components/alertComponent/Alert";
 
-export function Register() {
+export function Register(props) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [confirmEmail, setConfirmEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [phone, setPhone] = useState('');
     const [dob, setDoB] = useState('');
     const [address, setAddress] = useState('');
 
-    const firstNameRef = useRef();
-    const lastNameRef = useRef();
-    const emailRef = useRef();
-    const passwordRef = useRef();
-    const phoneRef = useRef();
-    const dobRef = useRef();
-    const addressRef = useRef();
-    const confEmailRef = useRef();
-    const confPasswordRef = useRef();
+    const [register, {loading, data}] = useMutation(
+        REGISTER,
+        {
+            onCompleted: async (res) => {
+                console.log(res);
+            },
+            onError: (e) => {
+                console.log(e)
+            },
+        }
+    );
 
+    function handleRegister () {
+        if (firstName === '' || lastName === '' || email === '' || password === '' || phone === '' ||
+        dob === '' || address === '' || confirmEmail === '' || confirmPassword === '') {
+            props.showError("All fields are required");
+        }
+        else if (email !== confirmEmail) {
+            props.showError("Emails should match");
+        }
+        else if (password !== confirmPassword){
+            props.showError("Passwords should match");
+        }
+        register({
+            variables: {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phoneNumber: phone,
+                password: password,
+                dateOfBirth: dob,
+                address: address,
+            },
+        });
 
-
-
-    const handleRegister = () => {
-        const firstName = firstNameRef.current.value;
-        const lastName = lastNameRef.current.value;
-        const email = emailRef.current.value;
-        const password = passwordRef.current.value;
-        const phone = phoneRef.current.value;
-        const dob = dobRef.current.value;
-        const address = addressRef.current.value;
-        const confEmail = confEmailRef.current.value;
-        const confPassword = confPasswordRef.current.value;
-
-        if(firstName === '' || lastName === '' || email === '' || password === '' || phone === '' || 
-        dob === '' || address === '' || confEmail === '' || confPassword === '' || email !== confEmail || password || confPassword) return;
-        //todo: armar mensaje de error
-
-        //todo: hablar con mati para ver como hacer esto.
-
-    };
-
+    }
 
   return (
     <div className='column-input'>
         <h1 className='app-title'>PoolMe</h1>
-        <input ref={firstNameRef} type="text" placeholder="First Name" />
-        <input ref={lastNameRef} type="text" placeholder="Last Name" />
-        <input ref={emailRef} type="text" placeholder="Email" />
-        <input ref={confEmailRef} type="text" placeholder="Confirm Email" />
-        <input ref={passwordRef} type="text" placeholder="Password" />
-        <input ref={confPasswordRef} type="text" placeholder="Confirm Password" />
-        <input ref={phoneRef} type="text" placeholder="Phone Number" />
-        <input ref={dobRef} type="date" placeholder="Date Of Birth" />
-        <input ref={addressRef} type="text" placeholder="Address" />
+        <input value={firstName} onChange= {e => setFirstName(e.target.value)} type="text" placeholder="First Name" />
+        <input value={lastName} onChange= {e => setLastName(e.target.value)} type="text" placeholder="Last Name" />
+        <input value={email} onChange= {e => setEmail(e.target.value)} type="text" placeholder="Email" />
+        <input value={confirmEmail} onChange= {e => setConfirmEmail(e.target.value)} type="text" placeholder="Confirm Email" />
+        <input value={password} onChange= {e => setPassword(e.target.value)} type="text" placeholder="Password" />
+        <input value={confirmPassword} onChange= {e => setConfirmPassword(e.target.value)} type="text" placeholder="Confirm Password" />
+        <input value={phone} onChange= {e => setPhone(e.target.value)} type="text" placeholder="Phone Number" />
+        <input value={dob} onChange= {e => setDoB(e.target.value)} type="date" placeholder="Date Of Birth" />
+        <input value={address} onChange= {e => setAddress(e.target.value)} type="text" placeholder="Address" />
         
         
-        <button onClick={handleRegister}>Register</button>
+        <button type={"submit"} onClick={handleRegister}>Register</button>
         <p>Already have an account? </p>
         <Link to="/login"><p>Log in now!</p>
         </Link>
