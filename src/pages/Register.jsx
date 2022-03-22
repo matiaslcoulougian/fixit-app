@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import {Link} from 'react-router-dom'
 import {REGISTER} from "../queries/mutations";
 import {useMutation} from "@apollo/client";
-import AlertComponent from "../components/alertComponent/Alert";
 
-export function Register(props) {
+export function Register() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -15,14 +14,17 @@ export function Register(props) {
     const [dob, setDoB] = useState('');
     const [address, setAddress] = useState('');
 
-    const [register, {loading, data}] = useMutation(
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const [register] = useMutation(
         REGISTER,
         {
             onCompleted: async (res) => {
-                console.log(res);
+                setErrorMessage('')
+
             },
             onError: (e) => {
-                console.log(e)
+                setErrorMessage(e.message);
             },
         }
     );
@@ -30,13 +32,16 @@ export function Register(props) {
     function handleRegister () {
         if (firstName === '' || lastName === '' || email === '' || password === '' || phone === '' ||
         dob === '' || address === '' || confirmEmail === '' || confirmPassword === '') {
-            props.showError("All fields are required");
+            setErrorMessage('All fields are required');
+            return;
         }
         else if (email !== confirmEmail) {
-            props.showError("Emails should match");
+            setErrorMessage('Emails should match');
+            return;
         }
         else if (password !== confirmPassword){
-            props.showError("Passwords should match");
+            setErrorMessage('Passwords should match');
+            return;
         }
         register({
             variables: {
@@ -67,10 +72,11 @@ export function Register(props) {
         
         
         <button type={"submit"} onClick={handleRegister}>Register</button>
+        {errorMessage && <div className="error"> {errorMessage} </div>}
         <p>Already have an account? </p>
         <Link to="/login"><p>Log in now!</p>
         </Link>
-        
+
     </div>
   )
 }
