@@ -1,11 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-
-export function Home() {
+import carLogo from '../resources/carLogo.png'
+import './LandingPage.css'
+export function LandingPage() {
   return (
     <div>
+        <img src={carLogo} alt="Logo" className="logo"/>
         <h1 className='app-title'>PoolMe</h1>
-        <div className='centered'>
+        <div className='centered' id='buttons'>
           <Link to="/login"><button>
                 Login
               </button>
