@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom'
 import {REGISTER} from "../queries/mutations";
 import {useMutation} from "@apollo/client";
 import './Register.css'
+import Modal from "./RegisterModal";
+
 export const Register = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -13,20 +15,28 @@ export const Register = () => {
     const [phone, setPhone] = useState('');
     const [dob, setDoB] = useState('');
     const [address, setAddress] = useState('');
-
+    const [passwordShown, setPasswordShown] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
 
     const [register] = useMutation(
         REGISTER,
         {
             onCompleted: async (res) => {
-                setErrorMessage('')
+                setErrorMessage('');
+                setModalVisible(true);
             },
             onError: (e) => {
                 setErrorMessage(e.message);
             },
         }
     );
+
+    const togglePassword = () => {
+        // When the handler is invoked
+        // inverse the boolean state of passwordShown
+        setPasswordShown(!passwordShown);
+    };
 
     function handleRegister () {
 
@@ -55,35 +65,13 @@ export const Register = () => {
             },
         });
 
+
+
     }
 
   return (
     <>
         <h1 className='app-title'>PoolMe</h1>
-
-        {/*<Form>*/}
-        {/*    <Form.Group className="mb-3" controlId="formBasicFirstName">*/}
-        {/*        <Form.Label>First name</Form.Label>*/}
-        {/*        <Form.Control type="text" placeholder="Enter first name" ref="firstNameRef"/>*/}
-        {/*    </Form.Group>*/}
-        {/*    <Form.Group className="mb-3" controlId="formBasicLastName">*/}
-        {/*        <Form.Label>Email address</Form.Label>*/}
-        {/*        <Form.Control type="text" placeholder="Enter last name" />*/}
-        {/*    </Form.Group>*/}
-        {/*    <Form.Group className="mb-3" controlId="formBasicEmail">*/}
-        {/*        <Form.Label>Email address</Form.Label>*/}
-        {/*        <Form.Control type="email" placeholder="Enter email" />*/}
-        {/*    </Form.Group>*/}
-        {/*    <Form.Group className="mb-3" controlId="formBasicConfirmEmail">*/}
-        {/*        <Form.Label>Confirm email address</Form.Label>*/}
-        {/*        <Form.Control type="email" placeholder="Enter email" />*/}
-        {/*    </Form.Group>*/}
-        {/*    <Form.Group className="mb-3" controlId="formBasicPassword">*/}
-        {/*        <Form.Label>Password</Form.Label>*/}
-        {/*        <Form.Control type="password" placeholder="Password" />*/}
-        {/*    </Form.Group>*/}
-        {/*    <button type="submit" onClick={handleRegister}>Register </button>*/}
-        {/*</Form>*/}
         <div className = "column-input">
             <label>
                 First name
@@ -104,11 +92,12 @@ export const Register = () => {
             <label>
                 Password
             </label>
-            <input value={password} onChange= {e => setPassword(e.target.value)} type="password" placeholder="Password" />
+            <input value={password} onChange= {e => setPassword(e.target.value)} type={passwordShown ? "text" : "password"} placeholder="Password" />
+            <button onClick={togglePassword}>Show Password</button>
             <label>
                 Confirm password
             </label>
-            <input value={confirmPassword} onChange= {e => setConfirmPassword(e.target.value)} type="password" placeholder="Confirm Password" />
+            <input value={confirmPassword} onChange= {e => setConfirmPassword(e.target.value)} type={passwordShown ? "text" : "password"} placeholder="Confirm Password" />
             <label>
                 Phone number
             </label>
@@ -134,6 +123,7 @@ export const Register = () => {
                     Log in now!
                 </p>
             </Link>
+            <Modal show={modalVisible} />
         </div>
     </>
   )

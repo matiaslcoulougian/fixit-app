@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
 
 export const client = new ApolloClient({
-    uri: 'http://localhost:4000/graphql',
+    uri: 'https://fierce-inlet-15882.herokuapp.com/graphql',
     cache: new InMemoryCache()
 });
 
