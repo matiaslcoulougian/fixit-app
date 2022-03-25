@@ -27,3 +27,21 @@ export const REGISTER = gql`
       }
     }
 `;
+
+export const LOGIN = gql`
+    mutation Login($credential: String!, $password: String!) {
+        login(input: {
+            credential: $credential,
+            password: $password
+        }) {
+          user {
+              id
+              firstName
+            }
+            accessToken
+        
+            }
+            
+}
+
+`;

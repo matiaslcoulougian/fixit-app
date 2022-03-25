@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import React from "react";
-import './RegisterModal.css'
+import './styles/RegisterModal.css'
 
 const Modal = props => {
     if (!props.show) {

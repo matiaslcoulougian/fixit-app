@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {Link} from 'react-router-dom'
 import {REGISTER} from "../queries/mutations";
 import {useMutation} from "@apollo/client";
-import './Register.css'
+import './styles/Register.css'
 import Modal from "./RegisterModal";
 
 export const Register = () => {
@@ -103,7 +103,7 @@ export const Register = () => {
             </label>
             <input value={phone} onChange= {e => setPhone(e.target.value)} type="text" placeholder="Phone Number" />
             <label>
-                Birthday
+                Date of Birth
             </label>
             <input value={dob} onChange= {e => setDoB(e.target.value)} type="date" placeholder="Date Of Birth" />
             <label>

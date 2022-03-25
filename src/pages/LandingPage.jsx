@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import carLogo from '../resources/carLogo.png'
-import './LandingPage.css'
+import './styles/LandingPage.css'
 export function LandingPage() {
   return (
     <div>
