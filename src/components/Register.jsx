@@ -123,7 +123,7 @@ export const Register = () => {
                     Log in now!
                 </p>
             </Link>
-            <Modal show={modalVisible} />
+            <Modal show={modalVisible} name={firstName}/>
         </div>
     </>
   )

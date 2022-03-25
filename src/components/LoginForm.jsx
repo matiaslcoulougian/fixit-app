@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import "./styles/LoginForm.css";
 import {useMutation} from "@apollo/client";
-import {LOGIN, REGISTER} from "../queries/mutations";
+import {LOGIN} from "../queries/mutations";
 
 export const LoginForm = () =>{
     const [email, setEmail] = useState('')
@@ -25,6 +25,8 @@ export const LoginForm = () =>{
         {
             onCompleted: async (res) => {
                 setErrorMessage('');
+                //Guardar el token
+                console.log("LOGGED IN!")
             },
             onError: (e) => {
                 setErrorMessage(e.message);
@@ -32,20 +34,20 @@ export const LoginForm = () =>{
         }
     );
 
-    const FormInput = props => (
+    const FormInput = (props) => (
         <div class="row">
             <label>{props.description}</label>
             <input type={props.type} onChange= {e => props.function(e.target.value)} placeholder={props.placeholder}/>
         </div>
     );
-    const FormHeader = props => (
+    const FormHeader = (props) => (
         <h2 id="headerTitle">{props.title}</h2>
     );
 
 
     const Form = (props) => (
         <div>
-            <FormInput description="Email" placeholder="Enter your email" type="text" function={props.setEmail}/>
+            <FormInput description="Email" placeholder="Enter your email" type="text" function={setEmail}/>
             <FormInput description="Password" placeholder="Enter your password" type="password" variable={props.password}/>
             <FormButton title="Log in" submit={props.submitFunction}/>
         </div>
@@ -73,7 +75,7 @@ export const LoginForm = () =>{
 
             <div id="loginform">
                 <FormHeader title="Login" />
-                <Form submitFunction={this.handleSubmit} email={email} password={password}/>
+                <Form submitFunction={handleSubmit} email={email} password={password}/>
                 <RegisterOption />
             </div>
         )

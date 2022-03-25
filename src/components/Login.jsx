@@ -10,8 +10,6 @@ export function Login(){
         //todo: hablar con mati para ver como hacer esto.
     }
 
-
-
     return (
         <div className='column-input'>
             <h1 className='app-title'>PoolMe</h1>

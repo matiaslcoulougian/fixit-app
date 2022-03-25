@@ -10,7 +10,7 @@ const Modal = props => {
         <div className="modal">
             <div className="modal-content">
                 <div className="modal-body">
-                    Account created successfully!
+                    Congrats {props.name}! Your account was created successfully!
                 </div>
                 <Link to="/"><button>
                     Go to app
