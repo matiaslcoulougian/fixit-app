@@ -8,6 +8,7 @@ export const LoginForm = () =>{
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    const [token, setToken] = useState('')
 
     const emailRef = useRef()
     const passwordRef = useRef()
@@ -24,26 +25,30 @@ export const LoginForm = () =>{
 
         const response = login({
             variables:{
-                email: emailRef.current.value,
+                credential: emailRef.current.value,
                 password: passwordRef.current.value
             }
         })
         console.log(response)
-        response.then(({data}) =>{
-            if(data.login.error){
-                setErrorMessage(data.login.error)
-            }else{
-                localStorage.setItem('token', data.login.token)
-                window.location.href = '/'
-            }
-        })
+        // response.then(({data}) =>{
+        //     if(data.login.error){
+        //         setErrorMessage(data.login.error)
+        //     }else{
+        //         localStorage.setItem('token', data.login.token)
+        //         window.location.href = '/'
+        //     }
+        // })
 
     }
     const [login] = useMutation(
         LOGIN,
         {
             onCompleted: async (res) => {
+                console.log(res)
                 setErrorMessage('');
+                const token = res['login']['accessToken'];
+                setToken(token);
+                console.log("the token is: ", token)
                 //Guardar el token
                 console.log("LOGGED IN!")
             },
@@ -54,7 +59,7 @@ export const LoginForm = () =>{
     );
 
     const FormInput = (props) => (
-        <div class="row">
+        <div className="row">
             <label>{props.description}</label>
             <input type={props.type} placeholder={props.placeholder}/>
         </div>
