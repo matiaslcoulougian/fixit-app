@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {Link} from "react-router-dom";
 import "./styles/LoginForm.css";
 import {useMutation} from "@apollo/client";
@@ -9,13 +9,32 @@ export const LoginForm = () =>{
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
 
-    const handleSubmit = () =>{
-        if(email === '' || password === '') return;
+    const emailRef = useRef()
+    const passwordRef = useRef()
 
-        login({
+    function handleSubmit(){
+        console.log("entre")
+        //setEmail(useRef().current.value)
+        //setPassword(useRef().current.value)
+
+        if(emailRef === '' || passwordRef === '') {
+            console.log("no lo tomo")
+            return;
+        }
+
+        const response = login({
             variables:{
-                email: email,
-                password: password,
+                email: emailRef.current.value,
+                password: passwordRef.current.value
+            }
+        })
+        console.log(response)
+        response.then(({data}) =>{
+            if(data.login.error){
+                setErrorMessage(data.login.error)
+            }else{
+                localStorage.setItem('token', data.login.token)
+                window.location.href = '/'
             }
         })
 
@@ -37,7 +56,7 @@ export const LoginForm = () =>{
     const FormInput = (props) => (
         <div class="row">
             <label>{props.description}</label>
-            <input type={props.type} onChange= {e => props.function(e.target.value)} placeholder={props.placeholder}/>
+            <input type={props.type} placeholder={props.placeholder}/>
         </div>
     );
     const FormHeader = (props) => (
@@ -47,15 +66,25 @@ export const LoginForm = () =>{
 
     const Form = (props) => (
         <div>
-            <FormInput description="Email" placeholder="Enter your email" type="text" function={setEmail}/>
-            <FormInput description="Password" placeholder="Enter your password" type="password" variable={props.password}/>
+            {/*<FormInput onChange={(e) => setEmail(e.target.value)} description="Email" placeholder="Enter your email" type="text" function={setEmail}/>*/}
+            <div className="row">
+                <label>Email</label>
+                <input ref={emailRef} type="text" placeholder="Enter your email"/>
+            </div>
+
+            <div className="row">
+                <label>Password</label>
+                <input ref={passwordRef} type="password" placeholder="Enter your password"/>
+            </div>
+
+            {/*<FormInput onChange={(e) => setPassword(e.target.value)} description="Password" placeholder="Enter your password" type="password" variable={props.password}/>*/}
             <FormButton title="Log in" submit={props.submitFunction}/>
         </div>
     );
 
     const FormButton = props => (
         <div id="button" class="row">
-            <button onClick={props.submit}>{props.title}</button>
+            <button onClick={handleSubmit}>{props.title}</button>
         </div>
     );
 
