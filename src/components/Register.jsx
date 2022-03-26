@@ -64,9 +64,6 @@ export const Register = () => {
                 address: address,
             },
         });
-
-
-
     }
 
   return (

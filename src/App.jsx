@@ -4,6 +4,7 @@ import { Routes, Route} from 'react-router-dom';
 import './App.css'
 import { LandingPage } from './pages/LandingPage';
 import RegisterPage from "./pages/RegisterPage";
+import {RegisterForm} from "./components/RegisterForm";
 
 export function App() {
   return (
@@ -11,7 +12,7 @@ export function App() {
             <Routes>
                 <Route exact path="/" element={<LandingPage />} />
                 <Route exact path="/login" element={<LoginPage />} />
-                <Route exact path="/register" element={<RegisterPage />} />
+                <Route exact path="/register" element={<RegisterForm />} />
             </Routes>
     </div>
   )
