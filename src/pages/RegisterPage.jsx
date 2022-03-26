@@ -1,4 +1,4 @@
-import {Register} from "../components/Register";
+import {Register} from "../components/deprecated/Register";
 import {RegisterForm} from "../components/RegisterForm";
 
 const RegisterPage = () => {

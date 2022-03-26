@@ -1,4 +1,4 @@
-import {Login} from "../components/Login";
+import {Login} from "../components/deprecated/Login";
 import {LoginForm} from "../components/LoginForm";
 
 const LoginPage = () => {

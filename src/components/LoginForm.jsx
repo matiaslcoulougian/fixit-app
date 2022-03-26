@@ -106,11 +106,12 @@ export const LoginForm = () =>{
 
 
         return(
-
+        <div id="bigger-div">
             <div id="loginform">
                 <FormHeader title="Login" />
                 <Form submitFunction={handleSubmit} email={email} password={password}/>
                 <RegisterOption />
+            </div>
             </div>
         )
 }

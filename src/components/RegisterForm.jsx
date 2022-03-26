@@ -106,7 +106,7 @@ export const RegisterForm = () =>{
             <FormInput reference={confirmEmailRef} description="Confirm email address" placeholder="Confirm your email" type="text" />
             <PasswordInput reference={passwordRef} description="Password" placeholder="Enter your password" type="password"/>
             <PasswordInput reference={confirmPasswordRef} description="Confirm password" placeholder="Confirm your password" type="password"/>
-            <button onClick={togglePassword}>{passwordShown ? 'Hide' : 'Show'}</button>
+            <button className="password-button" onClick={togglePassword}>{passwordShown ? 'Hide' : 'Show'}</button>
             <FormInput reference={phoneRef} description="Phone number" placeholder="Phone number" type="text" />
             <FormInput reference={dobRef} description="Date of birth" placeholder="Date of birth" type="date" />
             <FormInput reference={addressRef} description="Address" placeholder="Address" type="text" />

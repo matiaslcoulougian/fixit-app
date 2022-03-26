@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import {Link} from 'react-router-dom'
-import {REGISTER} from "../queries/mutations";
+import {REGISTER} from "../../queries/mutations";
 import {useMutation} from "@apollo/client";
-import './styles/Register.css'
-import Modal from "./RegisterModal";
+import '../styles/Register.css'
+import Modal from "../RegisterModal";
 
 export const Register = () => {
     const [firstName, setFirstName] = useState('');
