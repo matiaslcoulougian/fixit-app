@@ -14,12 +14,10 @@ export const LoginForm = () =>{
     const passwordRef = useRef()
 
     function handleSubmit(){
-        console.log("entre")
         //setEmail(useRef().current.value)
         //setPassword(useRef().current.value)
 
         if(emailRef === '' || passwordRef === '') {
-            console.log("no lo tomo")
             return;
         }
 
@@ -30,14 +28,6 @@ export const LoginForm = () =>{
             }
         })
         console.log(response)
-        // response.then(({data}) =>{
-        //     if(data.login.error){
-        //         setErrorMessage(data.login.error)
-        //     }else{
-        //         localStorage.setItem('token', data.login.token)
-        //         window.location.href = '/'
-        //     }
-        // })
 
     }
     const [login] = useMutation(
@@ -83,6 +73,7 @@ export const LoginForm = () =>{
             </div>
 
             {/*<FormInput onChange={(e) => setPassword(e.target.value)} description="Password" placeholder="Enter your password" type="password" variable={props.password}/>*/}
+            {errorMessage && <div className="login-error"> {errorMessage} </div>}
             <FormButton title="Log in" submit={props.submitFunction}/>
         </div>
     );
@@ -98,7 +89,7 @@ export const LoginForm = () =>{
     const RegisterOption = props => (
         <div id="register-form">
             <p>Don't have an account?</p>
-            <Link to="/register"><p>Register now!</p></Link>
+            <Link to="/register" className="nav-link"><p>Register now!</p></Link>
         </div>
     );
 

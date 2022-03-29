@@ -1,13 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import carLogo from '../resources/carLogo.png'
+import logo from '../resources/logo.png'
 import './styles/LandingPage.css'
 export function LandingPage() {
   return (
-    <div>
-        <img src={carLogo} alt="Logo" className="logo"/>
-        <h1 className='app-title'>PoolMe</h1>
-        <div className='centered' id='buttons'>
+    <div className='landing'>
+        <img src={logo} alt="Logo" className="logo"/>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,900;1,900&display=swap');
+        </style>
+        <h1 className='app-title'>Fixit</h1>
+        <div id='buttons'>
           <Link to="/login"><button>
                 Login
               </button>

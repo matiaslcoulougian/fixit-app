@@ -1,9 +1,10 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useMutation} from "@apollo/client";
-import {LOGIN, REGISTER} from "../queries/mutations";
+import {REGISTER} from "../queries/mutations";
 import {Link} from "react-router-dom";
 import Modal from "./RegisterModal";
 import "./styles/RegisterForm.css";
+import LoaderSpinner from "./LoaderSpinner";
 
 export const RegisterForm = () =>{
     const [firstName, setFirstName] = useState('');
@@ -18,28 +19,33 @@ export const RegisterForm = () =>{
     const [passwordShown, setPasswordShown] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const [loaderVisible, setLoaderVisible] = useState(false);
+    // const lastNameRef = useRef();
+    // const emailRef = useRef();
+    // const confirmEmailRef = useRef();
+    // const passwordRef = useRef();
+    // const confirmPasswordRef = useRef();
+    // const phoneRef= useRef();
+    // const dobRef = useRef();
+    // const addressRef = useRef();
+    const focusDiv = useRef();
 
-    const firstNameRef = useRef();
-    const lastNameRef = useRef();
-    const emailRef = useRef();
-    const confirmEmailRef = useRef();
-    const passwordRef = useRef();
-    const confirmPasswordRef = useRef();
-    const phoneRef = useRef();
-    const dobRef = useRef();
-    const addressRef = useRef();
+    useEffect(() => {
+        focusDiv.current.focus();
+    }, [focusDiv]);
 
-
-    const [register] = useMutation(
+    const [register, {loading}] = useMutation(
         REGISTER,
         {
             onCompleted: async (res) => {
                 setErrorMessage('');
+                setLoaderVisible(false)
                 setModalVisible(true);
             },
             onError: (e) => {
                 setErrorMessage(e.message);
             },
+
         }
     );
 
@@ -50,92 +56,103 @@ export const RegisterForm = () =>{
     };
 
     function handleRegister () {
-        console.log(firstNameRef.current.value);
+        console.log(firstName);
 
-        if (firstNameRef === '' || lastNameRef === '' || emailRef === '' || passwordRef === '' || phoneRef === '' ||
-            dobRef === '' || addressRef === '' || confirmEmailRef === '' || confirmPasswordRef === '') {
-            setErrorMessage('All fields are required');
+        if (firstName === '' || lastName === '' || email === '' || password === '' || phone === '' ||
+            dob === '' || address === '' || confirmEmail === '' || confirmPassword === '') {
+            setErrorMessage('All fields are required!');
             return;
         }
-        else if (emailRef.current.value !== confirmEmailRef.current.value) {
-            console.log(emailRef.current.value, confirmEmailRef.current.value);
-            setErrorMessage('Emails should match');
+        else if (email !== confirmEmail) {
+            console.log(email, confirmEmail);
+            setErrorMessage('Emails should match!');
             return;
         }
-        else if (passwordRef.current.value !== confirmPasswordRef.current.value){
-            setErrorMessage('Passwords should match');
+        else if (password !== confirmPassword){
+            setErrorMessage('Passwords should match!');
             return;
         }
         register({
             variables: {
-                firstName: firstNameRef.current.value,
-                lastName: lastNameRef.current.value,
-                email: emailRef.current.value,
-                phoneNumber: phoneRef.current.value,
-                password: passwordRef.current.value,
-                dateOfBirth: dobRef.current.value,
-                address: addressRef.current.value,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phoneNumber: phone,
+                password: password,
+                dateOfBirth: dob,
+                address: address,
             },
         });
+        if (loading){
+            setLoaderVisible(true);
+        }
     }
 
-    const FormInput = (props) => (
-        <div className="row">
-            <label>{props.description}</label>
-            <input ref={props.reference} type={props.type} placeholder={props.placeholder}/>
-        </div>
-    );
     const FormHeader = (props) => (
         <h2 id="headerTitle">{props.title}</h2>
     );
 
-    const PasswordInput = (props) => (
-        <div className="row">
-            <label>{props.description}</label>
-            <input ref={props.reference} type={passwordShown ? 'text' : 'password'} placeholder={props.placeholder}/>
-
-        </div>
-    );
-
-
-    const Form = (props) => (
-        <div>
-            <FormInput reference={firstNameRef} description="First Name" placeholder="First Name" type="text" />
-            <FormInput reference={lastNameRef} description="Last Name" placeholder="Last Name" type="text" />
-            <FormInput reference={emailRef} description="Email address" placeholder="Email" type="text" />
-            <FormInput reference={confirmEmailRef} description="Confirm email address" placeholder="Confirm your email" type="text" />
-            <PasswordInput reference={passwordRef} description="Password" placeholder="Enter your password" type="password"/>
-            <PasswordInput reference={confirmPasswordRef} description="Confirm password" placeholder="Confirm your password" type="password"/>
-            <button className="password-button" onClick={togglePassword}>{passwordShown ? 'Hide' : 'Show'}</button>
-            <FormInput reference={phoneRef} description="Phone number" placeholder="Phone number" type="text" />
-            <FormInput reference={dobRef} description="Date of birth" placeholder="Date of birth" type="date" />
-            <FormInput reference={addressRef} description="Address" placeholder="Address" type="text" />
-            <FormButton title="Register"/>
-            {errorMessage && <div className="error"> {errorMessage} </div>}
-        </div>
-    );
-
-    const FormButton = props => (
+    const FormButton = (props) => (
         <div id="button" className="row">
             <button onClick={handleRegister}>{props.title}</button>
         </div>
     );
 
-
-
-    const LoginOption = props => (
+    const LoginOption = () => (
         <div id="login-form">
             <p>Already have an account?</p>
-            <Link to="/login"><p>Login now!</p></Link>
+            <Link to="/login" className="nav-link"><p>Login now!</p></Link>
         </div>
     );
 
 
     return(
-
         <div id="loginform">
             <FormHeader title="Register" />
-            <Form email={email} password={password}/>
+            <div>
+                <div className="row">
+                    <label>First Name</label>
+                    <input ref={focusDiv} value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" placeholder="First Name"/>
+                </div>
+                <div className="row">
+                    <label>Last Name</label>
+                    <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last Name"/>
+                </div>
+                <div className="row">
+                    <label>Email address</label>
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email"/>
+                </div>
+                <div className="row">
+                    <label>Confirm email address</label>
+                    <input value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} type="text" placeholder="Confirm your email"/>
+                </div>
+                <div className="row">
+                    <label>Password</label>
+                    <input value={password} onChange={(e) => setPassword(e.target.value)} type={passwordShown ? 'text' : 'password'} placeholder="Enter your password"/>
+                </div>
+                <div className="row">
+                    <label>Confirm password</label>
+                    <input value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} type={passwordShown ? 'text' : 'password'} placeholder="Confirm your password"/>
+                </div>
+                <button className="password-button" onClick={togglePassword}>
+                    {passwordShown ? 'Hide password' : 'Show password'}
+                </button>
+                <div className="row">
+                    <label>Phone number</label>
+                    <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" placeholder="Phone number"/>
+                </div>
+                <div className="row">
+                    <label>Date of birth</label>
+                    <input value={dob} onChange={(e) => setDoB(e.target.value)} type="date" placeholder="Date of birth" />
+                </div>
+                <div className="row">
+                    <label>Address</label>
+                    <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" placeholder="Address"/>
+                </div>
+                {errorMessage && <div className="error"> {errorMessage} </div>}
+                <LoaderSpinner show={loaderVisible}/>
+                <FormButton title="Register"/>
+            </div>
             <LoginOption />
             <Modal show={modalVisible} name={firstName}/>
         </div>

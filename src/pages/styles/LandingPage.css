@@ -1,13 +1,51 @@
 .logo {
-    height: 100px;
-    width: 100px;
+    height: 200px;
+    width: 200px;
     border-radius: 50%;
     left: 850px;
     margin-left: auto;
     margin-right: auto;
     display: block;
+    margin-top: 15px;
 }
 
 #buttons {
     padding-top: 15px;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+
+.landing{
+    width: 500px;
+    height: 500px;
+    margin: 100px auto;
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    border: 1px solid lightgrey;
+}
+
+.app-title {
+    font-family: 'Roboto';
+    letter-spacing: 1px;
+    font-size: 50px;
+}
+
+.landing button{
+    border-radius: 25px;
+    width: 80%;
+    height: 50px;
+    font-size: 1.3rem;
+    vertical-align: middle;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.25s ease-out;
+    background-color: #555555;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.landing button:hover{
+    opacity: 0.8;
 }

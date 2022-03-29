@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:600|Work+Sans:400,500,600,700&display=swap');
 
 body{
-    background: rgb(34,193,195);
-    background: linear-gradient(135deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%);
     font-family: "work sans";
 }
 
@@ -13,7 +11,7 @@ html{
 #loginform{
     max-width: 500px;
     min-width: 500px;
-    max-height: 1400px;
+    max-height: 1500px;
     width: 30%;
     height: 60%;
     margin: 100px auto;
@@ -35,7 +33,7 @@ html{
     font-size: 1.25em;
     padding-top: 0.2rem;
     margin-top: 0.1rem;
-    padding-bottom: 0.2rem;
+    padding-bottom: 0.5rem;
     width: 90%;
     margin:auto;
 }
@@ -50,12 +48,17 @@ html{
 }
 
 .password-button{
-    display: flex;
-    align-items: center;
-    margin: auto;
     padding-left: 20px;
     padding-right: 20px;
-    margin-top: 0.7rem;
+    border-radius: 25px;
+    height: 35px;
+    font-size: 0.9rem;
+    color: #615c5c;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.25s ease-out;
+    margin-top: 20px;
+    margin-left: 70px;
 }
 
 .row input{
@@ -96,11 +99,8 @@ html{
     width: 80%;
     height: 40px;
     font-size: 1.3rem;
-    color: white;
+    color: #5b5656;
     font-weight: 700;
-    background: rgb(34,193,195);
-    background: linear-gradient(90deg, rgba(34,193,195,1) 0%,     rgba(253,187,45,1) 100%);
-    border: 0px;
     cursor: pointer;
     transition: opacity 0.25s ease-out;
 }
@@ -114,7 +114,12 @@ html{
 }
 
 
-
+.error {
+    color: red;
+    text-align: center;
+    padding-top: 1.5rem;
+    font-size: 20px;
+}
 
 
 #alternativeLogin {

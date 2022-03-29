@@ -8,7 +8,7 @@ import { HomePage } from './pages/HomePage';
 
 export function App() {
   return (
-    <div>
+    <div className="main-app">
             <Routes>
                 <Route exact path="/" element={<LandingPage />} />
                 <Route exact path="/login" element={<LoginPage />} />

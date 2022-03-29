@@ -1,10 +1,12 @@
-import {Login} from "../components/deprecated/Login";
 import {LoginForm} from "../components/LoginForm";
+import ScrollToTop from "../components/ScrollToTop";
+import React from "react";
 
 const LoginPage = () => {
     return (
         <div>
             <LoginForm />
+            <ScrollToTop/>
         </div>
     )
 }
