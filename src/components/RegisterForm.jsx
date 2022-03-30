@@ -5,6 +5,8 @@ import {Link} from "react-router-dom";
 import Modal from "./RegisterModal";
 import "./styles/RegisterForm.css";
 import LoaderSpinner from "./LoaderSpinner";
+import {Checkbox, FormControlLabel} from "@mui/material";
+
 
 export const RegisterForm = () =>{
     const [firstName, setFirstName] = useState('');
@@ -20,6 +22,7 @@ export const RegisterForm = () =>{
     const [errorMessage, setErrorMessage] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [loaderVisible, setLoaderVisible] = useState(false);
+    const [worker, setWorker] = useState(false);
     // const lastNameRef = useRef();
     // const emailRef = useRef();
     // const confirmEmailRef = useRef();
@@ -48,6 +51,12 @@ export const RegisterForm = () =>{
 
         }
     );
+
+    const handleWorkerCheckbox = () => {
+        console.log("before", worker);
+        setWorker(!worker);
+        console.log("after", worker);
+    }
 
     const togglePassword = () => {
         // When the handler is invoked
@@ -107,6 +116,7 @@ export const RegisterForm = () =>{
 
 
     return(
+
         <div id="loginform">
             <FormHeader title="Register" />
             <div>
@@ -118,6 +128,16 @@ export const RegisterForm = () =>{
                     <label>Last Name</label>
                     <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last Name"/>
                 </div>
+
+                <div className="checkbox">
+                 <div>
+                     <label>Are you a worker?</label>
+                     <input className="box" type="checkbox" onChange={handleWorkerCheckbox} value={worker ? "checked": "unchecked"}/>
+
+                 </div>
+                {/*<FormControlLabel control={<Checkbox classes={""} defaultChecked />} label="Label" labelPlacement="start"/>*/}
+                </div>
+
                 <div className="row">
                     <label>Email address</label>
                     <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email"/>
