@@ -90,6 +90,7 @@ export const RegisterForm = () =>{
                 password: password,
                 dateOfBirth: dob,
                 address: address,
+                isWorker: worker
             },
         });
         if (loading){

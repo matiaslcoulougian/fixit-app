@@ -9,6 +9,7 @@ export const REGISTER = gql`
         $lastName: String!
         $dateOfBirth: Date!
         $address: String!
+        $isWorker: Boolean!
     ) {
         register(input: {
             email: $email,
@@ -18,12 +19,14 @@ export const REGISTER = gql`
             lastName: $lastName,
             dateOfBirth: $dateOfBirth,
             address: $address
+            isWorker: $isWorker
         }) {
             id
             email
             firstName
             lastName
             dateOfBirth
+            role
       }
     }
 `;
