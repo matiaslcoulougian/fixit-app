@@ -4,7 +4,8 @@ import logo from '../resources/logo.png'
 import './styles/LandingPage.css'
 export function LandingPage() {
   return (
-    <div className='landing'>
+      <div className="big-div">
+        <div className='landing'>
         <img src={logo} alt="Logo" className="logo"/>
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,900;1,900&display=swap');
@@ -20,7 +21,7 @@ export function LandingPage() {
               </button>
           </Link>
         </div>
-        
+    </div>
     </div>
   )
 }
