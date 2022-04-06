@@ -71,7 +71,7 @@ input.box:checked{
     display:inline
 }
 
-.row{
+.fieldRow{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -94,7 +94,7 @@ input.box:checked{
     margin-left: 70px;
 }
 
-.row input{
+.fieldRow input{
     width: 80%;
     box-sizing: border-box;
     border: none;
@@ -105,29 +105,29 @@ input.box:checked{
     transition: box-shadow 0.2s ease-in;
 }
 
-.row input:focus{
+.fieldRow input:focus{
     box-shadow: inset 0px -3px 0px 0px darkorange;
     outline: none;
 }
 
-.row input::-webkit-input-placeholder{
+.fieldRow input::-webkit-input-placeholder{
     opacity: 1;
     transition: opacity 0.25s ease-out;
 }
 
-.row input:hover::-webkit-input-placeholder,
-.row input:focus::-webkit-input-placeholder{
+.fieldRow input:hover::-webkit-input-placeholder,
+.fieldRow input:focus::-webkit-input-placeholder{
     opacity: 0;
 }
 
-.row label{
+.fieldRow label{
     align-self: start;
     padding-left: 4.5rem;
     padding-bottom: 0.5rem;
     color: darkorange;
 }
 
-.row button{
+.fieldRow button{
     border-radius: 25px;
     width: 80%;
     height: 40px;
@@ -138,7 +138,7 @@ input.box:checked{
     transition: opacity 0.25s ease-out;
 }
 
-.row button:hover{
+.fieldRow button:hover{
     opacity: 0.8;
 }
 

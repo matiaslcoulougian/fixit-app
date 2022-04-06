@@ -49,7 +49,7 @@ export const LoginForm = () =>{
     );
 
     const FormInput = (props) => (
-        <div className="row">
+        <div className="fieldRow-b">
             <label>{props.description}</label>
             <input type={props.type} placeholder={props.placeholder}/>
         </div>
@@ -62,12 +62,12 @@ export const LoginForm = () =>{
     const Form = (props) => (
         <div>
             {/*<FormInput onChange={(e) => setEmail(e.target.value)} description="Email" placeholder="Enter your email" type="text" function={setEmail}/>*/}
-            <div className="row">
+            <div className="fieldRow-b">
                 <label>Email</label>
                 <input ref={emailRef} type="text" placeholder="Enter your email"/>
             </div>
 
-            <div className="row">
+            <div className="fieldRow-b">
                 <label>Password</label>
                 <input ref={passwordRef} type="password" placeholder="Enter your password"/>
             </div>
@@ -79,7 +79,7 @@ export const LoginForm = () =>{
     );
 
     const FormButton = props => (
-        <div id="button" class="row">
+        <div id="button" className="fieldRow-b">
             <button onClick={handleSubmit}>{props.title}</button>
         </div>
     );

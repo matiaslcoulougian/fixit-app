@@ -16,8 +16,9 @@ export function Home() {
 
                 <h1 className="ml-3 mt-3">What are you looking for?</h1>
 
-                <form className="form-inline">
-                    <div className="input-group mb-3 col-9">
+                <div className="row">
+                    <div className="col-9">
+                    <div className="input-group mb-3 col-6">
                         <input type="text" className="form-control" placeholder="Search for a job..."
                                aria-label="Recipient's username" aria-describedby="button-addon2"/>
                         <div className="input-group-append">
@@ -25,8 +26,9 @@ export function Home() {
                             </button>
                         </div>
                     </div>
+                    </div>
 
-                    <div className="dropdown mb-3">
+                    <div className="dropdown mb-3 col-3">
                         <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Sort by
@@ -38,7 +40,8 @@ export function Home() {
                         </div>
                     </div>
 
-                </form>
+                </div>
+
             </div>
         );
     }

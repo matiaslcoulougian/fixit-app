@@ -103,7 +103,7 @@ export const RegisterForm = () =>{
     );
 
     const FormButton = (props) => (
-        <div id="button" className="row">
+        <div id="button" className="fieldRow">
             <button onClick={handleRegister}>{props.title}</button>
         </div>
     );
@@ -121,11 +121,11 @@ export const RegisterForm = () =>{
         <div id="loginform">
             <FormHeader title="Register" />
             <div>
-                <div className="row">
+                <div className="fieldRow">
                     <label>First Name</label>
                     <input ref={focusDiv} value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" placeholder="First Name"/>
                 </div>
-                <div className="row">
+                <div className="fieldRow">
                     <label>Last Name</label>
                     <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last Name"/>
                 </div>
@@ -139,34 +139,34 @@ export const RegisterForm = () =>{
                 {/*<FormControlLabel control={<Checkbox classes={""} defaultChecked />} label="Label" labelPlacement="start"/>*/}
                 </div>
 
-                <div className="row">
+                <div className="fieldRow">
                     <label>Email address</label>
                     <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder="Email"/>
                 </div>
-                <div className="row">
+                <div className="fieldRow">
                     <label>Confirm email address</label>
                     <input value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} type="text" placeholder="Confirm your email"/>
                 </div>
-                <div className="row">
+                <div className="fieldRow">
                     <label>Password</label>
                     <input value={password} onChange={(e) => setPassword(e.target.value)} type={passwordShown ? 'text' : 'password'} placeholder="Enter your password"/>
                 </div>
-                <div className="row">
+                <div className="fieldRow">
                     <label>Confirm password</label>
                     <input value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} type={passwordShown ? 'text' : 'password'} placeholder="Confirm your password"/>
                 </div>
                 <button className="password-button" onClick={togglePassword}>
                     {passwordShown ? 'Hide password' : 'Show password'}
                 </button>
-                <div className="row">
+                <div className="fieldRow">
                     <label>Phone number</label>
                     <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" placeholder="Phone number"/>
                 </div>
-                <div className="row">
+                <div className="fieldRow">
                     <label>Date of birth</label>
                     <input value={dob} onChange={(e) => setDoB(e.target.value)} type="date" placeholder="Date of birth" />
                 </div>
-                <div className="row">
+                <div className="fieldRow">
                     <label>Address</label>
                     <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" placeholder="Address"/>
                 </div>
