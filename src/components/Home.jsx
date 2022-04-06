@@ -3,6 +3,7 @@ import "./styles/Home.css";
 import { NavBar} from "./NavBar";
 
 
+
 export function Home() {
 
     const imgSrc = (__filename) => {
@@ -46,30 +47,22 @@ export function Home() {
         );
     }
 
-    const JobResult = () => {
+    const JobResult = (props) => {
         return(
-            <div className="row my-5 align-items-center justify-content-center">
-                <div className="col-8 col-lg-4 col-xl-3">
-                    <div className="card mb-3">
-                        <div className="row g-0">
-                            <div className="col-md-4">
-                                <img src={`${process.env.PUBLIC_URL}/assets/images/dog.jpg`} className="img-fluid rounded-start" alt="dog"/>
-                            </div>
-
-                            <div className="col-md-8">
-                                <div className="card-body">
-                                    <h5 className="card-title">Card title</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" className="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
+            <div className="container">
+                <div className="card mb-3 shadow" style={{width: "400px"}}>
+                    <img src={props.imgSrc} className="card-img-top w-50 h-50 rounded mx-auto d-block mt-3"/>
+                        <div className="card-body text-center">
+                            <h4 className="card-title">{props.jobTitle}</h4>
+                            <h5 className="card-title">{props.jobType}</h5>
+                            <h6 className="card-title">{props.workersName}</h6>
+                            <p className="card-text">{props.rating} <i className="bi bi-star-fill "></i></p>
+                            <p className="card-text"><small className="text-muted">{props.timeDistance} away</small></p>
+                            <div className="btn btn-primary">Details</div>
                         </div>
-
-                    </div>
                 </div>
             </div>
         );
-
 
     }
 
@@ -79,7 +72,7 @@ export function Home() {
 
             <NavBar firstName="Luis" />
             <TopSearchBanner />
-            <JobResult />
+            <JobResult imgSrc={`${process.env.PUBLIC_URL}/assets/images/dog.jpg`} jobTitle={"Home plumber"} jobType={"Plumber"} workersName={"Juan Ramon"} rating={"4.3"} timeDistance={"30 min"}/>
 
 
 

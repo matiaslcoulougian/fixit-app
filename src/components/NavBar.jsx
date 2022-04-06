@@ -13,7 +13,7 @@ export const NavBar = (props) => {
     };
 
     return (
-        <div className="navbar navbar-expand-md navbar-light bg-warning">
+        <div className="navbar navbar-expand-md navbar-light bg-warning px-3">
             <a href="/" className="navbar-brand" >
                 <span><img src={Logo} alt="logo" width={logoWidthHeight} height={logoWidthHeight} className="d-inline-block align-top"/></span>
                 <span style={lineHeight}>Fixit</span>
@@ -26,7 +26,7 @@ export const NavBar = (props) => {
 
             <div className="collapse navbar-collapse justify-content-end align-end" id="main-nav">
                 <ul className="navbar-nav">
-                    <li className="nav-item">
+                    <li className="nav-item pe-2">
                         <a className="nav-link" href="/">Notifications</a>
                     </li>
 
@@ -48,6 +48,7 @@ export const NavBar = (props) => {
                     </li>
                 </ul>
             </div>
+
 
         </div>
     )
