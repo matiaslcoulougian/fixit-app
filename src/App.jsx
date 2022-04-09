@@ -5,7 +5,7 @@ import './App.css'
 import { LandingPage } from './pages/LandingPage';
 import RegisterPage from "./pages/RegisterPage";
 import { HomePage } from './pages/HomePage';
-import {Test} from "./components/Test";
+import {Test} from "./components/pages/Test";
 import {DashboardPage} from "./pages/DashboardPage";
 
 export function App() {

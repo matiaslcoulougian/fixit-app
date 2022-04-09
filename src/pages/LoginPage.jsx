@@ -1,4 +1,4 @@
-import {LoginForm} from "../components/LoginForm";
+import {LoginForm} from "../components/pages/LoginForm";
 import ScrollToTop from "../components/ScrollToTop";
 import React from "react";
 

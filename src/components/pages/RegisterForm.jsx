@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useMutation} from "@apollo/client";
-import {REGISTER} from "../queries/mutations";
+import {REGISTER} from "../../queries/mutations";
 import {Link} from "react-router-dom";
-import Modal from "./RegisterModal";
-import "./styles/RegisterForm.css";
-import LoaderSpinner from "./LoaderSpinner";
+import Modal from "../RegisterModal";
+import "../styles/RegisterForm.css";
+import LoaderSpinner from "../LoaderSpinner";
 import {Checkbox, FormControlLabel} from "@mui/material";
 
 

@@ -1,4 +1,4 @@
-import {RegisterForm} from "../components/RegisterForm";
+import {RegisterForm} from "../components/pages/RegisterForm";
 import ScrollToTop from "../components/ScrollToTop";
 import React from "react";
 import "./styles/RegisterPage.css";
