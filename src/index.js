@@ -7,16 +7,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-
-
 export const client = new ApolloClient({
-    uri: 'https://fierce-inlet-15882.herokuapp.com/graphql',
-    // uri: 'http://localhost:4000/',
+    // uri: 'https://fierce-inlet-15882.herokuapp.com/graphql',
+    uri: 'http://localhost:4000/',
     cache: new InMemoryCache()
 });
-
-
-
 
 render((
 <BrowserRouter>

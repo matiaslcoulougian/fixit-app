@@ -1,11 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useMutation} from "@apollo/client";
 import {REGISTER} from "../queries/mutations";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Modal from "./RegisterModal";
 import "./styles/RegisterForm.css";
 import LoaderSpinner from "./LoaderSpinner";
-import {Checkbox, FormControlLabel} from "@mui/material";
 
 
 export const RegisterForm = () =>{
@@ -23,15 +22,8 @@ export const RegisterForm = () =>{
     const [modalVisible, setModalVisible] = useState(false);
     const [loaderVisible, setLoaderVisible] = useState(false);
     const [worker, setWorker] = useState(false);
-    // const lastNameRef = useRef();
-    // const emailRef = useRef();
-    // const confirmEmailRef = useRef();
-    // const passwordRef = useRef();
-    // const confirmPasswordRef = useRef();
-    // const phoneRef= useRef();
-    // const dobRef = useRef();
-    // const addressRef = useRef();
     const focusDiv = useRef();
+    const navigate = useNavigate();
 
     useEffect(() => {
         focusDiv.current.focus();
@@ -43,7 +35,7 @@ export const RegisterForm = () =>{
             onCompleted: async (res) => {
                 setErrorMessage('');
                 setLoaderVisible(false)
-                setModalVisible(true);
+                navigate('/login');
             },
             onError: (e) => {
                 setErrorMessage(e.message);
