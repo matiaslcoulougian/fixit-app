@@ -30,9 +30,11 @@ export const LoginForm = () =>{
             }
         });
         const token = response.data.login.accessToken
-        console.log(token)
+        const firstName = response.data.login.user.firstName
         window.localStorage.setItem('token', token)
-        navigate('/home')
+        window.localStorage.setItem('firstName', firstName)
+        if (response.data.login.user.role === "customer") navigate('/home')
+        else navigate('/dashboard')
 
     }
     const [login] = useMutation(

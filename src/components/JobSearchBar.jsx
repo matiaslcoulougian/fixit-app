@@ -7,14 +7,9 @@ export const JobSearchBar = forwardRef((props, ref) => {
     // with whatever you return from the callback passed
     // as the second argument
     useImperativeHandle(ref, () => ({
-
-
         getText(){
             return text;
         }
-
-
-
     }));
 
     return(

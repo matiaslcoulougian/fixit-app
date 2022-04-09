@@ -13,6 +13,7 @@ export const Home = () => {
 
     const searchBarRef = useRef();
     const [search, setSearch] = useState("");
+    const firstName = window.localStorage.getItem('firstName');
 
     const [getPostsByType] = useLazyQuery(
         GET_POSTS_BY_TYPE,{
@@ -115,7 +116,7 @@ export const Home = () => {
     return (
         <div>
 
-            <NavBar firstName="Luis" />
+            <NavBar firstName={firstName} />
             <TopSearchBanner />
 
             <div className="container mt-3">

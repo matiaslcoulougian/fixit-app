@@ -40,6 +40,7 @@ export const LOGIN = gql`
           user {
               id
               firstName
+              role
             }
             accessToken
         
@@ -47,3 +48,12 @@ export const LOGIN = gql`
     }
 `;
 
+export const CREATE_JOB_POST = gql`
+    mutation CreateJobPost($input: CreateJobPostInput!) {
+        createJobPost(input: $input){
+            id
+            description
+            isActive
+        }
+    }
+`;
