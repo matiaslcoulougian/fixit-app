@@ -2,14 +2,29 @@ import React from 'react';
 import {render} from 'react-dom';
 import { App } from './App';
 import { BrowserRouter } from 'react-router-dom';
-import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
+import {ApolloClient, ApolloProvider, createHttpLink, InMemoryCache} from "@apollo/client";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import {setContext} from "@apollo/client/link/context";
+
+const httpLink = createHttpLink({
+    uri: '/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+    const token = window.localStorage.getItem('token');
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : "",
+        }
+    }
+});
 
 export const client = new ApolloClient({
     // uri: 'https://fierce-inlet-15882.herokuapp.com/graphql',
-    uri: 'http://localhost:4000/',
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache()
 });
 

@@ -36,16 +36,14 @@ export const LOGIN = gql`
         login(input: {
             credential: $credential,
             password: $password
-        }) {
+        }){
           user {
               id
               firstName
             }
             accessToken
         
-            }
-            
-}
-
+          }
+    }
 `;
 
