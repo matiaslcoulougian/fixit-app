@@ -14,7 +14,7 @@ export const NavBar = (props) => {
 
     return (
         <div className="navbar navbar-expand-md navbar-light bg-warning px-3">
-            <a href="/" className="navbar-brand" >
+            <a href="/home" className="navbar-brand" >
                 <span><img src={Logo} alt="logo" width={logoWidthHeight} height={logoWidthHeight} className="d-inline-block align-top"/></span>
                 <span style={lineHeight}>Fixit</span>
             </a>
@@ -37,9 +37,9 @@ export const NavBar = (props) => {
                             Hello, {props.firstName}
                         </a>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a className="dropdown-item" href="#">Hired Services</a></li>
-                            <li><a className="dropdown-item" href="#">My Profile</a></li>
-                            <li><a className="dropdown-item" href="#">Settings</a></li>
+                            <li><a className="dropdown-item" href="/hired">Hired Services</a></li>
+                            <li><a className="dropdown-item" href="/profile">My Profile</a></li>
+                            <li><a className="dropdown-item" href="/test">Settings</a></li>
                         </ul>
                     </li>
 

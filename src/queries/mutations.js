@@ -49,22 +49,3 @@ export const LOGIN = gql`
 
 `;
 
-export const GET_JOBS_BY_TYPE = gql`
-    query GetJobsByType($type: String!) {
-        getJobsByType(type: $String) {
-            id
-            title
-            description
-            type
-            location
-            date
-            time
-            price
-            user {
-                id
-                firstName
-                lastName
-            }
-        }
-    }
-`;

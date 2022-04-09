@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useMutation} from "@apollo/client";
-import {REGISTER} from "../queries/mutations";
+import {REGISTER} from "../../queries/mutations";
 import {Link, useNavigate} from "react-router-dom";
-import Modal from "./RegisterModal";
-import "./styles/RegisterForm.css";
-import LoaderSpinner from "./LoaderSpinner";
+import Modal from "../RegisterModal";
+import "../styles/RegisterForm.css";
+import LoaderSpinner from "../LoaderSpinner";
 
 
 export const RegisterForm = () =>{

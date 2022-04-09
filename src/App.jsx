@@ -7,6 +7,8 @@ import RegisterPage from "./pages/RegisterPage";
 import { HomePage } from './pages/HomePage';
 import {Test} from "./components/pages/Test";
 import {DashboardPage} from "./pages/DashboardPage";
+import {JobDetailsPage} from "./pages/JobDetailsPage";
+
 
 export function App() {
   return (
@@ -18,6 +20,7 @@ export function App() {
                 <Route exact path="/home" element={<HomePage />} />
                 <Route exact path="/test" element={<Test />} />
                 <Route exact path="/dashboard" element={<DashboardPage />} />
+                <Route exact path="/details" element={<JobDetailsPage />} />
             </Routes>
     </div>
   )

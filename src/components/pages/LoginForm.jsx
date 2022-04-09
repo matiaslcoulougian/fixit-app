@@ -1,8 +1,8 @@
 import React, {useState, useRef} from 'react';
 import {Link, useNavigate} from "react-router-dom";
-import "./styles/LoginForm.css";
+import "../styles/LoginForm.css";
 import {useMutation} from "@apollo/client";
-import {LOGIN} from "../queries/mutations";
+import {LOGIN} from "../../queries/mutations";
 
 export const LoginForm = () =>{
     const [email, setEmail] = useState('')

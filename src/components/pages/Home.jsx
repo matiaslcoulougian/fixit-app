@@ -3,21 +3,19 @@ import "../styles/Home.css";
 import { NavBar} from "../NavBar";
 import {JobResultCard} from "../JobResultCard";
 import {JobGrid} from "../JobGrid";
-import {useMutation} from "@apollo/client";
-import {GET_JOBS_BY_TYPE} from "../../queries/mutations";
+import { useQuery} from "@apollo/client";
+import {GET_POSTS_BY_TYPE} from "../../queries/queries";
 import {JobSearchBar} from "../JobSearchBar";
 
 
 
-export function Home() {
-    const [searchedTerm, setSearchedTerm] = useState('');
-    /*const [searchError, setSearchError] = useState('');
+export const Home = () => {
 
-    const [getJobsByType, {loading}] = useMutation(
-        GET_JOBS_BY_TYPE,{
+
+    const [getPostsByType] = useQuery(
+        GET_POSTS_BY_TYPE,{
             onCompleted: async (data) => {
                 console.log(data);
-                setSearchError('');
                 return data;
             },
             onError: (error) => {
@@ -25,35 +23,35 @@ export function Home() {
             }
         }
 
-    );*/
+    );
 
+
+    async function fetchJobs() {
+        const searchedType = this.refs.searchBar.text;
+        console.log(searchedType);
+
+        const response = await getPostsByType({
+            variables: {
+                type: searchedType
+            }
+        });
+
+
+
+    }
 
 
     const TopSearchBanner = () => {
-        function fetchJobs() {
-            //getJobsByType({variables: {type: searchedTerm}});
-
-        }
-
-        function getJobTypeList() {
-            return undefined; //ver como pedir todos los jobs
-        }
-
-        //const jobTypeList = getJobTypeList();
-        const jobTypeList = ['Full Time', 'Part Time', 'Freelance', 'Internship'];
 
         return(
             <div className="container">
-
                 <h1 className="ml-3 mt-3">What are you looking for?</h1>
-
                 <div className="row">
                     <div className="col-9">
                     <div className="input-group mb-3 col-6">
-                        <JobSearchBar style={{width: "880px"}}/>
+                        <JobSearchBar ref="searchBar" style={{width: "880px"}}/>
                         <div className="input-group-append">
-                            <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={fetchJobs()}>Search
-                            </button>
+                            <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={fetchJobs}>Search</button>
                         </div>
                     </div>
                     </div>
@@ -106,8 +104,6 @@ export function Home() {
             <NavBar firstName="Luis" />
             <TopSearchBanner />
 
-
-
             <div className="container mt-3">
                 <div className="row row-cols-3 row-cols-sm-2 row-cols-md-3 g-4">
                     {list.map((item) => (
@@ -123,10 +119,8 @@ export function Home() {
                         </div>)
                     )}
 
-
                 </div>
             </div>
-
 
         </div>
     );
