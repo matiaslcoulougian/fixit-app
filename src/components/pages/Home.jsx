@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import "../styles/Home.css";
 import { NavBar} from "../NavBar";
 import {JobResultCard} from "../JobResultCard";
 import {JobGrid} from "../JobGrid";
-import { useQuery} from "@apollo/client";
+import {useLazyQuery, useQuery} from "@apollo/client";
 import {GET_POSTS_BY_TYPE} from "../../queries/queries";
 import {JobSearchBar} from "../JobSearchBar";
 
@@ -11,9 +11,16 @@ import {JobSearchBar} from "../JobSearchBar";
 
 export const Home = () => {
 
+    const searchBarRef = useRef();
+    const [search, setSearch] = useState("");
 
-    const [getPostsByType] = useQuery(
+    const [getPostsByType] = useLazyQuery(
         GET_POSTS_BY_TYPE,{
+
+            variables: {
+                type: search,
+            },
+
             onCompleted: async (data) => {
                 console.log(data);
                 return data;
@@ -21,20 +28,27 @@ export const Home = () => {
             onError: (error) => {
                 console.log(error);
             }
+
+
         }
 
     );
 
 
     async function fetchJobs() {
-        const searchedType = this.refs.searchBar.text;
+        console.log("fetching jobs");
+        const searchedType = searchBarRef.current.getText();
         console.log(searchedType);
+        setSearch(searchedType);
+        const response = await getPostsByType();
 
-        const response = await getPostsByType({
-            variables: {
-                type: searchedType
-            }
-        });
+
+        // const {data} = getPostsByType({
+        //     variables: {
+        //         type: searchedType
+        //     }
+        // });
+
 
 
 
@@ -49,9 +63,9 @@ export const Home = () => {
                 <div className="row">
                     <div className="col-9">
                     <div className="input-group mb-3 col-6">
-                        <JobSearchBar ref="searchBar" style={{width: "880px"}}/>
+                        <JobSearchBar ref={searchBarRef} style={{width: "880px"}}/>
                         <div className="input-group-append">
-                            <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={fetchJobs}>Search</button>
+                            <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={fetchJobs} >Search</button>
                         </div>
                     </div>
                     </div>
