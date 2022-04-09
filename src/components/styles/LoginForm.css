@@ -91,9 +91,8 @@ html{
     width: 80%;
     height: 40px;
     font-size: 1.3rem;
-    color: white;
+    color: #5b5656;
     font-weight: 700;
-    border: 0px;
     cursor: pointer;
     transition: opacity 0.25s ease-out;
 }
