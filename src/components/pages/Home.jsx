@@ -50,7 +50,7 @@ export function Home() {
                 <div className="row">
                     <div className="col-9">
                     <div className="input-group mb-3 col-6">
-                        <JobSearchBar/>
+                        <JobSearchBar style={{width: "880px"}}/>
                         <div className="input-group-append">
                             <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={fetchJobs()}>Search
                             </button>
@@ -109,7 +109,7 @@ export function Home() {
 
 
             <div className="container mt-3">
-                <div className="row row-cols-1 row-cols-md-3 g-4">
+                <div className="row row-cols-3 row-cols-sm-2 row-cols-md-3 g-4">
                     {list.map((item) => (
                         <div className="col>">
                             <JobResultCard
