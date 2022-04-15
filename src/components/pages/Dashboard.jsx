@@ -34,6 +34,10 @@ export const Dashboard = () => {
             }
 
         );
+        function capitalize(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
 
         const handleAddJob = () => {
             const searchedType = searchBarRef.current.getText();
@@ -43,9 +47,9 @@ export const Dashboard = () => {
 
             createJobPost({
                 variables:{
-                    title: title,
-                    description: description,
-                    type: searchedType
+                    title: capitalize(title),
+                    description: capitalize(description),
+                    type: searchedType.toLowerCase()
                 }
             });
         };

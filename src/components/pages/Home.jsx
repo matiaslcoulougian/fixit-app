@@ -49,6 +49,45 @@ export const Home = () => {
 
     );
 
+    function sortJobsByProperty(e){
+        let sortedList;
+        const property = e.currentTarget.getAttribute("field");
+        console.log("entered!");
+        console.log("property chosen", property);
+        let list = [...realList];
+
+        switch(property){
+            case "type":
+                sortedList = list.sort((a,b) => {
+                    console.log("a", a.type);
+                    console.log("a", a);
+                    if(a.type < b.type) return -1;
+                    if(a.type > b.type) return 1;
+                    return 0;
+                });
+                break;
+            case "title":
+                sortedList = list.sort((a,b) => {
+                    if(a.title < b.title) return -1;
+                    if(a.title > b.title) return 1;
+                    return 0;
+                });
+                break;
+
+            case "worker":
+                sortedList = list.sort((a,b) => {
+                    if((a.worker.firstName + a.worker.lastName) < (b.worker.firstName + b.worker.lastName)) return -1;
+                    if((a.worker.firstName + a.worker.lastName) > (b.worker.firstName + b.worker.lastName)) return 1;
+                    return 0;
+                });
+                break;
+            default:
+                sortedList = realList;
+        }
+        setRealList(sortedList);
+    }
+
+
     useEffect(() => {
         if(searchedType !== ""){
             setSearch(searchedType);
@@ -96,15 +135,21 @@ export const Home = () => {
                     </div>
 
                     <div className="dropdown mb-3 col-3">
-                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Sort by
+                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            Sort By
                         </button>
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href="#">Action</a>
-                            <a className="dropdown-item" href="#">Another action</a>
-                            <a className="dropdown-item" href="#">Something else here</a>
-                        </div>
+                        <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <li>
+                                <button className="dropdown-item" type="button" onClick={sortJobsByProperty} field={"type"}>Type</button>
+                            </li>
+                            <li>
+                                <button className="dropdown-item" type="button" onClick={sortJobsByProperty} field={"title"}>Title</button>
+                            </li>
+                            <li>
+                                <button className="dropdown-item" type="button" onClick={sortJobsByProperty} field={"worker"}>Worker</button>
+                            </li>
+                        </ul>
                     </div>
 
                 </div>

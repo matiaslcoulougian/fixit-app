@@ -24,6 +24,7 @@ export const JobResultCard = (props) => {
                 <div className="card-body text-center">
                     <h4 className="card-title">{props.jobTitle}</h4>
                     <h5 className="card-title">{props.jobType}</h5>
+                    <h5 className="card-title"><span className="badge bg-info">{props.jobType}</span></h5>
                     <h6 className="card-title">{props.workersName}</h6>
                     <p className="card-text">{props.rating} <i className="bi bi-star-fill "></i></p>
                     <p className="card-text"><small className="text-muted">{props.timeDistance} away</small></p>

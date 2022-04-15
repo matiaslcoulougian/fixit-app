@@ -37,6 +37,7 @@ export const JobDetails = () => {
 
 
 
+
     console.log("product details id: ", id);
       return (
           <div>
