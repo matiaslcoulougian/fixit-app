@@ -1,9 +1,9 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import "../styles/Home.css";
 import { NavBar} from "../NavBar";
 import {JobResultCard} from "../JobResultCard";
 import {JobGrid} from "../JobGrid";
-import {useLazyQuery, useQuery} from "@apollo/client";
+import {setLogVerbosity, useLazyQuery, useQuery} from "@apollo/client";
 import {GET_POSTS_BY_TYPE} from "../../queries/queries";
 import {JobSearchBar} from "../JobSearchBar";
 
@@ -14,6 +14,17 @@ export const Home = () => {
     const searchBarRef = useRef();
     const [search, setSearch] = useState("");
     const firstName = window.localStorage.getItem('firstName');
+    let searchedType = "";
+    const [realList, setRealList] = useState([{
+        imgSrc: "https://www.plumbingbyjake.com/wp-content/uploads/2015/11/VIGILANT-plumber-fixing-a-sink-shutterstock_132523334-e1448389230378.jpg",
+        title: "Home plumber",
+        type: "Plumber",
+        worker: {
+            firstName: "juano",
+            lastName: "ramon"
+        }
+
+    }]);
 
     const [getPostsByType] = useLazyQuery(
         GET_POSTS_BY_TYPE,{
@@ -24,6 +35,9 @@ export const Home = () => {
 
             onCompleted: async (data) => {
                 console.log(data);
+                list = data.getPostsByType;
+                console.log("list", list);
+                setRealList(list);
                 return data;
             },
             onError: (error) => {
@@ -35,13 +49,23 @@ export const Home = () => {
 
     );
 
+    useEffect(() => {
+        if(searchedType !== ""){
+            setSearch(searchedType);
+        }
+    }, [searchedType]);
+
 
     async function fetchJobs() {
         console.log("fetching jobs");
-        const searchedType = searchBarRef.current.getText();
+        searchedType = searchBarRef.current.getText();
         console.log(searchedType);
         setSearch(searchedType);
         const response = await getPostsByType();
+        console.log("response", response);
+        console.log("response.data", response.data.getPostsByType);
+        // list = response.data.getPostsByType;
+        // console.log("list", list);
 
 
         // const {data} = getPostsByType({
@@ -98,15 +122,17 @@ export const Home = () => {
         timeDistance: "30 min",
     };
 
-    const list = []
+    let list = []
     for (let i = 0; i < 5; i++) {
         list.push({
             imgSrc: "https://www.plumbingbyjake.com/wp-content/uploads/2015/11/VIGILANT-plumber-fixing-a-sink-shutterstock_132523334-e1448389230378.jpg",
-            jobTitle: "Home plumber",
-            jobType: "Plumber",
-            workersName: "Juan Ramon",
-            rating: "4.3",
-            timeDistance: "30 min",
+            title: "Home plumber",
+            type: "Plumber",
+            worker: {
+                firstName: "juano",
+                lastName: "ramon"
+            }
+
         });
     }
 
@@ -118,24 +144,7 @@ export const Home = () => {
 
             <NavBar firstName={firstName} />
             <TopSearchBanner />
-
-            <div className="container mt-3">
-                <div className="row row-cols-3 row-cols-sm-2 row-cols-md-3 g-4">
-                    {list.map((item) => (
-                        <div className="col>">
-                            <JobResultCard
-                                imgSrc={item.imgSrc}
-                                jobTitle={item.jobTitle}
-                                jobType={item.jobType}
-                                workersName={item.workersName}
-                                rating={item.rating}
-                                timeDistance={item.timeDistance}/>
-
-                        </div>)
-                    )}
-
-                </div>
-            </div>
+            <JobGrid list={realList}/>
 
         </div>
     );

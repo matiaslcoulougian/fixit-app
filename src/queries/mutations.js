@@ -49,8 +49,12 @@ export const LOGIN = gql`
 `;
 
 export const CREATE_JOB_POST = gql`
-    mutation CreateJobPost($input: CreateJobPostInput!) {
-        createJobPost(input: $input){
+    mutation CreateJobPost($title: String!, $description: String!, $type: String! ) {
+        createJobPost(input: {
+            title: $title,
+            description: $description,
+            type: $type
+        }){
             id
             description
             isActive

@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import "../styles/LoginForm.css";
 import {useMutation} from "@apollo/client";
@@ -13,7 +13,7 @@ export const LoginForm = () =>{
 
     const emailRef = useRef()
     const passwordRef = useRef()
-
+    let response = null;
     async function handleSubmit(){
         //setEmail(useRef().current.value)
         //setPassword(useRef().current.value)
@@ -23,7 +23,7 @@ export const LoginForm = () =>{
             //todo: show error to complete fields
         }
 
-        const response = await login({
+        response = await login({
             variables:{
                 credential: emailRef.current.value,
                 password: passwordRef.current.value
@@ -33,10 +33,19 @@ export const LoginForm = () =>{
         const firstName = response.data.login.user.firstName
         window.localStorage.setItem('token', token)
         window.localStorage.setItem('firstName', firstName)
-        if (response.data.login.user.role === "customer") navigate('/home')
-        else navigate('/dashboard')
+        // if (response.data.login.user.role === "customer") navigate('/home')
+        // else navigate('/dashboard')
 
     }
+
+    useEffect( () => {
+        if(response){
+            if (response.data.login.user.role === "customer") navigate('/home')
+            else navigate('/dashboard')
+        }
+
+    });
+
     const [login] = useMutation(
         LOGIN,
         {
