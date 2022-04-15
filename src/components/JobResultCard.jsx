@@ -11,7 +11,8 @@ export const JobResultCard = (props) => {
 
     useEffect(() => {
         if (redirect) {
-            navigate(`/job/${props.job.id}`);
+            navigate(`/job/${props.jobId}`);
+            //navigate(`/dashboard`)
         }
     }, [redirect]);
 

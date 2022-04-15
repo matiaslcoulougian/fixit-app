@@ -20,7 +20,7 @@ export function App() {
                 <Route exact path="/home" element={<HomePage />} />
                 <Route exact path="/test" element={<Test />} />
                 <Route exact path="/dashboard" element={<DashboardPage />} />
-                <Route exact path="/details" element={<JobDetailsPage />} />
+                <Route exact path="/job/:jobId" element={<JobDetailsPage />} />
             </Routes>
     </div>
   )

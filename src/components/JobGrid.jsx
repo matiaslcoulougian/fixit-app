@@ -10,12 +10,15 @@ export const JobGrid = (props) =>{
     return(
         <div className="container mt-3">
             <div className="row row-cols-3 row-cols-sm-2 row-cols-md-3 g-4">
-                {props.list.map((item) => (
+                {   console.log(props.list)}
+                {
+                    props.list.map((item) => (
                     <div className="col>">
                         <JobResultCard
                             imgSrc={imgSource} // hardocoded
                             jobTitle={item.title}
                             jobType={item.type}
+                            jobId={item.id}
                             workersName={(item.worker.firstName + " " + item.worker.lastName)}
                             rating={falseRating}
                             timeDistance={timeDist}/>
