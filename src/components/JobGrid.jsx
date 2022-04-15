@@ -16,7 +16,7 @@ export const JobGrid = (props) =>{
                             imgSrc={imgSource} // hardocoded
                             jobTitle={item.title}
                             jobType={item.type}
-                            workersName={(item.worker.firstName + item.worker.lastName)}
+                            workersName={(item.worker.firstName + " " + item.worker.lastName)}
                             rating={falseRating}
                             timeDistance={timeDist}/>
 

@@ -33,25 +33,18 @@ export const LoginForm = () =>{
         const firstName = response.data.login.user.firstName
         window.localStorage.setItem('token', token)
         window.localStorage.setItem('firstName', firstName)
-        // if (response.data.login.user.role === "customer") navigate('/home')
-        // else navigate('/dashboard')
+        if (response.data.login.user.role === "customer") navigate('/home')
+        else navigate('/dashboard')
 
     }
 
-    useEffect( () => {
-        if(response){
-            if (response.data.login.user.role === "customer") navigate('/home')
-            else navigate('/dashboard')
-        }
-
-    });
 
     const [login] = useMutation(
         LOGIN,
         {
             onCompleted: async (res) => {
                 setErrorMessage('');
-                navigate('/home');
+
             },
             onError: (e) => {
                 setErrorMessage(e.message);
