@@ -7,6 +7,7 @@ import "../styles/RegisterForm.css";
 import LoaderSpinner from "../LoaderSpinner";
 
 
+
 export const RegisterForm = () =>{
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -24,6 +25,10 @@ export const RegisterForm = () =>{
     const [worker, setWorker] = useState(false);
     const focusDiv = useRef();
     const navigate = useNavigate();
+
+    function capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
     useEffect(() => {
         focusDiv.current.focus();
@@ -75,8 +80,8 @@ export const RegisterForm = () =>{
         }
         register({
             variables: {
-                firstName: firstName,
-                lastName: lastName,
+                firstName: capitalize(firstName),
+                lastName: capitalize(lastName),
                 email: email,
                 phoneNumber: phone,
                 password: password,

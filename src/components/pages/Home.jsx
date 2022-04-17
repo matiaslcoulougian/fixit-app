@@ -15,16 +15,28 @@ export const Home = () => {
     const [search, setSearch] = useState("");
     const firstName = window.localStorage.getItem('firstName');
     let searchedType = "";
-    const [realList, setRealList] = useState([{
-        imgSrc: "https://www.plumbingbyjake.com/wp-content/uploads/2015/11/VIGILANT-plumber-fixing-a-sink-shutterstock_132523334-e1448389230378.jpg",
-        title: "Home plumber",
-        type: "Plumber",
-        worker: {
-            firstName: "juano",
-            lastName: "ramon"
+    const [realList, setRealList] = useState(
+
+
+        () =>{
+        if (window.localStorage.getItem("realList") !== null) {
+            return JSON.parse(window.localStorage.getItem("realList"));
+        }
+        else {
+            return [{
+                imgSrc: "https://www.plumbingbyjake.com/wp-content/uploads/2015/11/VIGILANT-plumber-fixing-a-sink-shutterstock_132523334-e1448389230378.jpg",
+                title: "Home plumber",
+                type: "Plumber",
+                worker: {
+                    firstName: "juano",
+                    lastName: "ramon"
+                }
+
+            }];
+        }
         }
 
-    }]);
+    );
 
     const [getPostsByType] = useLazyQuery(
         GET_POSTS_BY_TYPE,{
@@ -38,6 +50,7 @@ export const Home = () => {
                 list = data.getPostsByType;
                 console.log("list", list);
                 setRealList(list);
+                window.localStorage.setItem("realList", JSON.stringify(list));
                 return data;
             },
             onError: (error) => {

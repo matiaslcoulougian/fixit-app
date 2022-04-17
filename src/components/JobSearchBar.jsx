@@ -2,13 +2,24 @@ import React, {forwardRef, useImperativeHandle, useState} from "react";
 
 export const JobSearchBar = forwardRef((props, ref) => {
     const [text, setText] = useState("");
-    const jobTypeList = ['Full Time', 'Part Time', 'Freelance', 'Internship'];
+    const jobTypeList = [
+        "Builder",
+        "Carpenter",
+        "Computer Technician",
+        "Electrician",
+        "Gardener",
+        "Mechanic",
+        "Painter",
+        "Plumber",
+        "Pool Cleaner"
+    ];
     // The component instance will be extended
     // with whatever you return from the callback passed
     // as the second argument
     useImperativeHandle(ref, () => ({
         getText(){
-            return text;
+            const toReturnText = text.toLowerCase().replaceAll(" ", "_");
+            return toReturnText;
         }
     }));
 
