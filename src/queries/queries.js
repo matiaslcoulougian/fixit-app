@@ -9,6 +9,7 @@ export const GET_POSTS_BY_TYPE = gql`
             title
             type
             worker {
+                id
                 firstName
                 lastName
             }
@@ -29,6 +30,16 @@ export const GET_POST_BY_ID = gql`
                 firstName
                 lastName
             }
+        }
+    }
+`;
+
+export const GET_USER_DISTANCE = gql`
+    query GetUserDistance($workerId: String!) {
+        getPostById(input: {
+            workerId: $workerId
+        }){
+           distance
         }
     }
 `;

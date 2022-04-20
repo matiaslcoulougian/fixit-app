@@ -6,6 +6,8 @@ export const JobResultCard = (props) => {
     const [redirect, setRedirect] = React.useState(false);
 
     const redirectToJob = () => {
+        console.log(props.workerId)
+        window.localStorage.setItem("workerId", props.workerId);
         setRedirect(true);
     }
 

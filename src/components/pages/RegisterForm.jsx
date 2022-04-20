@@ -6,8 +6,6 @@ import Modal from "../RegisterModal";
 import "../styles/RegisterForm.css";
 import LoaderSpinner from "../LoaderSpinner";
 
-
-
 export const RegisterForm = () =>{
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');

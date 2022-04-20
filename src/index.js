@@ -31,7 +31,6 @@ export const client = new ApolloClient({
 render((
 <BrowserRouter>
     <ApolloProvider client={client}>
-
         <App />
     </ApolloProvider>
 </BrowserRouter>), document.getElementById('root'));

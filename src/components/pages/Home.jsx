@@ -1,23 +1,17 @@
 import React, {useEffect, useRef, useState} from 'react';
 import "../styles/Home.css";
 import { NavBar} from "../NavBar";
-import {JobResultCard} from "../JobResultCard";
 import {JobGrid} from "../JobGrid";
-import {setLogVerbosity, useLazyQuery, useQuery} from "@apollo/client";
+import {useLazyQuery} from "@apollo/client";
 import {GET_POSTS_BY_TYPE} from "../../queries/queries";
 import {JobSearchBar} from "../JobSearchBar";
 
-
-
 export const Home = () => {
-
     const searchBarRef = useRef();
     const [search, setSearch] = useState("");
     const firstName = window.localStorage.getItem('firstName');
     let searchedType = "";
     const [realList, setRealList] = useState(
-
-
         () =>{
         if (window.localStorage.getItem("realList") !== null) {
             return JSON.parse(window.localStorage.getItem("realList"));
@@ -31,20 +25,15 @@ export const Home = () => {
                     firstName: "juano",
                     lastName: "ramon"
                 }
-
             }];
         }
         }
-
     );
-
     const [getPostsByType] = useLazyQuery(
         GET_POSTS_BY_TYPE,{
-
             variables: {
                 type: search,
             },
-
             onCompleted: async (data) => {
                 console.log(data);
                 list = data.getPostsByType;
@@ -56,19 +45,14 @@ export const Home = () => {
             onError: (error) => {
                 console.log(error);
             }
-
-
         }
-
     );
-
     function sortJobsByProperty(e){
         let sortedList;
         const property = e.currentTarget.getAttribute("field");
         console.log("entered!");
         console.log("property chosen", property);
         let list = [...realList];
-
         switch(property){
             case "type":
                 sortedList = list.sort((a,b) => {
@@ -99,15 +83,11 @@ export const Home = () => {
         }
         setRealList(sortedList);
     }
-
-
     useEffect(() => {
         if(searchedType !== ""){
             setSearch(searchedType);
         }
     }, [searchedType]);
-
-
     async function fetchJobs() {
         console.log("fetching jobs");
         searchedType = searchBarRef.current.getText();
@@ -118,22 +98,13 @@ export const Home = () => {
         console.log("response.data", response.data.getPostsByType);
         // list = response.data.getPostsByType;
         // console.log("list", list);
-
-
         // const {data} = getPostsByType({
         //     variables: {
         //         type: searchedType
         //     }
         // });
-
-
-
-
     }
-
-
     const TopSearchBanner = () => {
-
         return(
             <div className="container">
                 <h1 className="ml-3 mt-3">What are you looking for?</h1>
@@ -170,7 +141,6 @@ export const Home = () => {
             </div>
         );
     }
-
     const obj = {
         imgSrc: "https://www.plumbingbyjake.com/wp-content/uploads/2015/11/VIGILANT-plumber-fixing-a-sink-shutterstock_132523334-e1448389230378.jpg",
         jobTitle: "Home plumber",
@@ -179,7 +149,6 @@ export const Home = () => {
         rating: "4.3",
         timeDistance: "30 min",
     };
-
     let list = []
     for (let i = 0; i < 5; i++) {
         list.push({
@@ -193,17 +162,11 @@ export const Home = () => {
 
         });
     }
-
-
-
-
     return (
         <div>
-
             <NavBar firstName={firstName} />
             <TopSearchBanner />
             <JobGrid list={realList}/>
-
         </div>
     );
 }

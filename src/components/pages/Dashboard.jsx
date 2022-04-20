@@ -1,9 +1,16 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {JobSearchBar} from "../JobSearchBar";
 import {CREATE_JOB_POST} from "../../queries/mutations";
 import {useMutation} from "@apollo/client";
+import "../styles/Dashboard.css";
+import {useNavigate} from "react-router-dom";
 
 export const Dashboard = () => {
+    const navigate = useNavigate()
+    async function logout(){
+        window.localStorage.clear();
+        navigate("/login");
+    }
     const NewJobModal = () => {
 
         const [title, setTitle] = React.useState('');
@@ -54,8 +61,6 @@ export const Dashboard = () => {
             });
         };
 
-
-
         return(
             <div>
                 <div className="modal fade" id="new-job-modal" tabIndex="-1" aria-labelledby="modal-title" aria-hidden="true">
@@ -101,6 +106,7 @@ export const Dashboard = () => {
 
 
                 <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-job-modal"> Create New Job</button>
+                <button className="btn btn-primary" onClick={logout}> Log out</button>
             </div>);
     }
 
