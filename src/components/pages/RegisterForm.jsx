@@ -163,7 +163,7 @@ export const RegisterForm = () =>{
                 </div>
                 <div className="fieldRow">
                     <label>Address</label>
-                    <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" placeholder="Address"/>
+                    <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" placeholder="E.g. 123 Street, Town, State"/>
                 </div>
                 {errorMessage && <div className="error"> {errorMessage} </div>}
                 <LoaderSpinner show={loaderVisible}/>

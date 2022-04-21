@@ -8,10 +8,12 @@ export const GET_POSTS_BY_TYPE = gql`
             id
             title
             type
+            time
             worker {
                 id
                 firstName
                 lastName
+                address
             }
         }
     }
@@ -26,20 +28,35 @@ export const GET_POST_BY_ID = gql`
             title
             type
             description
+            time
             worker {
                 firstName
                 lastName
+                address
             }
         }
     }
 `;
 
-export const GET_USER_DISTANCE = gql`
-    query GetUserDistance($workerId: String!) {
-        getPostById(input: {
+export const GET_USER_TIME = gql`
+    query GetUserTime($workerId: String!) {
+        getUserTime(input: {
             workerId: $workerId
         }){
-           distance
+           time
+        }
+    }
+`;
+
+export const GET_ME = gql`
+    query GetMe {
+        getMe {
+            id
+            firstName
+            lastName
+            address
+            email
+            role
         }
     }
 `;
