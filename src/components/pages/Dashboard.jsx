@@ -4,6 +4,7 @@ import {CREATE_JOB_POST} from "../../queries/mutations";
 import {useMutation} from "@apollo/client";
 import "../styles/Dashboard.css";
 import {useNavigate} from "react-router-dom";
+import {NavBar} from "../NavBar";
 
 export const Dashboard = () => {
     const navigate = useNavigate()
@@ -103,22 +104,80 @@ export const Dashboard = () => {
                         </div>
                     </div>
                 </div>
+                <div className="text-center">
+                    <button className="btn btn-lg btn-primary text-center" data-bs-toggle="modal" data-bs-target="#new-job-modal"> Create New Job</button>
+                </div>
+
+                <div className="container">
+                    <div className="row mt-4">
+                        <div className="col-md-6">
+                            <div className="card">
+                                <h3 className="card-header">My Jobs</h3>
+                                <div className="card-body">
+                                    <h5 className="card-title">[Job List]</h5>
+                                    <p className="card-text">With supporting text below as a natural lead-in to
+                                        additional content.</p>
+                                    <a href="#" className="btn btn-primary">See full list</a>
+                                </div>
+                            </div>
+                        </div>
 
 
-                <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-job-modal"> Create New Job</button>
-                <button className="btn btn-primary" onClick={logout}> Log out</button>
+                        <div className="col-md-6">
+                            <div className="card">
+                                <h3 className="card-header">Money Made</h3>
+                                <div className="card-body">
+                                    <h3 className="card-title text-center">$22.155,53</h3>
+                                    <p className="card-text">[Card with earnings list, eg Job x +$150]</p>
+                                    <a href="#" className="btn btn-primary">See full list</a>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+
+                    <div className="row mt-3">
+                        <div className="col-md-6">
+                            <div className="card">
+                                <h3 className="card-header">My Rating</h3>
+                                <div className="card-body">
+                                    <h3 className="card-title text-center">4.7 <i className="bi bi-star-fill "></i></h3>
+                                    <p className="card-text text-center">42 jobs done</p>
+                                    <a href="#" className="btn btn-primary">See jobs done</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div className="col-md-6">
+                            <div className="card">
+                                <h3 className="card-header">Comments</h3>
+                                <div className="card-body">
+                                    <h3 className="card-title text-center">[List of Comments]</h3>
+
+                                    <a href="#" className="btn btn-primary">See full list</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>);
     }
 
 
 
   return (
-    <div className="container">
-        <h1>Worker's Dashboard</h1>
-        <NewJobModal/>
+      <div>
+        <NavBar firstName={window.localStorage.getItem("firstName")}/>
+        <div className="container mt-3">
+            <h1>Your Dashboard</h1>
+            <NewJobModal/>
 
 
-    </div>
+        </div>
+        </div>
   );
 
 

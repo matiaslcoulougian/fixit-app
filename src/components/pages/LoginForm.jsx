@@ -72,7 +72,7 @@ export const LoginForm = () =>{
 
             <div className="fieldRow-b">
                 <label>Password</label>
-                <input ref={passwordRef} type="password" placeholder="Enter your password"/>
+                <input ref={passwordRef}  onKeyPress={handleKeyPressed} type="password" placeholder="Enter your password"/>
             </div>
 
             {/*<FormInput onChange={(e) => setPassword(e.target.value)} description="Password" placeholder="Enter your password" type="password" variable={props.password}/>*/}
@@ -83,9 +83,15 @@ export const LoginForm = () =>{
 
     const FormButton = props => (
         <div id="button" className="fieldRow-b">
-            <button onClick={handleSubmit}>{props.title}</button>
+            <button onClick={handleSubmit} >{props.title}</button>
         </div>
     );
+
+    const handleKeyPressed = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit()
+        }
+    }
 
     const RegisterOption = props => (
         <div id="register-form">

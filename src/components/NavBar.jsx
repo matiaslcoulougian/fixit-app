@@ -1,5 +1,6 @@
 import Logo from "./logo.png";
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
 export const NavBar = (props) => {
     const logoWidthHeight = "50";
@@ -11,6 +12,13 @@ export const NavBar = (props) => {
         color: "black",
         fontWeight: "bold",
     };
+
+    const navigate = useNavigate();
+
+    async function logout() {
+        window.localStorage.clear();
+        navigate("/login")
+    }
 
     return (
         <div className="navbar navbar-expand-md navbar-light bg-warning px-3">
@@ -44,7 +52,7 @@ export const NavBar = (props) => {
                     </li>
 
                     <li className="nav-item ms-2 d-md-inline">
-                        <a className="btn btn-secondary" href="/">Log out</a>
+                        <a className="btn btn-secondary" onClick={logout}>Log out</a>
                     </li>
                 </ul>
             </div>
