@@ -8,6 +8,7 @@ import { HomePage } from './pages/HomePage';
 import {Test} from "./components/pages/Test";
 import {DashboardPage} from "./pages/DashboardPage";
 import {JobDetailsPage} from "./pages/JobDetailsPage";
+import {MyJobsPage} from "./pages/MyJobsPage";
 import {AutocompleteChangeDetails} from "@mui/material";
 
 
@@ -23,6 +24,7 @@ export function App() {
                 <Route exact path="/test" element={<Test />} />
                 <Route exact path="/dashboard" element={<DashboardPage />} />
                 <Route exact path="/job/:jobId" element={<JobDetailsPage />} />
+                <Route exact path="/my-jobs" element={<MyJobsPage />} />
 
             </Routes>
 

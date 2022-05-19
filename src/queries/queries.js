@@ -8,7 +8,6 @@ export const GET_POSTS_BY_TYPE = gql`
             id
             title
             type
-            time
             worker {
                 id
                 firstName
@@ -28,7 +27,6 @@ export const GET_POST_BY_ID = gql`
             title
             type
             description
-            time
             worker {
                 firstName
                 lastName
@@ -59,4 +57,21 @@ export const GET_ME = gql`
             role
         }
     }
+`;
+
+export const GET_WORKER_POSTS = gql`
+    query GetWorkerPosts($workerId: String!) {
+        getWorkerPosts(input: {
+            workerId: $workerId
+        }){
+            id
+            title
+            type
+            description
+            isActive
+            workerId
+
+        }
+    }
+    
 `;

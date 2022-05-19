@@ -61,3 +61,14 @@ export const CREATE_JOB_POST = gql`
         }
     }
 `;
+
+export const REQUEST_BUDGET = gql`
+    mutation RequestBudget($input: RequestBudgetInput!) {
+        requestBudget(input: $input){
+            id
+            description
+            status
+            imageKeys
+        }
+    }
+`;

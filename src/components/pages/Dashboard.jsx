@@ -117,7 +117,7 @@ export const Dashboard = () => {
                                     <h5 className="card-title">[Job List]</h5>
                                     <p className="card-text">With supporting text below as a natural lead-in to
                                         additional content.</p>
-                                    <a href="#" className="btn btn-primary">See full list</a>
+                                    <a href="/my-jobs" className="btn btn-primary">See full list</a>
                                 </div>
                             </div>
                         </div>
