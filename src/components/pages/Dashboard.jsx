@@ -17,6 +17,7 @@ export const Dashboard = () => {
         const [title, setTitle] = React.useState('');
         const [description, setDescription] = React.useState('');
         const [type, setType] = React.useState('');
+        const [jobCreationSuccessful, setJobCreationSuccessful] = React.useState(false);
 
         const searchBarRef = useRef();
 
@@ -27,6 +28,7 @@ export const Dashboard = () => {
 
         const getDescription = (e) => {
             setDescription(e.target.value);
+
         };
 
 
@@ -35,6 +37,7 @@ export const Dashboard = () => {
                 onCompleted: data => {
                     console.log(data);
                     console.log("JOB CREATED!!!")
+                    setJobCreationSuccessful(true)
                 },
                 onError: error => {
                     console.log(error);
@@ -46,6 +49,7 @@ export const Dashboard = () => {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
 
+        const restoreJobSuccess = () => setJobCreationSuccessful(false);
 
         const handleAddJob = () => {
             const searchedType = searchBarRef.current.getText();
@@ -90,12 +94,16 @@ export const Dashboard = () => {
                                         <textarea className="form-control" id="job-description" onChange={getDescription} rows="3" placeholder="Describe your Job as detailed as possible..."/>
                                     </div>
 
+                                    {jobCreationSuccessful && <div className="alert alert-success mt-2" role="alert">
+                                        Job Created Successfully! Please close this window.
+                                    </div>}
+
                                 </div>
                                 <hr/>
                             </div>
 
                             <div className="modal-footer border-0 pt-0">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={restoreJobSuccess}>Close</button>
                                 <button type="button" className="btn btn-primary" onClick={handleAddJob}>Add Job</button>
                             </div>
 

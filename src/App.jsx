@@ -10,6 +10,7 @@ import {DashboardPage} from "./pages/DashboardPage";
 import {JobDetailsPage} from "./pages/JobDetailsPage";
 import {MyJobsPage} from "./pages/MyJobsPage";
 import {AutocompleteChangeDetails} from "@mui/material";
+import ListTest from "./components/pages/ListTest";
 
 
 export function App() {
@@ -22,6 +23,7 @@ export function App() {
                 <Route exact path="/register" element={<RegisterPage />} />
                 <Route exact path="/home" element={<HomePage />} />
                 <Route exact path="/test" element={<Test />} />
+                <Route exact path="/list-test" element={<ListTest />} />
                 <Route exact path="/dashboard" element={<DashboardPage />} />
                 <Route exact path="/job/:jobId" element={<JobDetailsPage />} />
                 <Route exact path="/my-jobs" element={<MyJobsPage />} />

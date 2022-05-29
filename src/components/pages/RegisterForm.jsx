@@ -23,6 +23,7 @@ export const RegisterForm = () =>{
     const [worker, setWorker] = useState(false);
     const focusDiv = useRef();
     const navigate = useNavigate();
+    const [registerSuccess, setRegisterSuccess] = useState(false);
 
     function capitalize(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -30,7 +31,12 @@ export const RegisterForm = () =>{
 
     useEffect(() => {
         focusDiv.current.focus();
-    }, [focusDiv]);
+        if(registerSuccess){
+            setTimeout(() => {
+                navigate('/login')
+            }, 2000)
+        }
+    }, [focusDiv, registerSuccess]);
 
     const [register, {loading}] = useMutation(
         REGISTER,
@@ -38,7 +44,8 @@ export const RegisterForm = () =>{
             onCompleted: async (res) => {
                 setErrorMessage('');
                 setLoaderVisible(false)
-                navigate('/login');
+                setRegisterSuccess(true)
+
             },
             onError: (e) => {
                 setErrorMessage(e.message);
@@ -46,6 +53,7 @@ export const RegisterForm = () =>{
 
         }
     );
+
 
     const handleWorkerCheckbox = () => {
         console.log("before", worker);
@@ -168,6 +176,9 @@ export const RegisterForm = () =>{
                 {errorMessage && <div className="error"> {errorMessage} </div>}
                 <LoaderSpinner show={loaderVisible}/>
                 <FormButton title="Register"/>
+                {registerSuccess && <div className="alert alert-success mt-2" role="alert">
+                    Register successful! Redirecting to Login...
+                </div>}
             </div>
             <LoginOption />
             <Modal show={modalVisible} name={firstName}/>

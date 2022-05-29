@@ -1,9 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, {useState, useRef, useEffect} from "react";
 
 function UploadButton() {
 
 
         const [selectedImage, setSelectedImage] = useState(null);
+
+        useEffect(() => {
+                if(selectedImage) console.log(selectedImage)
+        })
 
         return (
             <div>

@@ -69,7 +69,6 @@ export const GET_WORKER_POSTS = gql`
             type
             description
             isActive
-            workerId
 
         }
     }
