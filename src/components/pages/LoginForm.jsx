@@ -39,7 +39,7 @@ export const LoginForm = () =>{
     }
 
 
-    const [login] = useMutation(
+    const [login, {data, loading, error}] = useMutation(
         LOGIN,
         {
             onCompleted: async (res) => {
@@ -77,6 +77,13 @@ export const LoginForm = () =>{
 
             {/*<FormInput onChange={(e) => setPassword(e.target.value)} description="Password" placeholder="Enter your password" type="password" variable={props.password}/>*/}
             {errorMessage && <div className="login-error"> {errorMessage} </div>}
+            <div className={"d-flex justify-content-center"}>
+                {loading && <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>}
+
+            </div>
+
             <FormButton title="Log in" submit={props.submitFunction}/>
         </div>
     );

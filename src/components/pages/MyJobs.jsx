@@ -16,7 +16,7 @@ export const MyJobs = () => {
     const [editMode, setEditMode] = useState(false);
 
 
-    const [getWorkerJobs] = useLazyQuery(
+    const [getWorkerJobs, {loading: postsLoading}] = useLazyQuery(
         GET_WORKER_POSTS, {
 
             onCompleted: (res) =>{
@@ -138,7 +138,7 @@ export const MyJobs = () => {
             {/*    <h2>Active Jobs</h2>*/}
 
             <div className={"btn btn-primary"} onClick={logColumns}>Log Columns</div>
-            <div className={"btn btn-primary"} onClick={enterEditMode}>Edit</div>
+            <button disabled={editMode} className={"btn btn-primary"} onClick={enterEditMode}>Edit</button>
             {editMode && <div className={"btn btn-primary"} onClick={exitEditMode}>Save</div>}
 
             <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
@@ -172,6 +172,12 @@ export const MyJobs = () => {
                                                         minHeight: 250
                                                     }}
                                                 >
+                                                    <div className={"d-flex justify-content-center"}>
+                                                        {postsLoading && <div className="spinner-border" role="status">
+                                                            <span className="visually-hidden">Loading...</span>
+                                                        </div>}
+
+                                                    </div>
                                                     {column.items.map((item, index) => {
                                                         return (
                                                             <Draggable

@@ -120,7 +120,8 @@ export const Dashboard = () => {
                     <div className="row mt-4">
                         <div className="col-md-6">
                             <div className="card">
-                                <h3 className="card-header">My Jobs</h3>
+                                <h3 className="card-header d-flex justify-content-between align-items-start">My Jobs<span className={"btn"} data-bs-toggle="modal" data-bs-target="#new-job-modal"><i
+                                    className="bi bi-plus-square"></i></span></h3>
                                 <div className="card-body">
                                     <h5 className="card-title">[Job List]</h5>
                                     <p className="card-text">With supporting text below as a natural lead-in to
