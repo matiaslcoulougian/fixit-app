@@ -131,15 +131,15 @@ export const MyJobs = () => {
 
   return (
     <div>
-        <NavBar firstName={localStorage.getItem('firstName')}/>
+        <NavBar isWorker={true} firstName={localStorage.getItem('firstName')}/>
         <div className={"container"}>
             <h1>My Jobs</h1>
             {/*<div className={"container"}>*/}
             {/*    <h2>Active Jobs</h2>*/}
 
-            <div className={"btn btn-primary"} onClick={logColumns}>Log Columns</div>
-            <button disabled={editMode} className={"btn btn-primary"} onClick={enterEditMode}>Edit</button>
-            {editMode && <div className={"btn btn-primary"} onClick={exitEditMode}>Save</div>}
+            {/*<div className={"btn btn-primary"} onClick={logColumns}>Log Columns</div>*/}
+            <button disabled={editMode} className={"btn btn-primary me-1"} onClick={enterEditMode}>Edit</button>
+            {editMode && <div className={"btn btn-primary ms-1"} onClick={exitEditMode}>Save</div>}
 
             <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
                 <DragDropContext
@@ -207,8 +207,8 @@ export const MyJobs = () => {
                                                                         >
 
                                                                             {item.title}
-                                                                            <span className={"btn btn-primary"}><i
-                                                                                className="bi bi-pencil"></i></span>
+                                                                            <span ><button className={"btn btn-primary"} disabled={!editMode}><i
+                                                                                className="bi bi-pencil"></i></button></span>
                                                                         </div>
                                                                     );
                                                                 }}
