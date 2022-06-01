@@ -6,12 +6,13 @@ import "../styles/Dashboard.css";
 import {useNavigate} from "react-router-dom";
 import {NavBar} from "../NavBar";
 import JobListCard from "./dashboardCards/JobListCard";
+import {handleLog, Redirect} from "../../Redirect";
 
 export const Dashboard = () => {
     const navigate = useNavigate()
     async function logout(){
         window.localStorage.clear();
-        navigate("/login");
+        navigate(-1);
     }
     const NewJobModal = () => {
 
@@ -69,6 +70,7 @@ export const Dashboard = () => {
 
         return(
             <div>
+                <Redirect />
                 <div className="modal fade" id="new-job-modal" tabIndex="-1" aria-labelledby="modal-title" aria-hidden="true">
                     <div className="modal-dialog">
                         <div className="modal-content">

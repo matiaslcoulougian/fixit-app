@@ -15,7 +15,6 @@ export const MyJobs = () => {
     const [me, setMe] = useState();
     const [editMode, setEditMode] = useState(false);
 
-
     const [getWorkerJobs, {loading: postsLoading}] = useLazyQuery(
         GET_WORKER_POSTS, {
 

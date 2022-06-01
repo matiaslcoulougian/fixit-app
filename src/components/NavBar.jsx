@@ -17,7 +17,7 @@ export const NavBar = (props) => {
 
     async function logout() {
         window.localStorage.clear();
-        navigate("/login")
+        navigate(-1)
     }
 
     return (
