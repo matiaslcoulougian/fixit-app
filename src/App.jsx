@@ -13,6 +13,15 @@ import {AutocompleteChangeDetails} from "@mui/material";
 import ListTest from "./components/pages/ListTest";
 
 const Auth = () => window.localStorage.getItem('token') ? <Outlet/> : <Navigate to={"/"}/>
+const ClientAuth = () => {
+    if(window.localStorage.getItem('userRole') === "customer"){<Outlet/>}
+    else {
+        window.localStorage.clear();
+        return <Navigate to={"/"}/>
+    }
+}
+const WorkerAuth = () => window.localStorage.getItem('userRole') === "worker" ? <Outlet/> : <Navigate to={"/"}/>
+
 
 export function App() {
   return (
@@ -23,13 +32,19 @@ export function App() {
                 <Route exact path="/login" element={<LoginPage />} />
                 <Route exact path="/register" element={<RegisterPage />} />
 
+                <Route exact path="/test" element={<Test />} />
+                <Route exact path="/list-test" element={<ListTest />} />
+
                 <Route element={<Auth/>} >
-                    <Route exact path="/home" element={<HomePage />} />
-                    <Route exact path="/test" element={<Test />} />
-                    <Route exact path="/list-test" element={<ListTest />} />
-                    <Route exact path="/dashboard" element={<DashboardPage />} />
-                    <Route exact path="/job/:jobId" element={<JobDetailsPage />} />
-                    <Route exact path="/my-jobs" element={<MyJobsPage />} />
+                    <Route element={<ClientAuth/>}>
+                        <Route exact path="/home" element={<HomePage />} />
+                        <Route exact path="/job/:jobId" element={<JobDetailsPage />} />
+                    </Route>
+                    <Route element={<WorkerAuth/>}>
+                        <Route exact path="/dashboard" element={<DashboardPage />} />
+                        <Route exact path="/my-jobs" element={<MyJobsPage />} />
+                    </Route>
+
                 </Route>
 
 

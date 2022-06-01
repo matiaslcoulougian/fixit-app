@@ -31,8 +31,10 @@ export const LoginForm = () =>{
         });
         const token = response.data.login.accessToken
         const firstName = response.data.login.user.firstName
+        const role = response.data.login.user.role
         window.localStorage.setItem('token', token)
         window.localStorage.setItem('firstName', firstName)
+        window.localStorage.setItem('userRole', role)
         if (response.data.login.user.role === "customer") navigate('/home')
         else navigate('/dashboard')
 
