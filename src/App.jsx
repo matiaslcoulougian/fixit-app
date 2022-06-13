@@ -14,13 +14,19 @@ import ListTest from "./components/pages/ListTest";
 
 const Auth = () => window.localStorage.getItem('token') ? <Outlet/> : <Navigate to={"/"}/>
 const ClientAuth = () => {
-    if(window.localStorage.getItem('userRole') === "customer"){<Outlet/>}
+    if(window.localStorage.getItem('userRole') === "customer"){return <Outlet/>}
     else {
         window.localStorage.clear();
         return <Navigate to={"/"}/>
     }
 }
-const WorkerAuth = () => window.localStorage.getItem('userRole') === "worker" ? <Outlet/> : <Navigate to={"/"}/>
+const WorkerAuth = () => {
+    if(window.localStorage.getItem('userRole') === "worker"){return <Outlet/>}
+    else {
+        window.localStorage.clear();
+        return <Navigate to={"/"}/>
+    }
+}
 
 
 export function App() {

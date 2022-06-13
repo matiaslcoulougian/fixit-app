@@ -16,7 +16,7 @@ const JobListCard = () => {
         while(tempArray.length < jobResultQuantity && i < jobList.length){
             console.log("dentro")
             console.log("current job", jobList[i])
-            if(jobList[i].isActive == "true"){
+            if(jobList[i].status == "active"){
                 console.log("entered if")
                 tempArray.push(jobList[i]);
             }

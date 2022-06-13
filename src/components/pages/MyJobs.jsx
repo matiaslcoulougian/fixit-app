@@ -1,19 +1,24 @@
 import {React, useEffect, useState} from 'react';
 import {NavBar} from "../NavBar";
 import {GET_ME, GET_WORKER_POSTS} from "../../queries/queries";
-import {useLazyQuery, useQuery} from "@apollo/client";
+import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {Query} from "@apollo/client/react/components";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import { v4 as uuidv4 } from 'uuid';
+import {JobSearchBar} from "../JobSearchBar";
+import {UPDATE_JOB_POSTS} from "../../queries/mutations";
 
 
 
 
 export const MyJobs = () => {
 
-    const [jobList, setJobList] = useState();
+    let [jobList, setJobList] = useState();
     const [me, setMe] = useState();
     const [editMode, setEditMode] = useState(false);
+    const [jobEditSuccessful, setJobEditSuccessful] = useState(false);
+    const [saved, setSaved] = useState(false);
+    const [focusJobEdit, setFocusJobEdit] = useState({title:"loading...", description:"loading..."});
 
     const [getWorkerJobs, {loading: postsLoading}] = useLazyQuery(
         GET_WORKER_POSTS, {
@@ -54,6 +59,24 @@ export const MyJobs = () => {
             items: []
         }
     };
+
+    const [updateJobPosts, {loading: updateLoading, error: updateError}] = useMutation(
+        UPDATE_JOB_POSTS, {
+            onCompleted: (res) => {
+                setSaved(true);
+                console.log("updated job status");
+            },
+            onError: (err) => {
+                console.log(err);
+            }
+        }
+
+    );
+
+    const manageStatus = () => {
+
+    };
+
 
     const onDragEnd = (result, columns, setColumns) => {
         if (!result.destination) return;
@@ -99,9 +122,9 @@ export const MyJobs = () => {
         let tempDisabledJobs = []
         if(jobList) {
             for (let job of jobList) {
-                console.log(typeof job.isActive)
-                if (job.isActive === "true") tempActiveJobs.push(job);
-                else tempDisabledJobs.push(job)
+                console.log(typeof job.status)
+                if (job.status === "active") tempActiveJobs.push(job);
+                else if(job.status === "inactive") tempDisabledJobs.push(job);
             }
         }
         // setActiveJobs(tempActiveJobs)
@@ -112,7 +135,7 @@ export const MyJobs = () => {
     }
 
 
-    const [columns, setColumns] = useState(columnsFromBackend);
+    let [columns, setColumns] = useState(columnsFromBackend);
 
     useEffect(() => {
         getMe();
@@ -124,12 +147,109 @@ export const MyJobs = () => {
     }
 
     const enterEditMode = () => setEditMode(true);
-    const exitEditMode = () => {
-        setEditMode(false);
+
+    function save() {
+        console.log("columns", columns)
+
+        let activeJobs = [...columns.active.items]
+        let inactiveJobs = [...columns.disabled.items]
+        let fullList = [];
+
+        for (let jobToActivate of activeJobs) {
+            let localJob = {
+                title: jobToActivate.title,
+                description: jobToActivate.description,
+                id: jobToActivate.id
+            };
+            localJob.status = "active"
+            fullList.push(localJob);
+        }
+        for (let jobToDisable of inactiveJobs){
+            let localJob = {
+                title: jobToDisable.title,
+                description: jobToDisable.description,
+                id: jobToDisable.id
+            };
+            localJob.status = "inactive";
+            fullList.push(localJob);
+        }
+
+        console.log("full jobs list", fullList)
+
+        updateJobPosts({variables:{input:{jobPosts: fullList}}})
+
     }
 
-  return (
+    const exitEditMode = () => {
+        setEditMode(false);
+        save();
+    }
+
+
+
+    const EditJobModal = (job) => {
+        function useForceUpdate(){
+            const [value, setValue] = useState(0); // integer state
+            return () => setValue(value => value + 1); // update state to force render
+            // An function that increment 👆🏻 the previous state like here
+            // is better than directly setting `value + 1`
+        }
+
+        const useForce = useForceUpdate();
+
+        // useEffect(() => {
+        //     useForce();
+        // }, [focusJobEdit]);
+
+        return(<div className="modal fade" id="edit-job-modal" tabIndex="-1" aria-labelledby="modal-title" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header border-0 pb-0">
+                        <h5 className="modal-title" id="modal-title">Edit Job</h5>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+
+                    </div>
+
+                    <div className="modal-body border-0 py-0">
+                        <hr/>
+                        <div className="container">
+
+                            <div className="mt-3">
+                                <label className="form-label" htmlFor="job-title"> New Job Title</label>
+                                <input className="form-control" id="job-title" rows="3" onChange={useForce} value={focusJobEdit.title}/>
+                            </div>
+
+
+                            <div className="mt-3">
+                                <label className="form-label" htmlFor="job-description">Description of the Job</label>
+                                <textarea className="form-control" id="job-description"  rows="3">{focusJobEdit.description}</textarea>
+                            </div>
+
+                            {jobEditSuccessful && <div className="alert alert-success mt-2" role="alert">
+                                Job changed Successfully! Please close this window.
+                            </div>}
+
+                        </div>
+                        <hr/>
+                    </div>
+
+                    <div className="modal-footer border-0 pt-0">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                        <button type="button" className="btn btn-primary">Add Job</button>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>);
+    }
+
+
+
+    return (
     <div>
+        <EditJobModal/>
         <NavBar isWorker={true} firstName={localStorage.getItem('firstName')}/>
         <div className={"container"}>
             <h1>My Jobs</h1>
@@ -206,7 +326,7 @@ export const MyJobs = () => {
                                                                         >
 
                                                                             {item.title}
-                                                                            <span ><button className={"btn btn-primary"} disabled={!editMode}><i
+                                                                            <span ><button onClick={() => {setFocusJobEdit({title: item.title, description: item.description})}} className={"btn btn-primary"} data-bs-toggle="modal" data-bs-target="#edit-job-modal" disabled={!editMode}><i
                                                                                 className="bi bi-pencil"></i></button></span>
                                                                         </div>
                                                                     );

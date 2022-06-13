@@ -68,7 +68,7 @@ export const GET_WORKER_POSTS = gql`
             title
             type
             description
-            isActive
+            status
 
         }
     }
