@@ -36,6 +36,25 @@ export const GET_POST_BY_ID = gql`
     }
 `;
 
+export const GET_BUDGET_BY_WORKER = gql`
+    query GetBudgetByWorker{
+        getBudgetByWorker{
+            id
+            description
+            status 
+            
+            job {
+                title
+            }
+            customer {
+                firstName
+                lastName
+            }
+        }
+    }
+`;
+
+
 export const GET_USER_TIME = gql`
     query GetUserTime($workerId: String!) {
         getUserTime(input: {

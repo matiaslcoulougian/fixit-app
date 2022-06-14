@@ -11,6 +11,7 @@ import {JobDetailsPage} from "./pages/JobDetailsPage";
 import {MyJobsPage} from "./pages/MyJobsPage";
 import {AutocompleteChangeDetails} from "@mui/material";
 import ListTest from "./components/pages/ListTest";
+import HiredPage from "./pages/HiredPage";
 
 const Auth = () => window.localStorage.getItem('token') ? <Outlet/> : <Navigate to={"/"}/>
 const ClientAuth = () => {
@@ -45,6 +46,7 @@ export function App() {
                 <Route element={<Auth/>} >
                     <Route element={<ClientAuth/>}>
                         <Route exact path="/home" element={<HomePage />} />
+                        <Route exact path="/hired" element={<HiredPage />} />
                     </Route>
                     <Route element={<WorkerAuth/>}>
                         <Route exact path="/dashboard" element={<DashboardPage />} />

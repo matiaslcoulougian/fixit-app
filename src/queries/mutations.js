@@ -48,6 +48,19 @@ export const LOGIN = gql`
     }
 `;
 
+export const RESPOND_BUDGET = gql`
+    mutation RespondBudget($input: RespondBudgetInput!){
+        respondBudget(input: $input){
+            id
+            amount
+            customer{
+                firstName
+            }
+        }
+    }
+`;
+
+
 export const CREATE_JOB_POST = gql`
     mutation CreateJobPost($title: String!, $description: String!, $type: String!) {
         createJobPost(input: {
