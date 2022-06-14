@@ -29,7 +29,7 @@ export const JobResultCard = (props) => {
                     <h5 className="card-title"><span className="badge bg-info">{props.jobType}</span></h5>
                     <h6 className="card-title">{props.workersName}</h6>
                     <p className="card-text">{props.rating} <i className="bi bi-star-fill "></i></p>
-                    <p className="card-text"><small className="text-muted">{props.timeDistance} away</small></p>
+                    {/*<p className="card-text"><small className="text-muted">{props.timeDistance} away</small></p>*/}
                     <div className="btn btn-primary" onClick={redirectToJob}>Details</div>
                 </div>
             </div>

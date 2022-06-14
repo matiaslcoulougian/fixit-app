@@ -19,6 +19,7 @@ export const MyJobs = () => {
     const [jobEditSuccessful, setJobEditSuccessful] = useState(false);
     const [saved, setSaved] = useState(false);
     const [focusJobEdit, setFocusJobEdit] = useState({title:"loading...", description:"loading..."});
+    const [focusJobId, setFocusJobId] = useState();
 
     const [getWorkerJobs, {loading: postsLoading}] = useLazyQuery(
         GET_WORKER_POSTS, {
@@ -185,21 +186,53 @@ export const MyJobs = () => {
         save();
     }
 
-
-
-    const EditJobModal = (job) => {
-        function useForceUpdate(){
-            const [value, setValue] = useState(0); // integer state
-            return () => setValue(value => value + 1); // update state to force render
-            // An function that increment 👆🏻 the previous state like here
-            // is better than directly setting `value + 1`
+    function getJobById(id){
+        console.log("cols", columns)
+        for (const job of columns.active.items) {
+            if(job.id === id) return job;
         }
 
-        const useForce = useForceUpdate();
+        for (const job of columns.disabled.items) {
+            if(job.id === id) return job;
+        }
+        return null;
 
-        // useEffect(() => {
-        //     useForce();
-        // }, [focusJobEdit]);
+    }
+
+
+    function updateJobInfo(newTitle, newDescription) {
+        console.log("entered updateJobInfo")
+        let foundJob = getJobById(focusJobId);
+        console.log("found job",foundJob)
+
+        foundJob.title = newTitle;
+        foundJob.description = newDescription;
+        console.log("columns", columns)
+    }
+    const aFunc = (id, obj) => {
+        setFocusJobId(id);
+        setFocusJobEdit(obj)
+
+
+    }
+    const handleLog = () => {console.log("Clicked")};
+    const handleLogStr = async (str) => {
+        await setFocusJobId(str)
+        console.log("set triggered")
+    };
+
+    const EditJobModal = (job) => {
+        const [newTitle, setNewTitle] = useState();
+        const [newDescription, setNewDescription] = useState();
+
+        const getTitle = (e) => {
+            setNewTitle(e.target.value);
+        };
+        const getDescription = (e) => {
+            setNewDescription(e.target.value);
+        };
+
+
 
         return(<div className="modal fade" id="edit-job-modal" tabIndex="-1" aria-labelledby="modal-title" aria-hidden="true">
             <div className="modal-dialog">
@@ -216,26 +249,25 @@ export const MyJobs = () => {
 
                             <div className="mt-3">
                                 <label className="form-label" htmlFor="job-title"> New Job Title</label>
-                                <input className="form-control" id="job-title" rows="3" onChange={useForce} value={focusJobEdit.title}/>
+                                <input className="form-control" id="job-title" rows="3" onChange={getTitle} value={focusJobEdit.title}/>
                             </div>
 
 
                             <div className="mt-3">
                                 <label className="form-label" htmlFor="job-description">Description of the Job</label>
-                                <textarea className="form-control" id="job-description"  rows="3">{focusJobEdit.description}</textarea>
+                                <textarea className="form-control" id="job-description"  onChange={getDescription} rows="3" defaultValue={focusJobEdit.description}></textarea>
                             </div>
 
                             {jobEditSuccessful && <div className="alert alert-success mt-2" role="alert">
                                 Job changed Successfully! Please close this window.
                             </div>}
-
                         </div>
                         <hr/>
                     </div>
-
+                    {/*updateJobInfo(newTitle, newDescription)}*/}
                     <div className="modal-footer border-0 pt-0">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
-                        <button type="button" className="btn btn-primary">Add Job</button>
+                        <button type="button" className="btn btn-secondary" onClick={handleLog} data-bs-dismiss="modal" >Close</button>
+                        <button type="button" className="btn btn-primary" onClick={() => updateJobInfo(newTitle, newDescription)}>Add Job</button>
                     </div>
 
 
@@ -326,7 +358,7 @@ export const MyJobs = () => {
                                                                         >
 
                                                                             {item.title}
-                                                                            <span ><button onClick={() => {setFocusJobEdit({title: item.title, description: item.description})}} className={"btn btn-primary"} data-bs-toggle="modal" data-bs-target="#edit-job-modal" disabled={!editMode}><i
+                                                                            <span><button onClickCapture={() => handleLogStr(item.id)} className={"btn btn-primary"} data-bs-toggle="modal" data-bs-target="#edit-job-modal" disabled={!editMode}><i
                                                                                 className="bi bi-pencil"></i></button></span>
                                                                         </div>
                                                                     );

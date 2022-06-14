@@ -6,7 +6,7 @@ const JobListCard = () => {
     const [jobList, setJobList] = useState([]);
     const [me, setMe] = useState();
     const [selectedJobs, setSelectedJobs] = useState([]);
-    const jobResultQuantity = 2;
+    const jobResultQuantity = 3;
 
     function filterPosts() {
         let i = 0;
