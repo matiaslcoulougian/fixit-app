@@ -234,8 +234,8 @@ export const MyJobs = () => {
         console.log("entered updateJobInfo")
         console.log(newDescription, newTitle)
         let editedJob = {...focusJob};
-        editedJob.title = newTitle;
-        editedJob.description = newDescription;
+        if(newTitle) editedJob.title = newTitle;
+        if(newDescription) editedJob.description = newDescription;
         console.log(editedJob)
         setFocusJob(editedJob)
         const newActive = columns.active.items.map((item) => {
@@ -328,7 +328,7 @@ export const MyJobs = () => {
         <EditJobModal />
         <NavBar isWorker={true} firstName={localStorage.getItem('firstName')}/>
         <div className={"container"}>
-            <h1>My Jobs</h1>
+            <h1>Active Jobs</h1>
             {/*<div className={"container"}>*/}
             {/*    <h2>Active Jobs</h2>*/}
 
