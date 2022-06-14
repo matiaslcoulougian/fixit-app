@@ -8,6 +8,7 @@ import {NavBar} from "../NavBar";
 import JobListCard from "./dashboardCards/JobListCard";
 import {handleLog, Redirect} from "../../Redirect";
 import RatingCard from "./dashboardCards/RatingCard";
+import BudgetRequestsCard from "./dashboardCards/BudgetRequestsCard";
 
 export const Dashboard = () => {
     const navigate = useNavigate()
@@ -128,14 +129,7 @@ export const Dashboard = () => {
 
 
                         <div className="col-md-6">
-                            <div className="card">
-                                <h3 className="card-header">Money Made</h3>
-                                <div className="card-body">
-                                    <h3 className="card-title text-center">$22.155,53</h3>
-                                    <p className="card-text">[Card with earnings list, eg Job x +$150]</p>
-                                    <a href="#" className="btn btn-primary">See full list</a>
-                                </div>
-                            </div>
+                            <BudgetRequestsCard/>
                         </div>
 
                 </div>
@@ -148,13 +142,13 @@ export const Dashboard = () => {
 
                         <div className="col-md-6">
                             <div className="card">
-                                <h3 className="card-header">Comments</h3>
-                                <div className="card-body">
-                                    <h3 className="card-title text-center">[List of Comments]</h3>
-
-                                    <a href="#" className="btn btn-primary">See full list</a>
-                                </div>
+                            <h3 className="card-header">Money Made</h3>
+                            <div className="card-body">
+                                <h3 className="card-title text-center">$22.155,53</h3>
+                                <p className="card-text">[Card with earnings list, eg Job x +$150]</p>
+                                <a href="#" className="btn btn-primary">See full list</a>
                             </div>
+                        </div>
                         </div>
 
                     </div>

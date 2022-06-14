@@ -62,6 +62,8 @@ export const CREATE_JOB_POST = gql`
     }
 `;
 
+
+
 export const UPDATE_JOB_POSTS = gql`
     mutation UpdateJobPosts($input: UpdateJobPostInput!){
         updateJobPost(input: $input){
