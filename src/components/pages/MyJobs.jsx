@@ -7,6 +7,7 @@ import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import { v4 as uuidv4 } from 'uuid';
 import {JobSearchBar} from "../JobSearchBar";
 import {UPDATE_JOB_POSTS} from "../../queries/mutations";
+import {afterWrite} from "@popperjs/core";
 
 
 
@@ -20,6 +21,7 @@ export const MyJobs = () => {
     const [saved, setSaved] = useState(false);
     const [focusJobEdit, setFocusJobEdit] = useState({title:"loading...", description:"loading..."});
     const [focusJobId, setFocusJobId] = useState();
+    const [myState, setMyState] = useState();
 
     const [getWorkerJobs, {loading: postsLoading}] = useLazyQuery(
         GET_WORKER_POSTS, {
@@ -200,24 +202,19 @@ export const MyJobs = () => {
     }
 
 
-    function updateJobInfo(newTitle, newDescription) {
+    const updateJobInfo = (newTitle, newDescription) => {
         console.log("entered updateJobInfo")
-        let foundJob = getJobById(focusJobId);
-        console.log("found job",foundJob)
-
-        foundJob.title = newTitle;
-        foundJob.description = newDescription;
+        const foundJob = getJobById(focusJobId);
+        console.log("found job", foundJob)
+        let updatedJob = {...foundJob}
+        if (newTitle) updatedJob.title = newTitle;
+        if (newDescription) updatedJob.description = newDescription;
         console.log("columns", columns)
     }
-    const aFunc = (id, obj) => {
-        setFocusJobId(id);
-        setFocusJobEdit(obj)
 
-
-    }
-    const handleLog = () => {console.log("Clicked")};
-    const handleLogStr = async (str) => {
-        await setFocusJobId(str)
+    const setSelectedJob = (id) => {
+        setFocusJobId(id)
+        //await setFocusJobEdit(jobData)
         console.log("set triggered")
     };
 
@@ -266,8 +263,8 @@ export const MyJobs = () => {
                     </div>
                     {/*updateJobInfo(newTitle, newDescription)}*/}
                     <div className="modal-footer border-0 pt-0">
-                        <button type="button" className="btn btn-secondary" onClick={handleLog} data-bs-dismiss="modal" >Close</button>
-                        <button type="button" className="btn btn-primary" onClick={() => updateJobInfo(newTitle, newDescription)}>Add Job</button>
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => updateJobInfo(newTitle, newDescription)}>Save</button>
                     </div>
 
 
@@ -358,7 +355,7 @@ export const MyJobs = () => {
                                                                         >
 
                                                                             {item.title}
-                                                                            <span><button onClickCapture={() => handleLogStr(item.id)} className={"btn btn-primary"} data-bs-toggle="modal" data-bs-target="#edit-job-modal" disabled={!editMode}><i
+                                                                            <span><button onClickCapture={() => setSelectedJob(item.id)} className={"btn btn-primary"} data-bs-toggle="modal" data-bs-target="#edit-job-modal" disabled={!editMode}><i
                                                                                 className="bi bi-pencil"></i></button></span>
                                                                         </div>
                                                                     );
