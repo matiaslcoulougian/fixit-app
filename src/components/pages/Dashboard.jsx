@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {NavBar} from "../NavBar";
 import JobListCard from "./dashboardCards/JobListCard";
 import {handleLog, Redirect} from "../../Redirect";
+import RatingCard from "./dashboardCards/RatingCard";
 
 export const Dashboard = () => {
     const navigate = useNavigate()
@@ -141,14 +142,7 @@ export const Dashboard = () => {
 
                     <div className="row mt-3">
                         <div className="col-md-6">
-                            <div className="card">
-                                <h3 className="card-header">My Rating</h3>
-                                <div className="card-body">
-                                    <h3 className="card-title text-center">4.7 <i className="bi bi-star-fill "></i></h3>
-                                    <p className="card-text text-center">42 jobs done</p>
-                                    <a href="#" className="btn btn-primary">See jobs done</a>
-                                </div>
-                            </div>
+                            <RatingCard/>
                         </div>
 
 

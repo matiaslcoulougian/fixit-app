@@ -40,11 +40,11 @@ export function App() {
 
                 <Route exact path="/test" element={<Test />} />
                 <Route exact path="/list-test" element={<ListTest />} />
+                <Route exact path="/job/:jobId" element={<JobDetailsPage />} />
 
                 <Route element={<Auth/>} >
                     <Route element={<ClientAuth/>}>
                         <Route exact path="/home" element={<HomePage />} />
-                        <Route exact path="/job/:jobId" element={<JobDetailsPage />} />
                     </Route>
                     <Route element={<WorkerAuth/>}>
                         <Route exact path="/dashboard" element={<DashboardPage />} />

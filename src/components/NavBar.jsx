@@ -22,7 +22,7 @@ export const NavBar = (props) => {
 
     return (
         <div className="navbar navbar-expand-md navbar-light bg-warning px-3">
-            <a href={props.isWorker ? "/dashboard" : "/home"} className="navbar-brand" >
+            <a href={"javascript:history.back()"} className="navbar-brand" >
                 <span><img src={Logo} alt="logo" width={logoWidthHeight} height={logoWidthHeight} className="d-inline-block align-top"/></span>
                 <span style={lineHeight}>Fixit</span>
             </a>

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from "@apollo/client";
 import {GET_ME, GET_WORKER_POSTS} from "../../../queries/queries";
+import {useNavigate} from "react-router-dom";
 
 const JobListCard = () => {
     const [jobList, setJobList] = useState([]);
@@ -61,6 +62,12 @@ const JobListCard = () => {
         filterPosts();
     }, [jobList]);
 
+    const navigate = useNavigate();
+    const goToDetails = (jobId, job) => {
+        console.log("receiving job", job)
+        console.log("receiving job id", jobId)
+        navigate(`/job/${jobId}`)
+    }
 
     return (
         <div>
@@ -74,7 +81,7 @@ const JobListCard = () => {
                             (<div className={"d-flex justify-content-center"}><div className="spinner-border" role="status">
                             <span className="visually-hidden">Loading...</span> </div> </div>)
                             :
-                            selectedJobs.map((job) => <div className={"list-group-item"}>{job.title}</div>)
+                            selectedJobs.map((job) => <div className={"list-group-item"} role={"button"} onClick={() => goToDetails(job.id, job)}>{job.title}</div>)
                         }
                     </div>
 

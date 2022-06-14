@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import {useLazyQuery} from "@apollo/client";
 import {GET_POST_BY_ID, GET_USER_TIME} from "../../queries/queries";
 import {round} from "@popperjs/core/lib/utils/math";
+import BackButton from "../BackButton";
 
 // Display de los datos del job clickeado
 export const JobDetails = () => {
@@ -105,7 +106,8 @@ export const JobDetails = () => {
           <div>
           <NavBar firstName={navBarName}/>
           <div className="container bg-light">
-              <h1 className="mt-3">Job Details</h1>
+              <BackButton/>
+              <h1 className="mt-1">Job Details</h1>
               <div className="card mt-3">
                   <div className="card-body">
                       <div className="row">
@@ -123,7 +125,7 @@ export const JobDetails = () => {
                                   <h4 className="text-center">{job?.worker.firstName+" "+job?.worker.lastName || loading}</h4>
                                   <h5 className="text-center">[Rating]</h5>
                                   <h6 className="text-center">{simplifyTime}</h6>
-                                  <div className="btn btn-lg btn-primary mt-4 w-75">Ask for Budget</div>
+                                  <button className="btn btn-lg btn-primary mt-4 w-75" disabled={localStorage.getItem("userRole") === "worker"}>Ask for Budget</button>
                               </div>
                           </div>
                       </div>

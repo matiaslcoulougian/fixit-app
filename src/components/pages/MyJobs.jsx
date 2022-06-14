@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from 'react';
+import {React, useCallback, useEffect, useRef, useState} from 'react';
 import {NavBar} from "../NavBar";
 import {GET_ME, GET_WORKER_POSTS} from "../../queries/queries";
 import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
@@ -8,11 +8,54 @@ import { v4 as uuidv4 } from 'uuid';
 import {JobSearchBar} from "../JobSearchBar";
 import {UPDATE_JOB_POSTS} from "../../queries/mutations";
 import {afterWrite} from "@popperjs/core";
+import BackButton from "../BackButton";
 
 
 
 
 export const MyJobs = () => {
+
+    function useAsyncState(initialState) {
+        const [state, setState] = useState(initialState);
+        const resolveState = useRef();
+        const isMounted = useRef(false);
+
+        useEffect(() => {
+            isMounted.current = true;
+
+            return () => {
+                isMounted.current = false;
+            };
+        }, []);
+
+        useEffect(() => {
+            if (resolveState.current) {
+                resolveState.current(state);
+            }
+        }, [state]);
+
+        const setAsyncState = useCallback(
+            newState =>
+                new Promise(resolve => {
+                    if (isMounted.current) {
+                        resolveState.current = resolve;
+                        setState(newState);
+                    }
+                }),
+            []
+        );
+
+        return [state, setAsyncState];
+    }
+
+    const [targetId, setTargetId] = useAsyncState(0);
+    const updateTargetId = async (id) => {
+        const currentState = await setTargetId(prev => id);
+        console.log(currentState);
+    };
+
+
+
 
     let [jobList, setJobList] = useState();
     const [me, setMe] = useState();
@@ -202,9 +245,9 @@ export const MyJobs = () => {
     }
 
 
-    const updateJobInfo = (newTitle, newDescription) => {
+    const updateJobInfo = (newTitle, newDescription, itemId) => {
         console.log("entered updateJobInfo")
-        const foundJob = getJobById(focusJobId);
+        const foundJob = getJobById(itemId);
         console.log("found job", foundJob)
         let updatedJob = {...foundJob}
         if (newTitle) updatedJob.title = newTitle;
@@ -213,12 +256,12 @@ export const MyJobs = () => {
     }
 
     const setSelectedJob = (id) => {
-        setFocusJobId(id)
+        updateTargetId(id)
         //await setFocusJobEdit(jobData)
         console.log("set triggered")
     };
 
-    const EditJobModal = (job) => {
+    const EditJobModal = (props) => {
         const [newTitle, setNewTitle] = useState();
         const [newDescription, setNewDescription] = useState();
 
@@ -231,7 +274,7 @@ export const MyJobs = () => {
 
 
 
-        return(<div className="modal fade" id="edit-job-modal" tabIndex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        return(<div className="modal fade" ref={modalRef} id="edit-job-modal" tabIndex="-1" aria-labelledby="modal-title" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header border-0 pb-0">
@@ -264,7 +307,7 @@ export const MyJobs = () => {
                     {/*updateJobInfo(newTitle, newDescription)}*/}
                     <div className="modal-footer border-0 pt-0">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
-                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => updateJobInfo(newTitle, newDescription)}>Save</button>
+                        <button type="button" className="btn btn-primary" onClick={() => updateJobInfo(newTitle, newDescription, props.itemId)}>Save</button>
                     </div>
 
 
@@ -274,13 +317,21 @@ export const MyJobs = () => {
         </div>);
     }
 
+    const modalRef = useRef();
 
+
+    function openModal() {
+        console.log("openMOdal", modalRef.current)
+        modalRef.current.modal('show');
+        //return <div data-bs-toggle="modal" data-bs-target="#edit-job-modal"></div>
+    }
 
     return (
     <div>
         <EditJobModal/>
         <NavBar isWorker={true} firstName={localStorage.getItem('firstName')}/>
         <div className={"container"}>
+            <BackButton/>
             <h1>My Jobs</h1>
             {/*<div className={"container"}>*/}
             {/*    <h2>Active Jobs</h2>*/}
@@ -355,7 +406,8 @@ export const MyJobs = () => {
                                                                         >
 
                                                                             {item.title}
-                                                                            <span><button onClickCapture={() => setSelectedJob(item.id)} className={"btn btn-primary"} data-bs-toggle="modal" data-bs-target="#edit-job-modal" disabled={!editMode}><i
+
+                                                                            <span><button onClick={openModal} className={"btn btn-primary"}  disabled={!editMode}><i
                                                                                 className="bi bi-pencil"></i></button></span>
                                                                         </div>
                                                                     );

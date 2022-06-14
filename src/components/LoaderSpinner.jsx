@@ -1,16 +1,14 @@
 import {TailSpin} from "react-loader-spinner";
+import React from "react";
 
 const LoaderSpinner = (props) => {
-    if (!props.show) {
-        return null;
-    }
+
     return(
-        <TailSpin
-            height="100"
-            width="100"
-            color='grey'
-            ariaLabel='loading'
-        />
+        <div className={"d-flex justify-content-center"}>
+            <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </div>
     )
 }
 

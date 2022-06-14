@@ -40,23 +40,28 @@ export const JobGrid = (props) =>{
 
     return(
         <div className="container mt-3">
-            <div className="row row-cols-3 row-cols-sm-2 row-cols-md-3 g-4">
+
+            {props.list.length === 0 ? (<h3 className={"centered"}>No Jobs match :(</h3>) : (
+                <div className="row row-cols-3 row-cols-sm-2 row-cols-md-3 g-4">
                 {
                     props.list.map((item) => (
-                    <div className="col>">
-                        <JobResultCard
-                            imgSrc={imgSource} // hardocoded
-                            jobTitle={item.title}
-                            jobType={item.type}
-                            jobId={item.id}
-                            workersName={(item.worker.firstName + " " + item.worker.lastName)}
-                            rating={falseRating}
-                            timeDistance={item.time}
-                            workerId={item.worker.id}/>
+                        <div className="col>">
+                            <JobResultCard
+                                imgSrc={imgSource} // hardocoded
+                                jobTitle={item.title}
+                                jobType={item.type}
+                                jobId={item.id}
+                                workersName={(item.worker.firstName + " " + item.worker.lastName)}
+                                rating={falseRating}
+                                timeDistance={item.time}
+                                workerId={item.worker.id}/>
 
-                    </div>)
-                )}
+                        </div>)
+                    )}
             </div>
+            )}
+
+
         </div>
     );
 
