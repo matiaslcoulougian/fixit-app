@@ -5,7 +5,6 @@ import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import {UPDATE_JOB_POSTS} from "../../queries/mutations";
 import BackButton from "../BackButton";
-import {EditJobModal} from "../EditJobModal";
 import {Modal} from "@mui/material";
 
 
