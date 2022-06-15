@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {JobSearchBar} from "../JobSearchBar";
 import {CREATE_JOB_POST} from "../../queries/mutations";
-import {useMutation} from "@apollo/client";
+import {useLazyQuery, useMutation} from "@apollo/client";
 import "../styles/Dashboard.css";
 import {useNavigate} from "react-router-dom";
 import {NavBar} from "../NavBar";
@@ -10,6 +10,7 @@ import {handleLog, Redirect} from "../../Redirect";
 import RatingCard from "./dashboardCards/RatingCard";
 import BudgetRequestsCard from "./dashboardCards/BudgetRequestsCard";
 import {Modal} from "@mui/material";
+import {GET_ME} from "../../queries/queries";
 
 export const Dashboard = () => {
     const navigate = useNavigate()
@@ -24,6 +25,7 @@ export const Dashboard = () => {
         const [type, setType] = React.useState('');
         const [jobCreationSuccessful, setJobCreationSuccessful] = React.useState(false);
         const [openModal, setOpenModal] = useState(false);
+        const [me, setMe] = useState();
         const searchBarRef = useRef();
 
 
@@ -35,6 +37,22 @@ export const Dashboard = () => {
             setDescription(e.target.value);
 
         };
+
+        const [getMe] = useLazyQuery(
+            GET_ME, {
+                onCompleted:  (res) => {
+                    console.log(res.getMe)
+                    setMe(res.getMe);
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
+            }
+        );
+
+        useEffect( async () => {
+            await getMe();
+        }, []);
 
         const [createJobPost] = useMutation(
             CREATE_JOB_POST, {
@@ -143,8 +161,8 @@ export const Dashboard = () => {
                 </div>
 
                     <div className="row mt-3">
-                        <div className="col-md-6">
-                            <RatingCard/>
+                        <div className="col-md-6" >
+                            {me && <RatingCard workerId={me.id}/>}
                         </div>
 
 

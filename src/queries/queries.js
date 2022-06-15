@@ -90,9 +90,10 @@ export const GET_USER_TIME = gql`
 `;
 
 export const GET_RATING_AVERAGE = gql`
-    query GetWorkerAvgRating($input: GetWorkerRatingsInput!){
-        getWorkerAvgRating(input: $input){
-            average    
+    query GetWorkerAvgRating($input: GetWorkerRatingsInput!) {
+         getWorkerAvgRating(input: $input){
+         average
+         jobsDone
         }
     }
 `;
