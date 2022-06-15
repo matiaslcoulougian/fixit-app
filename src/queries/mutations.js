@@ -60,6 +60,14 @@ export const RESPOND_BUDGET = gql`
     }
 `;
 
+export const REJECT_BUDGET = gql`
+    mutation RejectBudget($input: RejectBudgetInput!){
+        rejectBudget(input: $input){
+            id
+        }
+    }
+`;
+
 
 export const CREATE_JOB_POST = gql`
     mutation CreateJobPost($title: String!, $description: String!, $type: String!) {

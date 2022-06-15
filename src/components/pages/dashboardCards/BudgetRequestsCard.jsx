@@ -8,7 +8,7 @@ import { addDays } from 'date-fns'
 
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
-import {RESPOND_BUDGET} from "../../../queries/mutations";
+import {REJECT_BUDGET, RESPOND_BUDGET} from "../../../queries/mutations";
 
 const BudgetRequestsCard = () => {
 
@@ -119,6 +119,17 @@ const BudgetRequestsCard = () => {
 
     );
 
+    const [rejectBudget] = useMutation(
+        REJECT_BUDGET, {
+            onCompleted: (res) => {
+                console.log("REJECTED!");
+            },
+            onError: (err) => {
+                console.log(err);
+            }
+        }
+    );
+
     useEffect(() => {
         getBudgetByWorker()
         if(budgetList) filterPending()
@@ -127,7 +138,7 @@ const BudgetRequestsCard = () => {
 
     function handleRejectBudget() {
         setOpenModal(false)
-        // implement rejection
+        rejectBudget({variables: {input: {budgetId: focusBudget.id}}})
     }
 
 
