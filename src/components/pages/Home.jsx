@@ -112,13 +112,12 @@ export const Home = () => {
                     <div className="col-9">
                     <div className="input-group mb-3 col-6">
                         <JobSearchBar ref={searchBarRef} style={{width: "880px"}}/>
-                        <div className="input-group-append">
-                            <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={fetchJobs} >Search</button>
-                        </div>
                     </div>
                     </div>
 
                     <div className="dropdown mb-3 col-3">
+                        <button className="btn btn-outline-secondary me-4" type="button" id="button-addon2" onClick={fetchJobs} >Search</button>
+
                         <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             Sort By
