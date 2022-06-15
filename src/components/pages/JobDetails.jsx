@@ -7,6 +7,7 @@ import {round} from "@popperjs/core/lib/utils/math";
 import BackButton from "../BackButton";
 import {JobSearchBar} from "../JobSearchBar";
 import {REQUEST_BUDGET} from "../../queries/mutations";
+import {Modal} from "@mui/material";
 
 // Display de los datos del job clickeado
 export const JobDetails = () => {
@@ -15,7 +16,8 @@ export const JobDetails = () => {
     const [job, setJob] = React.useState(null);
     const [distanceMin, setDistanceMin] = React.useState(null);
     const [distanceHs, setDistanceHs] = React.useState(null);
-    const [time, setTime] = React.useState(null);
+    const [openModal, setOpenModal] = useState(false);
+
     console.log(window.localStorage.getItem("workerId"))
     const [getJobById] = useLazyQuery(
         GET_POST_BY_ID, {
@@ -137,50 +139,42 @@ export const JobDetails = () => {
     }
 
     return (
-          <div>
+        <div>
+            <Modal
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                aria-labelledby="parent-modal-title"
+                aria-describedby="parent-modal-description"
+            >
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header border-0 pb-0">
+                            <h5 className="modal-title" id="modal-title">Request a Budget</h5>
+                            <button type="button" className="btn-close" onClick={()=> setOpenModal(false)} aria-label="Close"/>
+                        </div>
 
-          <div className="modal fade" id="request-budget-modal" tabIndex="-1" aria-labelledby="modal-title" aria-hidden="true">
-              <div className="modal-dialog">
-                  <div className="modal-content">
-                      <div className="modal-header border-0 pb-0">
-                          <h5 className="modal-title" id="modal-title">Request a Budget</h5>
-                          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                        <div className="modal-body border-0 py-0">
+                            <hr/>
+                            <div className="container">
 
-                      </div>
+                                <div className="mt-3">
+                                    <label className="form-label" htmlFor="job-description">Description of the Job</label>
+                                    <textarea className="form-control" id="job-description" onChange={getDescription} rows="3" placeholder="Describe your Job as detailed as possible..."/>
+                                </div>
 
-                      <div className="modal-body border-0 py-0">
-                          <hr/>
-                          <div className="container">
+                                {budgetRequestSent && <div className="alert alert-success mt-2" role="alert">
+                                    Request sent successfully! Please close this window.
+                                </div>}
 
-                              <div className="mt-3">
-                                  <label className="form-label" htmlFor="job-description">Description of the Job</label>
-                                  <textarea className="form-control" id="job-description" onChange={getDescription} rows="3" placeholder="Describe your Job as detailed as possible..."/>
-                              </div>
-
-                              {budgetRequestSent && <div className="alert alert-success mt-2" role="alert">
-                                  Request sent successfully! Please close this window.
-                              </div>}
-
-                          </div>
-                          <hr/>
-                      </div>
-
-                      <div className="modal-footer border-0 pt-0">
-                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
-                          <button type="button" className="btn btn-primary" disabled={budgetRequestSent} onClick={handleSendBudget}>Send Request</button>
-                      </div>
-
-
-
-                  </div>
-              </div>
-          </div>
-
-
-
-
-
-
+                            </div>
+                            <hr/>
+                        </div>
+                        <div className="modal-footer border-0 pt-0">
+                            <button type="button" className="btn btn-primary" disabled={budgetRequestSent} onClick={handleSendBudget}>Send Request</button>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
           <NavBar firstName={navBarName}/>
           <div className="container bg-light">
               <BackButton/>
@@ -202,7 +196,7 @@ export const JobDetails = () => {
                                   <h4 className="text-center">{job?.worker.firstName+" "+job?.worker.lastName || loading}</h4>
                                   <h5 className="text-center">[Rating]</h5>
                                   <h6 className="text-center">{simplifyTime}</h6>
-                                  <button className="btn btn-lg btn-primary mt-4 w-75" data-bs-toggle="modal" data-bs-target="#request-budget-modal" disabled={localStorage.getItem("userRole") === "worker" || budgetRequestSent}>Ask for Budget</button>
+                                  <button className="btn btn-lg btn-primary mt-4 w-75" onClick={ () => setOpenModal(true)} disabled={localStorage.getItem("userRole") === "worker" || budgetRequestSent}>Ask for Budget</button>
                               </div>
                           </div>
                       </div>
@@ -216,6 +210,6 @@ export const JobDetails = () => {
                   </div>
               </div>
           </div>
-              </div>
+        </div>
   );
 };

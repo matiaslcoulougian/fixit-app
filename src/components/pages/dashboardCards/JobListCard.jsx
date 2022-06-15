@@ -72,8 +72,9 @@ const JobListCard = () => {
     return (
         <div>
             <div className="card">
-                <h3 className="card-header d-flex justify-content-between align-items-start">Active Jobs<span className={"btn"} data-bs-toggle="modal" data-bs-target="#new-job-modal"><i
-                    className="bi bi-plus-square"></i></span></h3>
+                <h3 className="card-header d-flex justify-content-between align-items-start">Active Jobs</h3>
+                {/*<span className={"btn"}><i*/}
+                {/*    className="bi bi-plus-square"></i></span>*/}
                 <div className="card-body">
 
                     <div className={"list-group mb-2"}>

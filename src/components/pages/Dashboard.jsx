@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {JobSearchBar} from "../JobSearchBar";
 import {CREATE_JOB_POST} from "../../queries/mutations";
 import {useMutation} from "@apollo/client";
@@ -9,6 +9,7 @@ import JobListCard from "./dashboardCards/JobListCard";
 import {handleLog, Redirect} from "../../Redirect";
 import RatingCard from "./dashboardCards/RatingCard";
 import BudgetRequestsCard from "./dashboardCards/BudgetRequestsCard";
+import {Modal} from "@mui/material";
 
 export const Dashboard = () => {
     const navigate = useNavigate()
@@ -22,7 +23,7 @@ export const Dashboard = () => {
         const [description, setDescription] = React.useState('');
         const [type, setType] = React.useState('');
         const [jobCreationSuccessful, setJobCreationSuccessful] = React.useState(false);
-
+        const [openModal, setOpenModal] = useState(false);
         const searchBarRef = useRef();
 
 
@@ -34,7 +35,6 @@ export const Dashboard = () => {
             setDescription(e.target.value);
 
         };
-
 
         const [createJobPost] = useMutation(
             CREATE_JOB_POST, {
@@ -53,7 +53,10 @@ export const Dashboard = () => {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
 
-        const restoreJobSuccess = () => setJobCreationSuccessful(false);
+        const restoreJobSuccess = () => {
+            setJobCreationSuccessful(false);
+            setOpenModal(false)
+        }
 
         const handleAddJob = () => {
             const searchedType = searchBarRef.current.getText();
@@ -73,12 +76,18 @@ export const Dashboard = () => {
         return(
             <div>
                 <Redirect />
-                <div className="modal fade" id="new-job-modal" tabIndex="-1" aria-labelledby="modal-title" aria-hidden="true">
+
+                <Modal
+                    open={openModal}
+                    onClose={() => setOpenModal(false)}
+                    aria-labelledby="parent-modal-title"
+                    aria-describedby="parent-modal-description"
+                >
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header border-0 pb-0">
                                 <h5 className="modal-title" id="modal-title">Create New Job</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                                <button type="button" className="btn-close" onClick={()=>restoreJobSuccess()} aria-label="Close"/>
 
                             </div>
 
@@ -108,7 +117,6 @@ export const Dashboard = () => {
                             </div>
 
                             <div className="modal-footer border-0 pt-0">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={restoreJobSuccess}>Close</button>
                                 <button type="button" className="btn btn-primary" onClick={handleAddJob}>Add Job</button>
                             </div>
 
@@ -116,9 +124,9 @@ export const Dashboard = () => {
 
                         </div>
                     </div>
-                </div>
+                </Modal>
                 <div className="text-center">
-                    <button className="btn btn-lg btn-primary text-center" data-bs-toggle="modal" data-bs-target="#new-job-modal"> Create New Job</button>
+                    <button className="btn btn-lg btn-primary text-center" onClick={()=> setOpenModal(true)}> Create New Job</button>
                 </div>
 
                 <div className="container">
