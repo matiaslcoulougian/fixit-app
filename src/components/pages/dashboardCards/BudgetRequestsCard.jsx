@@ -260,7 +260,7 @@ const BudgetRequestsCard = () => {
             <div className="card">
             <h3 className="card-header">Budget Requests</h3>
             <div className="card-body">
-
+                {pendingBudgets.length === 0 && <h6 className={"centered"}>No pending budgets...</h6>}
                 <div className="list-group">
 
                     {pendingBudgets?.slice(0,3).map((budget) => {
