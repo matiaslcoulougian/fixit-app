@@ -2,12 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {NavBar} from "../NavBar";
 import {useParams} from "react-router-dom";
 import {useLazyQuery, useMutation} from "@apollo/client";
-import {GET_POST_BY_ID, GET_USER_TIME} from "../../queries/queries";
+import {GET_POST_BY_ID, GET_RATING_AVERAGE, GET_USER_TIME} from "../../queries/queries";
 import {round} from "@popperjs/core/lib/utils/math";
 import BackButton from "../BackButton";
 import {JobSearchBar} from "../JobSearchBar";
 import {REQUEST_BUDGET} from "../../queries/mutations";
 import {Modal} from "@mui/material";
+import LoaderSpinner from "../LoaderSpinner";
 
 // Display de los datos del job clickeado
 export const JobDetails = () => {
@@ -17,6 +18,7 @@ export const JobDetails = () => {
     const [distanceMin, setDistanceMin] = React.useState(null);
     const [distanceHs, setDistanceHs] = React.useState(null);
     const [openModal, setOpenModal] = useState(false);
+    const [rating, setRating] = useState(false);
 
     console.log(window.localStorage.getItem("workerId"))
     const [getJobById] = useLazyQuery(
@@ -28,6 +30,7 @@ export const JobDetails = () => {
             console.log("data", data);
             setJob(data.getPostById);
             console.log("job", job);
+            getWorkerAvgRating({variables:{input: {workerId: data.getPostById.worker.id}}})
         },
         onError: (error) => {
             console.log(error);
@@ -47,12 +50,20 @@ export const JobDetails = () => {
         }
     );
 
-    const getJob = () => {
-        getJobById();
-    };
+    const [getWorkerAvgRating] = useLazyQuery(
+        GET_RATING_AVERAGE, {
+            onCompleted: (data) => {
+                console.log("FETCHED!");
+                setRating(data.getWorkerAvgRating.average)
+            },
+            onError: (err) => {
+                console.log(err)
+            }
+        }
+    );
 
     useEffect(() => {
-        getJob()
+        getJobById()
     }, []);
 
     const simplifyTime = () => {
@@ -177,7 +188,7 @@ export const JobDetails = () => {
             </Modal>
           <NavBar firstName={navBarName}/>
           <div className="container bg-light">
-              <BackButton/>
+              <BackButton marginTop={"mt-2"}/>
               <h1 className="mt-1">Job Details</h1>
               <div className="card mt-3">
                   <div className="card-body">
@@ -186,7 +197,7 @@ export const JobDetails = () => {
                       <div className="row">
                           <div className="col-md-7">
                               <h2>{job?.title || loading}</h2>
-                              <img src={"https://i.ytimg.com/vi/KEkrWRHCDQU/maxresdefault.jpg"} className="img-fluid col-10 mt-2" alt=""/>
+                              <img src={"https://arquitecturaproxima.com/wp-content/uploads/2015/02/shop-page-header1.jpg"} className="img-fluid col-10 mt-2" alt=""/>
                           </div>
                           <div className="col-md-5 mt-4">
                               <div className="row justify-content-center mb-3">
@@ -194,7 +205,8 @@ export const JobDetails = () => {
                               </div>
                               <div className="row justify-content-center">
                                   <h4 className="text-center">{job?.worker.firstName+" "+job?.worker.lastName || loading}</h4>
-                                  <h5 className="text-center">[Rating]</h5>
+
+                                  <h5 className="text-center">{rating ? (<span>{rating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</h5>
                                   <h6 className="text-center">{simplifyTime}</h6>
                                   <button className="btn btn-lg btn-primary mt-4 w-75" onClick={ () => setOpenModal(true)} disabled={localStorage.getItem("userRole") === "worker" || budgetRequestSent}>Ask for Budget</button>
                               </div>

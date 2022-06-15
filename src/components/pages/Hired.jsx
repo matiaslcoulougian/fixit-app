@@ -11,7 +11,9 @@ const Hired = (props) => {
     const [respondedBudgets, setRespondedBudgets] = useState();
     const [acceptedBudgets, setAcceptedBudgets] = useState();
     const [completedBudgets, setCompletedBudgets] = useState();
-
+    const [budgetConfirmed, setBudgetConfirmed] = useState(false);
+    const [budgetDeclined, setBudgetDeclined] = useState(false);
+    const [budgetFinished, setBudgetFinished] = useState(false);
 
     const [getBudgetByCustomer] = useLazyQuery(
         GET_BUDGET_BY_CUSTOMER, {
@@ -29,6 +31,7 @@ const Hired = (props) => {
         REJECT_BUDGET, {
             onCompleted: (res) => {
                 console.log("CLOSED!");
+                setBudgetDeclined(true)
             },
             onError: (err) => {
                 console.log(err)
@@ -40,6 +43,7 @@ const Hired = (props) => {
         CONFIRM_BUDGET, {
             onCompleted: (res) => {
                 console.log("CONFIRMED!");
+                setBudgetConfirmed(true)
             },
             onError: (err) => {
                 console.log(err)
@@ -92,6 +96,7 @@ const Hired = (props) => {
     }
 
     function handleFinished(stars, comment) {
+        setBudgetFinished(true)
         finishBudget({variables: {input: {budgetId: focusBudget.id}}})
         rateWorker({
             variables: {
@@ -117,7 +122,7 @@ const Hired = (props) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header border-0 pb-0">
-                            <h5 className="modal-title" id="modal-title">Confirm Budget</h5>
+                            <h5 className="modal-title" id="modal-title">Confirm Service</h5>
                             <button type="button" className="btn-close" onClick={() => setOpenRespondedModal(false)} data-bs-dismiss="modal" aria-label="Close"/>
 
                         </div>
@@ -154,6 +159,13 @@ const Hired = (props) => {
                                         <div className="form-control" id="job-description" rows="3">{focusBudget?.firstDateFrom + " to " + focusBudget?.firstDateTo}</div>
                                     </div>
 
+                                    {budgetConfirmed && <div className="alert alert-success mt-2" role="alert">
+                                        Job Confirmed Successfully! Please close this window.
+                                    </div>}
+
+                                    {budgetDeclined && <div className="alert alert-success mt-2" role="alert">
+                                        Job Declined Successfully! Please close this window.
+                                    </div>}
 
                                 </div>
                                 <hr/>
@@ -161,8 +173,8 @@ const Hired = (props) => {
 
                             {/*updateJobInfo(newTitle, newDescription)}*/}
                             <div className="modal-footer border-0 pt-0">
-                                <button type="button" className="btn btn-secondary" onClick={handleRejection}>Decline</button>
-                                <button type="button" className="btn btn-primary" onClick={handleConfirmation}>Confirm</button>
+                                <button type="button" className="btn btn-secondary" disabled={budgetDeclined || budgetConfirmed}  onClick={handleRejection}>Decline</button>
+                                <button type="button" className="btn btn-primary" disabled={budgetDeclined || budgetConfirmed}  onClick={handleConfirmation}>Confirm</button>
                             </div>
 
 
@@ -194,7 +206,7 @@ const Hired = (props) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header border-0 pb-0">
-                            <h5 className="modal-title" id="modal-title">Confirm Budget</h5>
+                            <h5 className="modal-title" id="modal-title">Finish Service</h5>
                             <button type="button" className="btn-close" onClick={() => setOpenConfirmedModal(false)} data-bs-dismiss="modal" aria-label="Close"/>
 
                         </div>
@@ -224,20 +236,27 @@ const Hired = (props) => {
 
 
                                     <div className={"mt-3"}>
-                                        <label className="form-label" htmlFor="job-description">Rating</label>
-                                        <Rating
-                                            name="simple-controlled"
-                                            value={stars}
-                                            onChange={(event, newValue) => {
-                                                setStars(newValue);
-                                            }}
-                                        />
+                                        <label className="form-label me-2" htmlFor="job-description">Rating</label>
+                                        <div>
+                                            <Rating
+                                                name="simple-controlled"
+                                                value={stars}
+                                                onChange={(event, newValue) => {
+                                                    setStars(newValue);
+                                                }}
+                                            />
+                                        </div>
+
                                     </div>
 
                                     <div className={"mt-3"}>
                                         <label className="form-label" htmlFor="job-description">Add a Comment</label>
-                                        <textarea onChange={(e) => setComment(e.target.value)}></textarea>
+                                        <div><textarea onChange={(e) => setComment(e.target.value)}></textarea></div>
                                     </div>
+
+                                    {budgetFinished && <div className="alert alert-success mt-2" role="alert">
+                                        Job Finished Successfully! Please close this window.
+                                    </div>}
 
 
                                 </div>
@@ -246,7 +265,7 @@ const Hired = (props) => {
 
                                 {/*updateJobInfo(newTitle, newDescription)}*/}
                                 <div className="modal-footer border-0 pt-0">
-                                    <button type="button" className="btn btn-primary" onClick={() => handleFinished(stars, comment)}>Close Job</button>
+                                    <button type="button" className="btn btn-primary" disabled={budgetFinished} onClick={() => handleFinished(stars, comment)}>Finish</button>
                                 </div>
 
 
@@ -260,10 +279,7 @@ const Hired = (props) => {
 
     }
 
-
-
     function handleClick(budget, type) {
-        console.log("droga")
         setFocusBudget(budget)
 
         if (type === "RESPONDED") {
@@ -280,17 +296,17 @@ const Hired = (props) => {
             <RespondedBudgetModal/>
             <ConfirmedBudgetModal/>
             <NavBar firstName={localStorage.getItem("firstName")}/>
-            <BackButton/>
+            <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
 
             <div className={"container"}>
-                <div className={"row"}>
-                    <h2> Budgets to Confirm</h2>
-                    <div className={"list-group"}>
-                        {respondedBudgets?.length === 0 ? (<h2>No budgets yet...</h2>): (respondedBudgets?.map((budget) => {
+                <div className={"row pb-4"}>
+                    <div className="list-group ">
+                        <h2> Services to Confirm</h2>
+                        {respondedBudgets?.length === 0 ? (<h4>No budgets yet...</h4>): (respondedBudgets?.map((budget) => {
                             return(<div role="button" onClick={() => handleClick(budget, "RESPONDED")} className={"list-group-item"}>
-                                <div>{budget.job.title}</div>
-                                <div>{budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
-                                <div>{budget.description}</div>
+                                <div>{"Title: " + budget.job.title}</div>
+                                <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
+                                <div>{"Description: " + budget.description}</div>
 
                             </div>)
                         }))}
@@ -298,14 +314,14 @@ const Hired = (props) => {
 
                 </div>
 
-                <div className={"row"}>
-                    <h2> Confirmed Budgets</h2>
+                <div className={"row pb-4"}>
                     <div className={"list-group"}>
-                        {acceptedBudgets?.length === 0 ? (<h2>No budgets yet...</h2>) : (acceptedBudgets?.map((budget) => {
+                        <h2> Confirmed Services</h2>
+                        {acceptedBudgets?.length === 0 ? (<h4>No budgets yet...</h4>) : (acceptedBudgets?.map((budget) => {
                             return(<div className={"list-group-item"} role="button" onClick={() => handleClick(budget, "CONFIRMED")}>
-                                <div>{budget.job.title}</div>
-                                <div>{budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
-
+                                <div>{"Title: " +  budget.job.title}</div>
+                                <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
+                                <div>{"Description: " + budget.description}</div>
                             </div>)
                         }))}
                     </div>
@@ -313,13 +329,13 @@ const Hired = (props) => {
                 </div>
 
                 <div className={"row"}>
-                    <h2> Completed Budget History</h2>
                     <div className={"list-group"}>
-                        {completedBudgets?.length === 0 ? (<h2>No budgets yet...</h2>): (completedBudgets?.map((budget) => {
+                        <h2> Finished Services </h2>
+                        {completedBudgets?.length === 0 ? (<h4>No budgets yet...</h4>): (completedBudgets?.map((budget) => {
                             return(<div role="button" onClick={() => handleClick(budget, "COMPLETED")} className={"list-group-item"}>
-                                <div>{budget.job.title}</div>
-                                <div>{budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
-
+                                <div>{"Title: " + budget.job.title}</div>
+                                <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
+                                <div>{"Description: " + budget.description}</div>
                             </div>)
                         }))}
                     </div>

@@ -24,6 +24,8 @@ const BudgetRequestsCard = () => {
             key: 'selection'
         }
     ])
+    const [budgetResponded, setBudgetResponded] = useState(false);
+    const [budgetRejected, setBudgetRejected] = useState(false);
     const DateRangeComp = () => {
 
         // date state
@@ -138,7 +140,7 @@ const BudgetRequestsCard = () => {
 
 
     function handleRejectBudget() {
-        setOpenModal(false)
+        setBudgetRejected(true)
         rejectBudget({variables: {input: {budgetId: focusBudget.id}}})
         setRefresh((refresh) => refresh+1)
     }
@@ -154,6 +156,7 @@ const BudgetRequestsCard = () => {
 
 
         function handleRespondBudget() {
+            setBudgetResponded(true)
             console.log(estimatedPrice)
             console.log(format(range[0].startDate, "MM/dd/yyyy"))
             console.log(format(range[0].endDate, "MM/dd/yyyy"))
@@ -226,6 +229,14 @@ const BudgetRequestsCard = () => {
                                 <textarea className="form-control" id="job-title" rows="3" onChange={(e) => setAddedComments(e.target.value)}></textarea>
                             </div>
 
+                            {budgetResponded && <div className="alert alert-success mt-2" role="alert">
+                                Budget Responded Successfully! Please close this window.
+                            </div>}
+
+                            {budgetRejected && <div className="alert alert-success mt-2" role="alert">
+                                Budget Rejected Successfully! Please close this window.
+                            </div>}
+
                         </div>
                             <div/>
 
@@ -234,8 +245,8 @@ const BudgetRequestsCard = () => {
                     </div>
                     {/*updateJobInfo(newTitle, newDescription)}*/}
                     <div className="modal-footer border-0 pt-0">
-                        <button type="button" className="btn btn-secondary" onClick={handleRejectBudget} >Decline</button>
-                        <button type="button" className="btn btn-primary" onClick={handleRespondBudget}>Send</button>
+                        <button type="button" className="btn btn-secondary" disabled={budgetRejected || budgetResponded} onClick={handleRejectBudget} >Decline</button>
+                        <button type="button" className="btn btn-primary" disabled={budgetRejected || budgetResponded} onClick={handleRespondBudget}>Send</button>
                     </div>
 
 
@@ -260,7 +271,7 @@ const BudgetRequestsCard = () => {
             <div className="card">
             <h3 className="card-header">Budget Requests</h3>
             <div className="card-body">
-                {pendingBudgets.length === 0 && <h6 className={"centered"}>No pending budgets...</h6>}
+                {pendingBudgets?.length === 0 && <h6 className={"centered"}>No pending budgets...</h6>}
                 <div className="list-group">
 
                     {pendingBudgets?.slice(0,3).map((budget) => {

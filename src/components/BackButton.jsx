@@ -1,7 +1,7 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
 
-const BackButton = () => {
+const BackButton = (props) => {
 
     const navigate = useNavigate();
     const goBack = () => {
@@ -10,7 +10,7 @@ const BackButton = () => {
 
     return (
         <div>
-            <button onClick={goBack} className={"btn btn-primary mt-2"}><span><i className="bi bi-arrow-left"></i> Back</span></button>
+            <button onClick={goBack} className={`btn btn-primary ${props.marginTop} ${props.marginLeft}`}><span><i className="bi bi-arrow-left"></i> Back</span></button>
         </div>
     );
 };

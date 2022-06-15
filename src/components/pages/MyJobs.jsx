@@ -422,7 +422,7 @@ export const MyJobs = () => {
                     })}
                 </DragDropContext>
             </div>
-            <BackButton/>
+            <BackButton marginTop={"mt-2"}/>
         </div>
     </div>
   );

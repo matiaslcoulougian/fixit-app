@@ -135,7 +135,7 @@ export const Dashboard = () => {
                             </div>
 
                             <div className="modal-footer border-0 pt-0">
-                                <button type="button" className="btn btn-primary" onClick={handleAddJob}>Add Job</button>
+                                <button type="button" className="btn btn-primary" disabled={jobCreationSuccessful} onClick={handleAddJob}>Add Job</button>
                             </div>
 
 
