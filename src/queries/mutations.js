@@ -68,6 +68,24 @@ export const REJECT_BUDGET = gql`
     }
 `;
 
+export const FINISH_BUDGET = gql`
+    mutation FinishBudget($input: FinishBudgetInput!) {
+        finishBudget(input: $input) {
+            id
+        }
+    }
+`;
+
+
+
+export const CONFIRM_BUDGET = gql`
+    mutation ConfirmBudget($input: ConfirmBudgetInput!) {
+        confirmBudget(input: $input) {
+            id
+        }
+    }
+`;
+
 
 export const CREATE_JOB_POST = gql`
     mutation CreateJobPost($title: String!, $description: String!, $type: String!) {

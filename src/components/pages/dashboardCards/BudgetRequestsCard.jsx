@@ -16,6 +16,7 @@ const BudgetRequestsCard = () => {
     const [pendingBudgets, setPendingBudgets] = useState();
     const [openModal, setOpenModal] = useState(false)
     const [focusBudget, setFocusBudget] = useState()
+    const [refresh, setRefresh] = useState(0)
     const [range, setRange] = useState([
         {
             startDate: new Date(),
@@ -133,12 +134,13 @@ const BudgetRequestsCard = () => {
     useEffect(() => {
         getBudgetByWorker()
         if(budgetList) filterPending()
-    }, [budgetList]);
+    }, [budgetList, refresh]);
 
 
     function handleRejectBudget() {
         setOpenModal(false)
         rejectBudget({variables: {input: {budgetId: focusBudget.id}}})
+        setRefresh((refresh) => refresh+1)
     }
 
 
@@ -149,6 +151,7 @@ const BudgetRequestsCard = () => {
         const [addedComments, setAddedComments] = useState();
         const [dateFrom, setDateFrom] = useState();
         const [dateTo, setDateTo] = useState();
+
 
         function handleRespondBudget() {
             console.log(estimatedPrice)
@@ -167,6 +170,8 @@ const BudgetRequestsCard = () => {
                     }
                 }
             })
+            setRefresh((refresh) => refresh+1)
+
         }
 
         return(<Modal

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {NavBar} from "../NavBar";
 import {GET_BUDGET_BY_CUSTOMER} from "../../queries/queries";
-import {useLazyQuery} from "@apollo/client";
+import {useLazyQuery, useMutation} from "@apollo/client";
 import BackButton from "../BackButton";
 import {Modal} from "@mui/material";
+import {CONFIRM_BUDGET, REJECT_BUDGET} from "../../queries/mutations";
 
 const Hired = (props) => {
 
@@ -24,6 +25,28 @@ const Hired = (props) => {
         }
     );
 
+    const [closeBudget] = useMutation(
+        REJECT_BUDGET, {
+            onCompleted: (res) => {
+                console.log("CLOSED!");
+            },
+            onError: (err) => {
+                console.log(err)
+            }
+        }
+    )
+
+    const [confirmBudget] = useMutation(
+        CONFIRM_BUDGET, {
+            onCompleted: (res) => {
+                console.log("CONFIRMED!");
+            },
+            onError: (err) => {
+                console.log(err)
+            }
+        }
+    );
+
 
     useEffect(async () => {
         let responded = await getBudgetByCustomer({variables:{input:{status: "RESPONDED"}}})
@@ -36,15 +59,23 @@ const Hired = (props) => {
         setCompletedBudgets(completed.data.getBudgetByCustomer)
     }, []);
     
-    const [openModal, setOpenModal] = useState(false);
-    
+    const [openRespondedModal, setOpenRespondedModal] = useState(false);
+
+    function handleConfirmation() {
+        confirmBudget({variables: {input: {budgetId: focusBudget.id}}})
+    }
+
+    function handleRejection() {
+        closeBudget({variables: {input: {budgetId: focusBudget.id}}})
+    }
+
     const RespondedBudgetModal = () => {
         
         
         return(
             <Modal
-                open={openModal}
-                onClose={() => setOpenModal(false)}
+                open={openRespondedModal}
+                onClose={() => setOpenRespondedModal(false)}
                 aria-labelledby="parent-modal-title"
                 aria-describedby="parent-modal-description"
             >
@@ -52,7 +83,7 @@ const Hired = (props) => {
                     <div className="modal-content">
                         <div className="modal-header border-0 pb-0">
                             <h5 className="modal-title" id="modal-title">Confirm Budget</h5>
-                            <button type="button" className="btn-close" onClick={() => setOpenModal(false)} data-bs-dismiss="modal" aria-label="Close"/>
+                            <button type="button" className="btn-close" onClick={() => setOpenRespondedModal(false)} data-bs-dismiss="modal" aria-label="Close"/>
 
                         </div>
 
@@ -63,15 +94,31 @@ const Hired = (props) => {
                                 <div className="container">
 
                                     <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-title">Job</label>
-                                        <div className="form-control" id="job-title" rows="3">yeayeayea</div>
+                                        <label className="form-label" htmlFor="job-title">Job Description</label>
+                                        <div className="form-control" id="job-title" rows="3">{focusBudget?.description}</div>
                                     </div>
 
 
                                     <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-description">Description of the Job</label>
-                                        <div className="form-control" id="job-description" rows="3">yea</div>
+                                        <label className="form-label" htmlFor="job-description">Estimated Cost</label>
+                                        <div className="form-control" id="job-description" rows="3">{"$"+focusBudget?.amount}</div>
                                     </div>
+
+                                    <div className="mt-3">
+                                        <label className="form-label" htmlFor="job-description">Worker's Comments</label>
+                                        <div className="form-control" id="job-description" rows="3">{focusBudget?.details}</div>
+                                    </div>
+
+                                    <div className="mt-3">
+                                        <label className="form-label" htmlFor="job-description">Worker's Name</label>
+                                        <div className="form-control" id="job-description" rows="3">{focusBudget?.job.worker.firstName + " " + focusBudget?.job.worker.lastName}</div>
+                                    </div>
+
+                                    <div className="mt-3">
+                                        <label className="form-label" htmlFor="job-description">Possible Date Range</label>
+                                        <div className="form-control" id="job-description" rows="3">{focusBudget?.firstDateFrom + " to " + focusBudget?.firstDateTo}</div>
+                                    </div>
+
 
                                 </div>
                                 <hr/>
@@ -79,8 +126,8 @@ const Hired = (props) => {
 
                             {/*updateJobInfo(newTitle, newDescription)}*/}
                             <div className="modal-footer border-0 pt-0">
-                                <button type="button" className="btn btn-secondary">Decline</button>
-                                <button type="button" className="btn btn-primary">Send</button>
+                                <button type="button" className="btn btn-secondary" onClick={handleRejection}>Decline</button>
+                                <button type="button" className="btn btn-primary" onClick={handleConfirmation}>Confirm</button>
                             </div>
 
 
@@ -94,14 +141,18 @@ const Hired = (props) => {
         
     }
 
+    const [focusBudget, setFocusBudget] = useState();
+
 
     function handleClick(budget) {
-        
+        console.log("droga")
+        setFocusBudget(budget)
+        setOpenRespondedModal(true)
     }
 
     return (
         <div>
-            
+            <RespondedBudgetModal/>
             <NavBar firstName={localStorage.getItem("firstName")}/>
             <BackButton/>
 
@@ -113,6 +164,7 @@ const Hired = (props) => {
                             return(<div role="button" onClick={() => handleClick(budget)} className={"list-group-item"}>
                                 <div>{budget.job.title}</div>
                                 <div>{budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
+                                <div>{budget.description}</div>
 
                             </div>)
                         }))}
