@@ -31,6 +31,15 @@ export const REGISTER = gql`
     }
 `;
 
+export const RATE_WORKER = gql`
+    mutation RateWorker($input: RateWorkerInput!){
+        rateWorker(input: $input){
+            id
+            stars
+        }
+    }
+`;
+
 export const LOGIN = gql`
     mutation Login($credential: String!, $password: String!) {
         login(input: {

@@ -49,6 +49,7 @@ export const GET_BUDGET_BY_CUSTOMER = gql`
                 worker{
                     firstName
                     lastName
+                    id
                 
                 }
                 title
