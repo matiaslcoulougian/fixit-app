@@ -11,13 +11,18 @@ import RatingCard from "./dashboardCards/RatingCard";
 import BudgetRequestsCard from "./dashboardCards/BudgetRequestsCard";
 import {Modal} from "@mui/material";
 import {GET_ME} from "../../queries/queries";
+import {BudgetNotification} from "../BudgetNotification";
 
 export const Dashboard = () => {
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState("");
     const navigate = useNavigate()
+
     async function logout(){
         window.localStorage.clear();
         navigate(-1);
     }
+
     const NewJobModal = () => {
 
         const [title, setTitle] = React.useState('');
@@ -26,6 +31,7 @@ export const Dashboard = () => {
         const [jobCreationSuccessful, setJobCreationSuccessful] = React.useState(false);
         const [openModal, setOpenModal] = useState(false);
         const [me, setMe] = useState();
+
         const searchBarRef = useRef();
 
 
@@ -89,6 +95,10 @@ export const Dashboard = () => {
                     type: searchedType.toLowerCase()
                 }
             });
+            setJobCreationSuccessful(false);
+            setOpenModal(false)
+            setNotificationMessage("Job Created Successfully!");
+            setOpenSnackbar(true);
         };
 
         return(
@@ -125,10 +135,6 @@ export const Dashboard = () => {
                                         <label className="form-label" htmlFor="job-description">Description of the Job</label>
                                         <textarea className="form-control" id="job-description" onChange={getDescription} rows="3" placeholder="Describe your Job as detailed as possible..."/>
                                     </div>
-
-                                    {jobCreationSuccessful && <div className="alert alert-success mt-2" role="alert">
-                                        Job Created Successfully! Please close this window.
-                                    </div>}
 
                                 </div>
                                 <hr/>
@@ -191,7 +197,7 @@ export const Dashboard = () => {
         <div className="container mt-3">
             <h1>Your Dashboard</h1>
             <NewJobModal/>
-
+            <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={notificationMessage}/>
 
         </div>
         </div>

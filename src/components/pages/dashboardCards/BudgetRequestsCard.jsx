@@ -1,14 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {GET_BUDGET_BY_WORKER} from "../../../queries/queries";
 import {useLazyQuery, useMutation} from "@apollo/client";
-import {Modal} from "@mui/material";
-import { DateRange } from 'react-date-range'
-import format from 'date-fns/format'
 import { addDays } from 'date-fns'
-
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
-import {REJECT_BUDGET, RESPOND_BUDGET} from "../../../queries/mutations";
+import {BudgetNotification} from "../../BudgetNotification";
+import {OpenBudgetModal} from "../../BudgetModal";
 
 const BudgetRequestsCard = () => {
 
@@ -26,67 +23,8 @@ const BudgetRequestsCard = () => {
     ])
     const [budgetResponded, setBudgetResponded] = useState(false);
     const [budgetRejected, setBudgetRejected] = useState(false);
-    const DateRangeComp = () => {
-
-        // date state
-
-
-        // open close
-        const [open, setOpen] = useState(false)
-
-        // get the target element to toggle
-        const refOne = useRef(null)
-
-        useEffect(() => {
-            // event listeners
-            document.addEventListener("keydown", hideOnEscape, true)
-            document.addEventListener("click", hideOnClickOutside, true)
-        }, [])
-
-        // hide dropdown on ESC press
-        const hideOnEscape = (e) => {
-            // console.log(e.key)
-            if( e.key === "Escape" ) {
-                setOpen(false)
-            }
-        }
-
-        // Hide on outside click
-        const hideOnClickOutside = (e) => {
-            // console.log(refOne.current)
-            // console.log(e.target)
-            if( refOne.current && !refOne.current.contains(e.target) ) {
-                setOpen(false)
-            }
-        }
-
-        return (
-            <div className="calendarWrap">
-
-                <input
-                    value={`${format(range[0].startDate, "MM/dd/yyyy")} to ${format(range[0].endDate, "MM/dd/yyyy")}`}
-                    readOnly
-                    className="inputBox"
-                    onClick={ () => setOpen(open => !open) }
-                />
-
-                <div ref={refOne}>
-                    {open &&
-                        <DateRange
-                            onChange={item => setRange([item.selection])}
-                            editableDateInputs={true}
-                            moveRangeOnFirstSelection={false}
-                            ranges={range}
-                            months={1}
-                            direction="horizontal"
-                            className="calendarElement"
-                        />
-                    }
-                </div>
-
-            </div>
-        )
-    }
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState("");
 
     function filterPending() {
         let tempList = [];
@@ -96,17 +34,6 @@ const BudgetRequestsCard = () => {
         setPendingBudgets(tempList);
         console.log("tempList", tempList)
     }
-
-    const [respondBudget] = useMutation(
-        RESPOND_BUDGET, {
-            onCompleted: (res) => {
-                console.log("RESPONDED!")
-                console.log(res)
-            }, onError: (err) => {
-                console.log(err)
-            }
-        }
-    );
 
     const [getBudgetByWorker, {loading}] = useLazyQuery(
         GET_BUDGET_BY_WORKER, {
@@ -122,152 +49,20 @@ const BudgetRequestsCard = () => {
 
     );
 
-    const [rejectBudget] = useMutation(
-        REJECT_BUDGET, {
-            onCompleted: (res) => {
-                console.log("REJECTED!");
-            },
-            onError: (err) => {
-                console.log(err);
-            }
-        }
-    );
-
     useEffect(() => {
         getBudgetByWorker()
         if(budgetList) filterPending()
     }, [budgetList, refresh]);
-
-
-    function handleRejectBudget() {
-        setBudgetRejected(true)
-        rejectBudget({variables: {input: {budgetId: focusBudget.id}}})
-        setRefresh((refresh) => refresh+1)
-    }
-
-
-
-    const OpenBudgetModal = () => {
-
-        const [estimatedPrice, setEstimatedPrice] = useState();
-        const [addedComments, setAddedComments] = useState();
-        const [dateFrom, setDateFrom] = useState();
-        const [dateTo, setDateTo] = useState();
-
-
-        function handleRespondBudget() {
-            setBudgetResponded(true)
-            console.log(estimatedPrice)
-            console.log(format(range[0].startDate, "MM/dd/yyyy"))
-            console.log(format(range[0].endDate, "MM/dd/yyyy"))
-            console.log(addedComments)
-
-            respondBudget({
-                variables:{
-                    input:{
-                        budgetId: focusBudget.id,
-                        amount: parseFloat(estimatedPrice),
-                        details: addedComments,
-                        firstDateFrom: format(range[0].startDate, "MM/dd/yyyy"),
-                        firstDateTo: format(range[0].endDate, "MM/dd/yyyy")
-                    }
-                }
-            })
-            setRefresh((refresh) => refresh+1)
-
-        }
-
-        return(<Modal
-            open={openModal}
-            onClose={() => setOpenModal(false)}
-            aria-labelledby="parent-modal-title"
-            aria-describedby="parent-modal-description"
-        >
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header border-0 pb-0">
-                        <h5 className="modal-title" id="modal-title">Budget Request</h5>
-                        <button type="button" className="btn-close" onClick={() => setOpenModal(false)} data-bs-dismiss="modal" aria-label="Close"/>
-
-                    </div>
-
-                    <div className="modal-body border-0 py-0">
-                        <div className={"modal-form"}>
-                        <hr/>
-
-                        <div className="container">
-
-                            <div className="mt-3">
-                                <label className="form-label" htmlFor="job-title">Job</label>
-                                <div className="form-control" id="job-title" rows="3">{focusBudget?.job.title}</div>
-                            </div>
-
-
-                            <div className="mt-3">
-                                <label className="form-label" htmlFor="job-description">Description of the Job</label>
-                                <div className="form-control" id="job-description" rows="3">{focusBudget?.description}</div>
-                            </div>
-
-                        </div>
-                        <hr/>
-
-                        <div className="container">
-
-                            <div className="mt-3">
-                                <label className="form-label" htmlFor="job-title">Estimated Price (*)</label>
-                                <input className="form-control" id="job-title" rows="3" onChange={(e) => setEstimatedPrice(e.target.value)}></input>
-                            </div>
-
-
-                            <div className="mt-3">
-                                <label className="form-label" htmlFor="job-description">Date Range for the Job (*)</label>
-                                <div className="form-control" id="job-description" rows="3"><DateRangeComp/></div>
-                            </div>
-
-                            <div className="mt-3">
-                                <label className="form-label" htmlFor="job-title">Add Comments (*)</label>
-                                <textarea className="form-control" id="job-title" rows="3" onChange={(e) => setAddedComments(e.target.value)}></textarea>
-                            </div>
-
-                            {budgetResponded && <div className="alert alert-success mt-2" role="alert">
-                                Budget Responded Successfully! Please close this window.
-                            </div>}
-
-                            {budgetRejected && <div className="alert alert-success mt-2" role="alert">
-                                Budget Rejected Successfully! Please close this window.
-                            </div>}
-
-                        </div>
-                            <div/>
-
-
-
-                    </div>
-                    {/*updateJobInfo(newTitle, newDescription)}*/}
-                    <div className="modal-footer border-0 pt-0">
-                        <button type="button" className="btn btn-secondary" disabled={budgetRejected || budgetResponded} onClick={handleRejectBudget} >Decline</button>
-                        <button type="button" className="btn btn-primary" disabled={budgetRejected || budgetResponded} onClick={handleRespondBudget}>Send</button>
-                    </div>
-
-
-
-                </div>
-                </div>
-            </div>
-        </Modal>)
-
-    }
 
     const handleBudgetClick = (budget) => {
         setFocusBudget(budget)
         setOpenModal(true)
     }
 
-
-
     return (
         <div>
-            <OpenBudgetModal/>
+            <OpenBudgetModal focusBudget={focusBudget} range={range} setRange={setRange} setRefresh={setRefresh} setOpenModal={setOpenModal} setNotificationMessage={setNotificationMessage} setOpenSnackbar={setOpenSnackbar} setBudgetRejected={setBudgetRejected} openModal={openModal} budgetRejected={budgetRejected} budgetResponded={budgetResponded}/>
+            <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={notificationMessage}/>
             <div className="card">
             <h3 className="card-header">Budget Requests</h3>
             <div className="card-body">
@@ -293,6 +88,7 @@ const BudgetRequestsCard = () => {
             </div>
         </div>
         </div>
+
     );
 };
 

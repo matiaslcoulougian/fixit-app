@@ -82,7 +82,7 @@ const JobListCard = () => {
                             (<div className={"d-flex justify-content-center"}><div className="spinner-border" role="status">
                             <span className="visually-hidden">Loading...</span> </div> </div>)
                             :
-                            selectedJobs.map((job) => <div className={"list-group-item"} role={"button"} onClick={() => goToDetails(job.id, job)}>{job.title}</div>)
+                            selectedJobs.map((job) => <div className={"list-group-item"}>{`${job.title} - ${job.type}`}</div>)
                         }
                     </div>
 
