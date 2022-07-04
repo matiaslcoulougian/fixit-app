@@ -130,3 +130,13 @@ export const REQUEST_BUDGET = gql`
         }
     }
 `;
+
+export const PAY_BUDGET = gql`
+    mutation PayBudget($input: PayBudgetInput!) {
+        payBudget(input: $input){
+            id
+            description
+            status
+        }
+    }
+`;

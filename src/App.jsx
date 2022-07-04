@@ -5,11 +5,10 @@ import './App.css'
 import { LandingPage } from './pages/LandingPage';
 import RegisterPage from "./pages/RegisterPage";
 import { HomePage } from './pages/HomePage';
-import {Test} from "./components/pages/Test";
+import {PaymentForm} from "./components/PaymentForm";
 import {DashboardPage} from "./pages/DashboardPage";
 import {JobDetailsPage} from "./pages/JobDetailsPage";
 import {MyJobsPage} from "./pages/MyJobsPage";
-import {AutocompleteChangeDetails} from "@mui/material";
 import ListTest from "./components/pages/ListTest";
 import HiredPage from "./pages/HiredPage";
 
@@ -39,7 +38,7 @@ export function App() {
                 <Route exact path="/login" element={<LoginPage />} />
                 <Route exact path="/register" element={<RegisterPage />} />
 
-                <Route exact path="/test" element={<Test />} />
+                <Route exact path="/test" element={<PaymentForm />} />
                 <Route exact path="/list-test" element={<ListTest />} />
                 <Route exact path="/job/:jobId" element={<JobDetailsPage />} />
 
