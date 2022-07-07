@@ -19,7 +19,7 @@ html{
     min-width: 300px;
     max-height: 700px;
     width: 30%;
-    height: 60%;
+    height: auto;
     margin: 100px auto;
     background-color: #FFFFFF;
     border-radius: 25px;

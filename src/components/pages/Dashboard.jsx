@@ -176,7 +176,7 @@ export const Dashboard = () => {
                             <div className="card">
                             <h3 className="card-header">Money Made</h3>
                             <div className="card-body">
-                                <h3 className="card-title text-center">$22.155,53</h3>
+                                <h3 className="card-title text-center">{me && `$${me.balance}`}</h3>
                                 <p className="card-text">[Card with earnings list, eg Job x +$150]</p>
                                 <a href="#" className="btn btn-primary">See full list</a>
                             </div>

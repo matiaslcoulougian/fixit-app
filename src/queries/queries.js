@@ -112,6 +112,7 @@ export const GET_ME = gql`
             address
             email
             role
+            balance
         }
     }
 `;

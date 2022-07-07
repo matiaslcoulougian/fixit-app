@@ -34,7 +34,7 @@ const RatingCard = (props) => {
             <div className="card">
                 <h3 className="card-header">My Rating</h3>
                 <div className="card-body">
-                    <h3 className="card-title text-center">{averageRating ? (<span>{averageRating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</h3>
+                    <h3 className="card-title text-center">{!loading ? (<span>{averageRating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</h3>
                     <p className="card-text text-center">{jobsDone === 1 ? <span>{jobsDone} job done </span> : <span> {jobsDone} jobs done </span>}</p>
                     <a href="#" className="btn btn-primary">See jobs done</a>
                 </div>

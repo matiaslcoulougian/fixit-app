@@ -5,6 +5,7 @@ import {FINISH_BUDGET} from "../queries/mutations";
 import { useMercadopago } from 'react-sdk-mercadopago';
 
 export const PaymentForm = (props) => {
+    const [budgetId, setBudgetId] = useState()
     const mercadopago = useMercadopago.v2('TEST-c984a881-04f0-424a-838c-4378da9aa7d7', {
         locale: 'es-AR' // The most common are: 'pt-BR', 'es-AR' and 'en-US'
     });
@@ -22,7 +23,7 @@ export const PaymentForm = (props) => {
     );
     async function initiatePayment(){
         if (mercadopago) {
-            await finishBudget({variables: {input: {budgetId: props.budgetId? props.budgetId : 'budget_asz4tlSSyqT0JySx9YzRl'}}})
+            await finishBudget({variables: {input: {budgetId: budgetId}}})
         }
     }
 
@@ -43,6 +44,7 @@ export const PaymentForm = (props) => {
 
     return (<div>
         <div className='payment-form'>
+            <input value={budgetId} onChange={(e) => setBudgetId(e.target.value)} type="text" placeholder="Budget Id"/>
             <button className="btn btn-primary btn-lg btn-block" id="checkout-btn" onClick={() => initiatePayment()}> Checkout </button>
             <div id="button-checkout" className='#button-checkout'>
             </div>

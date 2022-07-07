@@ -93,6 +93,7 @@ export const Home = () => {
         searchedType = searchBarRef.current.getText();
         console.log(searchedType);
         setSearch(searchedType);
+        console.log(window.localStorage.getItem('token'))
         const response = await getPostsByType();
         console.log("response", response);
         console.log("response.data", response.data.getPostsByType);

@@ -13,7 +13,6 @@ export const LoginForm = () =>{
 
     const emailRef = useRef()
     const passwordRef = useRef()
-    let response = null;
     async function handleSubmit(){
         //setEmail(useRef().current.value)
         //setPassword(useRef().current.value)
@@ -23,20 +22,13 @@ export const LoginForm = () =>{
             //todo: show error to complete fields
         }
 
-        response = await login({
+        const response = await login({
             variables:{
                 credential: emailRef.current.value,
                 password: passwordRef.current.value
             }
         });
-        const token = response.data.login.accessToken
-        const firstName = response.data.login.user.firstName
-        const role = response.data.login.user.role
-        window.localStorage.setItem('token', token)
-        window.localStorage.setItem('firstName', firstName)
-        window.localStorage.setItem('userRole', role)
-        if (response.data.login.user.role === "customer") navigate('/home')
-        else navigate('/dashboard')
+        console.log(response)
 
     }
 
@@ -46,7 +38,16 @@ export const LoginForm = () =>{
         {
             onCompleted: async (res) => {
                 setErrorMessage('');
-
+                console.log(res)
+                const token = res.login.accessToken
+                console.log(token)
+                const firstName = res.login.user.firstName
+                const role = res.login.user.role
+                window.localStorage.setItem('token', token)
+                window.localStorage.setItem('firstName', firstName)
+                window.localStorage.setItem('userRole', role)
+                if (res.login.user.role === "customer") navigate('/home')
+                else navigate('/dashboard')
             },
             onError: (e) => {
                 setErrorMessage(e.message);
