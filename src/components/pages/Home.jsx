@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {EffectCallback, useEffect, useRef, useState} from 'react';
 import "../styles/Home.css";
 import { NavBar} from "../NavBar";
 import {JobGrid} from "../JobGrid";
@@ -6,29 +6,25 @@ import {useLazyQuery} from "@apollo/client";
 import {GET_POSTS_BY_TYPE} from "../../queries/queries";
 import {JobSearchBar} from "../JobSearchBar";
 
+function useEffectOnce(effect: EffectCallback) {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(effect, [])
+}
+
 export const Home = () => {
     const searchBarRef = useRef();
-    const [search, setSearch] = useState("");
     const firstName = window.localStorage.getItem('firstName');
-    let searchedType = "";
-    const [realList, setRealList] = useState(
-        () =>{
-        if (window.localStorage.getItem("realList") !== null) {
-            return JSON.parse(window.localStorage.getItem("realList"));
-        }
-        else {
-            return [{
-                imgSrc: "https://www.plumbingbyjake.com/wp-content/uploads/2015/11/VIGILANT-plumber-fixing-a-sink-shutterstock_132523334-e1448389230378.jpg",
-                title: "Home plumber",
-                type: "Plumber",
-                worker: {
-                    firstName: "juano",
-                    lastName: "ramon"
-                }
-            }];
-        }
-        }
-    );
+    const [realList, setRealList] = useState([]);
+
+    useEffectOnce(async () =>{
+        await getPostsByType({variables: {
+                input: {
+                    type: 'electrician',
+                },
+            }
+        });
+    })
+
     const [getPostsByType] = useLazyQuery(
         GET_POSTS_BY_TYPE,{
             onCompleted: async (data) => {
@@ -80,30 +76,17 @@ export const Home = () => {
         }
         setRealList(sortedList);
     }
-    useEffect(() => {
-        if(searchedType !== ""){
-            setSearch(searchedType);
-        }
-    }, [searchedType]);
+
     async function fetchJobs() {
         console.log("fetching jobs");
-        searchedType = searchBarRef.current.getText();
+        const searchedType = searchBarRef.current.getText();
         console.log(window.localStorage.getItem('token'))
-        const response = await getPostsByType({variables: {
+        await getPostsByType({variables: {
             input: {
                 type: searchedType,
                 },
             }
         });
-        // console.log("response", response);
-        // console.log("response.data", response.data.getPostsByType);
-        // list = response.data.getPostsByType;
-        // console.log("list", list);
-        // const {data} = getPostsByType({
-        //     variables: {
-        //         type: searchedType
-        //     }
-        // });
     }
     const TopSearchBanner = () => {
         return(

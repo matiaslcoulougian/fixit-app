@@ -45,9 +45,9 @@ export const NavBar = (props) => {
                             Hello, {props.firstName}
                         </a>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a className="dropdown-item" href="/hired">Hired Services</a></li>
+                            {!props.isWorker && <li><a className="dropdown-item" href="/hired">Hired Services</a></li>}
                             <li><a className="dropdown-item" href="/profile">My Profile</a></li>
-                            <li><a className="dropdown-item" href="/test">Settings</a></li>
+                            <li><a className="dropdown-item" href="/settings">Settings</a></li>
                         </ul>
                     </li>
 
