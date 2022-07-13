@@ -31,9 +31,6 @@ export const Home = () => {
     );
     const [getPostsByType] = useLazyQuery(
         GET_POSTS_BY_TYPE,{
-            variables: {
-                type: search,
-            },
             onCompleted: async (data) => {
                 console.log(data);
                 list = data.getPostsByType;
@@ -91,12 +88,15 @@ export const Home = () => {
     async function fetchJobs() {
         console.log("fetching jobs");
         searchedType = searchBarRef.current.getText();
-        console.log(searchedType);
-        setSearch(searchedType);
         console.log(window.localStorage.getItem('token'))
-        const response = await getPostsByType();
-        console.log("response", response);
-        console.log("response.data", response.data.getPostsByType);
+        const response = await getPostsByType({variables: {
+            input: {
+                type: searchedType,
+                },
+            }
+        });
+        // console.log("response", response);
+        // console.log("response.data", response.data.getPostsByType);
         // list = response.data.getPostsByType;
         // console.log("list", list);
         // const {data} = getPostsByType({

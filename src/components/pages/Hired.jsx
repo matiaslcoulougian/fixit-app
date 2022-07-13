@@ -5,6 +5,7 @@ import {useLazyQuery, useMutation} from "@apollo/client";
 import BackButton from "../BackButton";
 import {Modal, Rating} from "@mui/material";
 import {CONFIRM_BUDGET, FINISH_BUDGET, RATE_WORKER, REJECT_BUDGET} from "../../queries/mutations";
+import {ConfirmedBudgetModal} from "../PaymentForm";
 
 const Hired = (props) => {
 
@@ -191,94 +192,6 @@ const Hired = (props) => {
     const [focusBudget, setFocusBudget] = useState();
     const [openConfirmedModal, setOpenConfirmedModal] = useState()
 
-
-    const ConfirmedBudgetModal = () => {
-        const [stars, setStars] = useState();
-        const [comment, setComment] = useState();
-
-        return(
-            <Modal
-                open={openConfirmedModal}
-                onClose={() => setOpenConfirmedModal(false)}
-                aria-labelledby="parent-modal-title"
-                aria-describedby="parent-modal-description"
-            >
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header border-0 pb-0">
-                            <h5 className="modal-title" id="modal-title">Finish Service</h5>
-                            <button type="button" className="btn-close" onClick={() => setOpenConfirmedModal(false)} data-bs-dismiss="modal" aria-label="Close"/>
-
-                        </div>
-
-                        <div className="modal-body border-0 py-0">
-                            <div className={"modal-form"}>
-                                <hr/>
-
-                                <div className="container">
-
-                                    <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-title">Job Title</label>
-                                        <div className="form-control" id="job-title" rows="3">{focusBudget?.job.title}</div>
-                                    </div>
-
-                                    <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-title">Job Description</label>
-                                        <div className="form-control" id="job-title" rows="3">{focusBudget?.description}</div>
-                                    </div>
-
-
-                                    <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-description">Worker's Name</label>
-                                        <div className="form-control" id="job-description" rows="3">{focusBudget?.job.worker.firstName + " " + focusBudget?.job.worker.lastName}</div>
-                                    </div>
-
-
-
-                                    <div className={"mt-3"}>
-                                        <label className="form-label me-2" htmlFor="job-description">Rating</label>
-                                        <div>
-                                            <Rating
-                                                name="simple-controlled"
-                                                value={stars}
-                                                onChange={(event, newValue) => {
-                                                    setStars(newValue);
-                                                }}
-                                            />
-                                        </div>
-
-                                    </div>
-
-                                    <div className={"mt-3"}>
-                                        <label className="form-label" htmlFor="job-description">Add a Comment</label>
-                                        <div><textarea onChange={(e) => setComment(e.target.value)}></textarea></div>
-                                    </div>
-
-                                    {budgetFinished && <div className="alert alert-success mt-2" role="alert">
-                                        Job Finished Successfully! Please close this window.
-                                    </div>}
-
-
-                                </div>
-                                <hr/>
-
-
-                                {/*updateJobInfo(newTitle, newDescription)}*/}
-                                <div className="modal-footer border-0 pt-0">
-                                    <button type="button" className="btn btn-primary" disabled={budgetFinished} onClick={() => handleFinished(stars, comment)}>Finish</button>
-                                </div>
-
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Modal>);
-
-
-    }
-
     function handleClick(budget, type) {
         setFocusBudget(budget)
 
@@ -294,7 +207,7 @@ const Hired = (props) => {
     return (
         <div>
             <RespondedBudgetModal/>
-            <ConfirmedBudgetModal/>
+            <ConfirmedBudgetModal openConfirmedModal={openConfirmedModal} setOpenConfirmedModal={setOpenConfirmedModal} focusBudget={focusBudget} budgetFinished={budgetFinished}/>
             <NavBar firstName={localStorage.getItem("firstName")}/>
             <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
 

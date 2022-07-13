@@ -18,6 +18,7 @@ export const JobResultCard = (props) => {
         GET_RATING_AVERAGE, {
             onCompleted: (data) => {
                 console.log("FETCHED!");
+
                 console.log(data.getWorkerAvgRating.average)
                 setRating(data.getWorkerAvgRating.average)
             },
@@ -45,7 +46,7 @@ export const JobResultCard = (props) => {
                     <h5 className="card-title">{props.jobType}</h5>
                     <h5 className="card-title"><span className="badge bg-info">{props.jobType}</span></h5>
                     <h6 className="card-title">{props.workersName}</h6>
-                    <p className="card-text">{rating ? (<span>{rating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</p>
+                    <p className="card-text">{rating || rating === 0 ? (<span>{rating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</p>
                     {/*<p className="card-text"><small className="text-muted">{props.timeDistance} away</small></p>*/}
                     <div className="btn btn-primary" onClick={redirectToJob}>Details</div>
                 </div>
