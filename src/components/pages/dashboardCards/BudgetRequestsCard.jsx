@@ -25,7 +25,7 @@ const BudgetRequestsCard = () => {
     const [budgetRejected, setBudgetRejected] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [notificationMessage, setNotificationMessage] = useState("");
-
+    const [budgetTime, setBudgetTime] = useState('');
     function filterPending() {
         let tempList = [];
         for (const budget of budgetList) {
@@ -56,12 +56,16 @@ const BudgetRequestsCard = () => {
 
     const handleBudgetClick = (budget) => {
         setFocusBudget(budget)
+        let time = calculateTime(budget.time)
+        const lastIndex = time.lastIndexOf(" ");
+        time = time.substring(0, lastIndex);
+        setBudgetTime(time)
         setOpenModal(true)
     }
 
     return (
         <div>
-            <OpenBudgetModal focusBudget={focusBudget} range={range} setRange={setRange} setRefresh={setRefresh} setOpenModal={setOpenModal} setNotificationMessage={setNotificationMessage} setOpenSnackbar={setOpenSnackbar} setBudgetRejected={setBudgetRejected} openModal={openModal} budgetRejected={budgetRejected} budgetResponded={budgetResponded}/>
+            <OpenBudgetModal focusBudget={focusBudget} range={range} setRange={setRange} setRefresh={setRefresh} setOpenModal={setOpenModal} setNotificationMessage={setNotificationMessage} setOpenSnackbar={setOpenSnackbar} setBudgetRejected={setBudgetRejected} openModal={openModal} budgetRejected={budgetRejected} budgetResponded={budgetResponded} time={budgetTime}/>
             <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={notificationMessage}/>
             <div className="card">
             <h3 className="card-header">Budget Requests</h3>
@@ -73,9 +77,12 @@ const BudgetRequestsCard = () => {
                         return(<div className="list-group-item list-group-item-action" role="button" onClick={() => handleBudgetClick(budget)} aria-current="true">
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">{budget.job.title}</h5>
-                                <small>3 days ago</small>
+                                <small>{calculateDays(budget.createdAt) === 0 ? 'Today' :  calculateDays(budget.createdAt) + ' days ago'}</small>
                             </div>
-                            <p className="mb-1">{budget.customer?.firstName}</p>
+                            <div className="d-flex w-100 justify-content-between">
+                                <p className="mb-1">{budget.customer?.firstName}</p>
+                                <small> {calculateTime(budget.time)}</small>
+                            </div>
                             <small>{budget.description}</small>
                         </div>)
                     })}
@@ -84,7 +91,7 @@ const BudgetRequestsCard = () => {
 
                 {pendingBudgets?.length > 3 && <h4 className="card-text mt-1 ms-2">And {pendingBudgets?.length-3} more...</h4>}
 
-                <button className="btn btn-primary">See full list</button>
+                <button className="btn btn-primary mt-2">See full list</button>
             </div>
         </div>
         </div>
@@ -93,7 +100,24 @@ const BudgetRequestsCard = () => {
 };
 
 
+function calculateDays(date){
+    const date1 = new Date(date);
+    const date2 = new Date();
+    const difference = date2.getTime() - date1.getTime();
+    return Math.floor(difference / (1000 * 3600 * 24));
+}
 
+function calculateTime(time){
+    const toNum = Number(time)
+    if (toNum === 0) return null;
+    else if (toNum < 60) return 'Less than one minute away'
+    else if (toNum < 3600) return `${(time/60).toFixed(0)} minutes away`
+    else {
+        const hours = ((time/60)/60).toFixed(0)
+        const minutes = (time/60).toFixed(0) - 60 * hours;
+        return `${hours} hours and ${minutes} away`
+    }
+}
 
 
 export default BudgetRequestsCard;

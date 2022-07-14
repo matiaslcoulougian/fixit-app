@@ -6,6 +6,9 @@ import BackButton from "../BackButton";
 import {Modal, Rating} from "@mui/material";
 import {CONFIRM_BUDGET, FINISH_BUDGET, RATE_WORKER, REJECT_BUDGET} from "../../queries/mutations";
 import {ConfirmedBudgetModal} from "../PaymentForm";
+import {BudgetNotification} from "../BudgetNotification";
+//import {DeclinedBudgetModal} from "./DeclinedBudgetModal";
+import "../../components/styles/Hired.css"
 
 const Hired = (props) => {
 
@@ -16,6 +19,9 @@ const Hired = (props) => {
     const [budgetConfirmed, setBudgetConfirmed] = useState(false);
     const [budgetDeclined, setBudgetDeclined] = useState(false);
     const [budgetFinished, setBudgetFinished] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
 
     const [getBudgetByCustomer] = useLazyQuery(
         GET_BUDGET_BY_CUSTOMER, {
@@ -87,16 +93,26 @@ const Hired = (props) => {
         setAcceptedBudgets(accepted.data.getBudgetByCustomer)
         setCompletedBudgets(completed.data.getBudgetByCustomer)
         setPendingBudgets(pending.data.getBudgetByCustomer)
-    }, []);
+        setRefresh(false)
+    }, [refresh]);
     
     const [openRespondedModal, setOpenRespondedModal] = useState(false);
 
     function handleConfirmation() {
         confirmBudget({variables: {input: {budgetId: focusBudget.id}}})
+        setRefresh(true)
+        setNotificationMessage('Budget confirmed successfully')
+        setOpenSnackbar(true)
+        setOpenRespondedModal(false)
     }
 
     function handleRejection() {
         closeBudget({variables: {input: {budgetId: focusBudget.id}}})
+        setRefresh(true)
+        //setOpenDeclineModal(true)
+        setNotificationMessage('Budget declined successfully')
+        setOpenSnackbar(true)
+        setOpenRespondedModal(false)
     }
 
     function handleFinished(stars, comment) {
@@ -111,8 +127,10 @@ const Hired = (props) => {
                 }
             }
         })
+        setRefresh(true)
     }
 
+    //TODO:sacar
     const RespondedBudgetModal = () => {
 
         
@@ -132,44 +150,36 @@ const Hired = (props) => {
                         </div>
 
                         <div className="modal-body border-0 py-0">
-                            <div className={"modal-form"}>
+                            <div className="modal-form">
                                 <hr/>
 
                                 <div className="container">
 
                                     <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-title">Job Description</label>
-                                        <div className="form-control" id="job-title" rows="3">{focusBudget?.description}</div>
+                                        <div className="form-label respond-budget-label" htmlFor="job-title">Job Description</div>
+                                        <div id="job-title" rows="3">{focusBudget?.description}</div>
                                     </div>
 
 
                                     <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-description">Estimated Cost</label>
-                                        <div className="form-control" id="job-description" rows="3">{"$"+focusBudget?.amount}</div>
+                                        <div className="form-label respond-budget-label" htmlFor="job-description">Estimated Cost</div>
+                                        <div  id="job-description" rows="3">{"$"+focusBudget?.amount}</div>
                                     </div>
 
                                     <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-description">Worker's Comments</label>
-                                        <div className="form-control" id="job-description" rows="3">{focusBudget?.details}</div>
+                                        <div className="form-label respond-budget-label" htmlFor="job-description">Worker's Comments</div>
+                                        <div  id="job-description" rows="3">{focusBudget?.details}</div>
                                     </div>
 
                                     <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-description">Worker's Name</label>
-                                        <div className="form-control" id="job-description" rows="3">{focusBudget?.job.worker.firstName + " " + focusBudget?.job.worker.lastName}</div>
+                                        <div className="form-label respond-budget-label" htmlFor="job-description">Worker's Name</div>
+                                        <div id="job-description" rows="3">{focusBudget?.job.worker.firstName + " " + focusBudget?.job.worker.lastName}</div>
                                     </div>
 
                                     <div className="mt-3">
-                                        <label className="form-label" htmlFor="job-description">Possible Date Range</label>
-                                        <div className="form-control" id="job-description" rows="3">{focusBudget?.firstDateFrom + " to " + focusBudget?.firstDateTo}</div>
+                                        <div className="form-label respond-budget-label" htmlFor="job-description">Possible Date Range</div>
+                                        <div id="job-description" rows="3">{focusBudget?.firstDateFrom + " to " + focusBudget?.firstDateTo}</div>
                                     </div>
-
-                                    {budgetConfirmed && <div className="alert alert-success mt-2" role="alert">
-                                        Job Confirmed Successfully! Please close this window.
-                                    </div>}
-
-                                    {budgetDeclined && <div className="alert alert-success mt-2" role="alert">
-                                        Job Declined Successfully! Please close this window.
-                                    </div>}
 
                                 </div>
                                 <hr/>
@@ -177,8 +187,8 @@ const Hired = (props) => {
 
                             {/*updateJobInfo(newTitle, newDescription)}*/}
                             <div className="modal-footer border-0 pt-0">
-                                <button type="button" className="btn btn-secondary" disabled={budgetDeclined || budgetConfirmed}  onClick={handleRejection}>Decline</button>
-                                <button type="button" className="btn btn-primary" disabled={budgetDeclined || budgetConfirmed}  onClick={handleConfirmation}>Confirm</button>
+                                <button type="button" className="btn btn-secondary" onClick={handleRejection}>Decline</button>
+                                <button type="button" className="btn btn-primary"onClick={handleConfirmation}>Confirm</button>
                             </div>
 
 
@@ -209,23 +219,19 @@ const Hired = (props) => {
 
     return (
         <div>
+            <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={notificationMessage}/>
             <RespondedBudgetModal/>
+            {/*<DeclinedBudgetModal openModal={false} setOpenModal={false}/>*/}
             <ConfirmedBudgetModal openConfirmedModal={openConfirmedModal} setOpenConfirmedModal={setOpenConfirmedModal} focusBudget={focusBudget} budgetFinished={budgetFinished}/>
             <NavBar firstName={localStorage.getItem("firstName")}/>
             <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
 
             <div className={"container"}>
                 <div className={"row pb-4"}>
+                    <h2>My Sent Requests</h2>
                         <div className="list-group ">
-                            <h2>My Sent Requests</h2>
-                            {pendingBudgets?.length === 0 ? (<h4>No budgets yet...</h4>): (pendingBudgets?.map((budget) => {
-                                return(<div className={"list-group-item"}>
-                                    <div>{"Title: " + budget.job.title}</div>
-                                    <div>{"Type: " + budget.job.type}</div>
-                                    <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
-                                    <div>{"Description: " + budget.description}</div>
-
-                                </div>)
+                            {pendingBudgets?.length === 0 ? (<h4 className="no-budget">No budgets yet...</h4>): (pendingBudgets?.map((budget) => {
+                                return budgetCard(budget);
                             }))}
                         </div>
 
@@ -233,46 +239,30 @@ const Hired = (props) => {
 
 
                 <div className={"row pb-4"}>
-                    <div className="list-group ">
-                        <h2> Services to Confirm</h2>
-                        {respondedBudgets?.length === 0 ? (<h4>No budgets yet...</h4>): (respondedBudgets?.map((budget) => {
-                            return(<div role="button" onClick={() => handleClick(budget, "RESPONDED")} className={"list-group-item"}>
-                                <div>{"Title: " + budget.job.title}</div>
-                                <div>{"Type: " + budget.job.type}</div>
-                                <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
-                                <div>{"Description: " + budget.description}</div>
-
-                            </div>)
+                    <h2> Services to Confirm</h2>
+                    <div className="list-group" >
+                        {respondedBudgets?.length === 0 ? (<h4 className="no-budget">No budgets yet...</h4>): (respondedBudgets?.map((budget) => {
+                            return budgetCard(budget, handleClick, "RESPONDED", "confirm");
                         }))}
                     </div>
 
                 </div>
 
                 <div className={"row pb-4"}>
+                    <h2> Confirmed Services</h2>
                     <div className={"list-group"}>
-                        <h2> Confirmed Services</h2>
-                        {acceptedBudgets?.length === 0 ? (<h4>No budgets yet...</h4>) : (acceptedBudgets?.map((budget) => {
-                            return(<div className={"list-group-item"} role="button" onClick={() => handleClick(budget, "CONFIRMED")}>
-                                <div>{"Title: " +  budget.job.title}</div>
-                                <div>{"Type: " + budget.job.type}</div>
-                                <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
-                                <div>{"Description: " + budget.description}</div>
-                            </div>)
+                        {acceptedBudgets?.length === 0 ? (<h4 className="no-budget">No budgets yet...</h4>) : (acceptedBudgets?.map((budget) => {
+                            return budgetCard(budget, handleClick, "CONFIRMED", "finish");
                         }))}
                     </div>
 
                 </div>
 
                 <div className={"row"}>
+                    <h2> Finished Services </h2>
                     <div className={"list-group"}>
-                        <h2> Finished Services </h2>
-                        {completedBudgets?.length === 0 ? (<h4>No budgets yet...</h4>): (completedBudgets?.map((budget) => {
-                            return(<div role="button" onClick={() => handleClick(budget, "COMPLETED")} className={"list-group-item"}>
-                                <div>{"Title: " + budget.job.title}</div>
-                                <div>{"Type: " + budget.job.type}</div>
-                                <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
-                                <div>{"Description: " + budget.description}</div>
-                            </div>)
+                        {completedBudgets?.length === 0 ? (<h4 className="no-budget">No budgets yet...</h4>): (completedBudgets?.map((budget) => {
+                            return budgetCard(budget);
                         }))}
                     </div>
 
@@ -280,10 +270,18 @@ const Hired = (props) => {
 
             </div>
 
-
-
         </div>
     );
+}
+
+const budgetCard = (budget, handleClick, status, buttonLabel) =>{
+    return(<div className={"list-group-item"}>
+        {handleClick && <button className="btn btn-primary button-card" onClick={() => handleClick(budget, status)}> {buttonLabel} </button>}
+        <div>{"Title: " + budget.job.title}</div>
+        <div>{"Type: " + budget.job.type}</div>
+        <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
+        <div>{"Description: " + budget.description}</div>
+    </div>)
 }
 
 export default Hired;

@@ -43,7 +43,6 @@ export const JobResultCard = (props) => {
                 <img src={props.imgSrc} className="card-img-top w-50 h-50 rounded mx-auto d-block mt-3" alt="images"/>
                 <div className="card-body text-center">
                     <h4 className="card-title">{props.jobTitle}</h4>
-                    <h5 className="card-title">{props.jobType}</h5>
                     <h5 className="card-title"><span className="badge bg-info">{props.jobType}</span></h5>
                     <h6 className="card-title">{props.workersName}</h6>
                     <p className="card-text">{rating || rating === 0 ? (<span>{rating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</p>

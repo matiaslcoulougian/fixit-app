@@ -31,7 +31,9 @@ export const JobDetails = (props) => {
         },
         onCompleted: (data) => {
             console.log("data", data);
-            setJob(data.getPostById);
+            let jobData = {...data.getPostById};
+            jobData.type = jobData.type.replace("_", " ");
+            setJob(jobData);
             console.log("this job", job);
             console.log("the worker id is", data.getPostById.worker.id)
             console.log("the type of the worker id is", typeof data.getPostById.worker.id);
@@ -197,15 +199,15 @@ export const JobDetails = (props) => {
                 </div>
             </Modal>
           <NavBar firstName={navBarName}/>
+            <BackButton marginTop={"mt-2"}  marginLeft={"ms-3"}/>
           <div className="container bg-light">
-              <BackButton marginTop={"mt-2"}/>
               <h1 className="mt-1">Job Details</h1>
               <div className="card mt-3">
                   <div className="card-body">
                       <div className="row">
                       </div>
                       <div className="row">
-                          <div className="col-md-7">
+                          <div className="col-md-6">
                               <h2>{job?.title || loading}</h2>
                               <img src={props.profileImage? props.profileImage : profile} className="img-fluid col-10 mt-2 w-50" alt=""/>
                           </div>

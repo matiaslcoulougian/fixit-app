@@ -137,18 +137,18 @@ export const ConfirmedBudgetModal = (props) => {
 
                                 <div className="mt-3">
                                     <label className="form-label" htmlFor="job-title">Job Title</label>
-                                    <div className="form-control" id="job-title" rows="3">{props.focusBudget?.job.title}</div>
+                                    <div id="job-title" rows="3">{props.focusBudget?.job.title}</div>
                                 </div>
 
                                 <div className="mt-3">
                                     <label className="form-label" htmlFor="job-title">Job Description</label>
-                                    <div className="form-control" id="job-title" rows="3">{props.focusBudget?.description}</div>
+                                    <div id="job-title" rows="3">{props.focusBudget?.description}</div>
                                 </div>
 
 
                                 <div className="mt-3">
                                     <label className="form-label" htmlFor="job-description">Worker's Name</label>
-                                    <div className="form-control" id="job-description" rows="3">{props.focusBudget?.job.worker.firstName + " " + props.focusBudget?.job.worker.lastName}</div>
+                                    <div id="job-description" rows="3">{props.focusBudget?.job.worker.firstName + " " + props.focusBudget?.job.worker.lastName}</div>
                                 </div>
 
 

@@ -95,6 +95,11 @@ export const OpenBudgetModal = (props) => {
                                 <div id="job-description" rows="3">{props.focusBudget?.description}</div>
                             </div>
 
+                            <div className="mt-3">
+                                <label className="form-label" htmlFor="job-time">Time away from you</label>
+                                <div id="job-description" rows="3">{props.time}</div>
+                            </div>
+
                         </div>
                         <hr/>
 

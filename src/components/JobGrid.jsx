@@ -45,7 +45,7 @@ export const JobGrid = (props) =>{
                                 <JobResultCard
                                     imgSrc={props.profileImage ? props.profileImage : profile} // hardocoded
                                     jobTitle={item.title}
-                                    jobType={item.type}
+                                    jobType={item.type.replace("_", " ")}
                                     jobId={item.id}
                                     workersName={(item.worker.firstName + " " + item.worker.lastName)}
                                     rating={falseRating}

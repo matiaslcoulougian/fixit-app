@@ -70,7 +70,8 @@ export const GET_BUDGET_BY_WORKER = gql`
             id
             description
             status 
-            
+            createdAt
+            time
             job {
                 title
             }

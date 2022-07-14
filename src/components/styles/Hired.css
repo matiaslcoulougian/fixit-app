@@ -1,0 +1,22 @@
+.list-group{
+    max-height: 510px;
+    overflow: scroll;
+}
+
+.container{
+    margin-bottom: 50px;
+}
+
+.button-card{
+    position: absolute;
+    right: 20px;
+    top: 40px;
+}
+.no-budget{
+    color: dimgray;
+    margin-left: 25px;
+}
+
+.respond-budget-label{
+    font-weight: bold;
+}
