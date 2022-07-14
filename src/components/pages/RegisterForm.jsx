@@ -174,8 +174,9 @@ export const RegisterForm = () =>{
                     <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" placeholder="E.g. 123 Street, Town, State"/>
                 </div>
                 {errorMessage && <div className="error"> {errorMessage} </div>}
-                {/*<LoaderSpinner show={loaderVisible}/>*/}
+                
                 <FormButton title="Register"/>
+                {loading && <LoaderSpinner/>}
                 {registerSuccess && <div className="alert alert-success mt-2" role="alert">
                     Register successful! Redirecting to Login...
                 </div>}

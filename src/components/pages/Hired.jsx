@@ -9,6 +9,7 @@ import {ConfirmedBudgetModal} from "../PaymentForm";
 
 const Hired = (props) => {
 
+    const [pendingBudgets, setPendingBudgets] = useState();
     const [respondedBudgets, setRespondedBudgets] = useState();
     const [acceptedBudgets, setAcceptedBudgets] = useState();
     const [completedBudgets, setCompletedBudgets] = useState();
@@ -79,11 +80,13 @@ const Hired = (props) => {
         let responded = await getBudgetByCustomer({variables:{input:{status: "RESPONDED"}}})
         let accepted = await getBudgetByCustomer({variables:{input:{status: "ACCEPTED"}}})
         let completed = await getBudgetByCustomer({variables:{input:{status: "COMPLETED"}}})
+        let pending = await getBudgetByCustomer({variables:{input:{status: "PENDING"}}})
         console.log("responded", responded)
 
         setRespondedBudgets(responded.data.getBudgetByCustomer)
         setAcceptedBudgets(accepted.data.getBudgetByCustomer)
         setCompletedBudgets(completed.data.getBudgetByCustomer)
+        setPendingBudgets(pending.data.getBudgetByCustomer)
     }, []);
     
     const [openRespondedModal, setOpenRespondedModal] = useState(false);
@@ -213,11 +216,29 @@ const Hired = (props) => {
 
             <div className={"container"}>
                 <div className={"row pb-4"}>
+                        <div className="list-group ">
+                            <h2>My Sent Requests</h2>
+                            {pendingBudgets?.length === 0 ? (<h4>No budgets yet...</h4>): (pendingBudgets?.map((budget) => {
+                                return(<div className={"list-group-item"}>
+                                    <div>{"Title: " + budget.job.title}</div>
+                                    <div>{"Type: " + budget.job.type}</div>
+                                    <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
+                                    <div>{"Description: " + budget.description}</div>
+
+                                </div>)
+                            }))}
+                        </div>
+
+                    </div>
+
+
+                <div className={"row pb-4"}>
                     <div className="list-group ">
                         <h2> Services to Confirm</h2>
                         {respondedBudgets?.length === 0 ? (<h4>No budgets yet...</h4>): (respondedBudgets?.map((budget) => {
                             return(<div role="button" onClick={() => handleClick(budget, "RESPONDED")} className={"list-group-item"}>
                                 <div>{"Title: " + budget.job.title}</div>
+                                <div>{"Type: " + budget.job.type}</div>
                                 <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
                                 <div>{"Description: " + budget.description}</div>
 
@@ -233,6 +254,7 @@ const Hired = (props) => {
                         {acceptedBudgets?.length === 0 ? (<h4>No budgets yet...</h4>) : (acceptedBudgets?.map((budget) => {
                             return(<div className={"list-group-item"} role="button" onClick={() => handleClick(budget, "CONFIRMED")}>
                                 <div>{"Title: " +  budget.job.title}</div>
+                                <div>{"Type: " + budget.job.type}</div>
                                 <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
                                 <div>{"Description: " + budget.description}</div>
                             </div>)
@@ -247,6 +269,7 @@ const Hired = (props) => {
                         {completedBudgets?.length === 0 ? (<h4>No budgets yet...</h4>): (completedBudgets?.map((budget) => {
                             return(<div role="button" onClick={() => handleClick(budget, "COMPLETED")} className={"list-group-item"}>
                                 <div>{"Title: " + budget.job.title}</div>
+                                <div>{"Type: " + budget.job.type}</div>
                                 <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
                                 <div>{"Description: " + budget.description}</div>
                             </div>)

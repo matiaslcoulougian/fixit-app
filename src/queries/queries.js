@@ -52,6 +52,7 @@ export const GET_BUDGET_BY_CUSTOMER = gql`
                 
                 }
                 title
+                type
             }
             status
             description
@@ -83,10 +84,8 @@ export const GET_BUDGET_BY_WORKER = gql`
 
 
 export const GET_USER_TIME = gql`
-    query GetUserTime($workerId: String!) {
-        getUserTime(input: {
-            workerId: $workerId
-        }){
+    query GetUserTime($input: GetUserTimeInput!) {
+        getUserTimes(input: $input){
            time
         }
     }

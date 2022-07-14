@@ -9,16 +9,20 @@ import {JobSearchBar} from "../JobSearchBar";
 import {REQUEST_BUDGET} from "../../queries/mutations";
 import {Modal} from "@mui/material";
 import LoaderSpinner from "../LoaderSpinner";
+import { log } from 'react-modal/lib/helpers/ariaAppHider';
 
 // Display de los datos del job clickeado
 export const JobDetails = () => {
     const id = useParams();
     const loading = "Loading...";
     const [job, setJob] = React.useState(null);
-    const [distanceMin, setDistanceMin] = React.useState(null);
+    const [distanceMin, setDistanceMin] = React.useState(5);
     const [distanceHs, setDistanceHs] = React.useState(null);
     const [openModal, setOpenModal] = useState(false);
-    const [rating, setRating] = useState(false);
+    const [timeCalculated, setTimeCalculated] = useState(false);
+    const [rating, setRating] = useState();
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState("");
 
     console.log(window.localStorage.getItem("workerId"))
     const [getJobById] = useLazyQuery(
@@ -29,8 +33,11 @@ export const JobDetails = () => {
         onCompleted: (data) => {
             console.log("data", data);
             setJob(data.getPostById);
-            console.log("job", job);
+            console.log("this job", job);
+            console.log("the worker id is", data.getPostById.worker.id)
+            console.log("the type of the worker id is", typeof data.getPostById.worker.id);
             getWorkerAvgRating({variables:{input: {workerId: data.getPostById.worker.id}}})
+            getUserDistance({variables:{input: {workerId: data.getPostById.worker.id}}})
         },
         onError: (error) => {
             console.log(error);
@@ -53,7 +60,7 @@ export const JobDetails = () => {
     const [getWorkerAvgRating] = useLazyQuery(
         GET_RATING_AVERAGE, {
             onCompleted: (data) => {
-                console.log("FETCHED!");
+                console.log("FETCHED!, it is", data.getWorkerAvgRating.average);
                 setRating(data.getWorkerAvgRating.average)
             },
             onError: (err) => {
@@ -64,7 +71,7 @@ export const JobDetails = () => {
 
     useEffect(() => {
         getJobById()
-    }, []);
+    },[]);
 
     const simplifyTime = () => {
 
@@ -76,17 +83,19 @@ export const JobDetails = () => {
             if (minutes > 0) setDistanceMin(minutes)
         }
         setDistanceMin(job.time);
-        showTime();
+        setTimeCalculated(true);
+        console.log("time calculated true")
+        //showTime();
     }
 
 
     const [getUserDistance] = useLazyQuery(
         GET_USER_TIME, {
-            variables: {
-                workerId: window.localStorage.getItem("workerId")
-            },
+            // variables: {
+            //     workerId: job.worker.id //poner aca el worker id, no esta en el localstorage, esta en el job.
+            // },
             onCompleted: (data) => {
-                console.log("data", data);
+                console.log("get user distance data", data);
                 simplifyTime();
             },
             onError: (error) => {
@@ -103,28 +112,33 @@ export const JobDetails = () => {
          getUserDistance();
     }
 
-    const showTime = () => {
-        if (distanceHs && distanceMin) {
+    const ShowTime = (props) => {
+        //h5 className="text-center"
+        console.log("en showtime", props)
+
+
+        if (props.hs && props.min) {
             return(<div>
                 <div className="col-md-10">
-                    {distanceHs} hours and {distanceMin} minutes away!
+                    {props.hs} hours and {props.min} minutes away!
                 </div>
             </div>)
         }
-        if(distanceMin){
+        if(props.min){
             return(<div>
                 <div className="col-md-10">
-                    {distanceMin} minutes away!
+                    {props.min} minutes away!
                 </div>
             </div>)
         }
-        else if (distanceHs){
+        else if (props.hs){
             return(<div>
                 <div className="col-md-10">
-                    {distanceHs} hours away!
+                    {props.hs} hours away!
                 </div>
             </div>)
         }
+        return (<div>No entro</div>);
     }
     const navBarName = window.localStorage.getItem('firstName');
     const [budgetRequestSent, setBudgetRequestSent] = useState(false);
@@ -206,8 +220,9 @@ export const JobDetails = () => {
                               <div className="row justify-content-center">
                                   <h4 className="text-center">{job?.worker.firstName+" "+job?.worker.lastName || loading}</h4>
 
-                                  <h5 className="text-center">{rating ? (<span>{rating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</h5>
-                                  <h6 className="text-center">{simplifyTime}</h6>
+                                  <h5 className="text-center">{rating>=0 ? (<span>{rating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</h5>
+                                  {timeCalculated && <ShowTime min={distanceMin} hs={distanceHs}/>}
+                                  {/* <h6 className="text-center">{simplifyTime}</h6> */}
                                   <button className="btn btn-lg btn-primary mt-4 w-75" onClick={ () => setOpenModal(true)} disabled={localStorage.getItem("userRole") === "worker" || budgetRequestSent}>Ask for Budget</button>
                               </div>
                           </div>
