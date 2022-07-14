@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {EffectCallback, useEffect, useRef, useState} from 'react';
 import "../styles/Home.css";
 import { NavBar} from "../NavBar";
 import {JobGrid} from "../JobGrid";
@@ -7,9 +7,10 @@ import {GET_POSTS_BY_TYPE} from "../../queries/queries";
 import {JobSearchBar} from "../JobSearchBar";
 import HomePageJobsCardGroup from '../HomePageJobsCardGroup';
 
+
+
 export const Home = () => {
     const searchBarRef = useRef();
-    const [search, setSearch] = useState("");
     const firstName = window.localStorage.getItem('firstName');
     let searchedType = "";
     const [realList, setRealList] = useState(
@@ -73,31 +74,23 @@ export const Home = () => {
         }
         setRealList(sortedList);
     }
-    useEffect(() => {
-        if(searchedType !== ""){
-            setSearch(searchedType);
-        }
-    }, [searchedType]);
-    async function fetchJobs() {
+
+    async function fetchJobs(fromCard, typeInCard) {
         console.log("fetching jobs");
-        searchedType = searchBarRef.current.getText();
+        let searchedType;
+        if(!fromCard) searchedType = searchBarRef.current.getText();
+        else searchedType = typeInCard;
         console.log(window.localStorage.getItem('token'))
-        const response = await getPostsByType({variables: {
+        await getPostsByType({variables: {
             input: {
                 type: searchedType,
                 },
             }
         });
-        // console.log("response", response);
-        // console.log("response.data", response.data.getPostsByType);
-        // list = response.data.getPostsByType;
-        // console.log("list", list);
-        // const {data} = getPostsByType({
-        //     variables: {
-        //         type: searchedType
-        //     }
-        // });
     }
+
+    const goToLandingJobs = () => {setRealList([])}
+
     const TopSearchBanner = () => {
         return(
             <div className="container">
@@ -110,12 +103,15 @@ export const Home = () => {
                     </div>
 
                     <div className="dropdown mb-3 col-3">
-                        <button className="btn btn-outline-secondary me-4" type="button" id="button-addon2" onClick={fetchJobs} >Search</button>
+                        <button className="btn btn-outline-secondary me-4" type="button" id="button-addon2" onClick={() => fetchJobs(false, "-")} >Search</button>
 
                         <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             Sort By
                         </button>
+
+                        <button className="btn btn-outline-secondary ms-4" type="button" id="button-addon2" onClick={goToLandingJobs} >Menu</button>
+
                         <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
                             <li>
                                 <button className="dropdown-item" type="button" onClick={sortJobsByProperty} field={"type"}>Type</button>
@@ -155,11 +151,12 @@ export const Home = () => {
 
         });
     }
+    const a = () => console.log("worked!")
     return (
         <div>
             <NavBar firstName={firstName} />
             <TopSearchBanner />
-            {realList.length === 0 ? <HomePageJobsCardGroup/> :<JobGrid list={realList}/>}
+            {realList.length === 0 ? <HomePageJobsCardGroup callback={fetchJobs}/> :<JobGrid list={realList}/>}
             
         </div>
     );

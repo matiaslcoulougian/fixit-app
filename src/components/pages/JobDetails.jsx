@@ -9,20 +9,19 @@ import {JobSearchBar} from "../JobSearchBar";
 import {REQUEST_BUDGET} from "../../queries/mutations";
 import {Modal} from "@mui/material";
 import LoaderSpinner from "../LoaderSpinner";
-import { log } from 'react-modal/lib/helpers/ariaAppHider';
-
+import profile from './no-profile.png'
+import {BudgetNotification} from "../BudgetNotification";
 // Display de los datos del job clickeado
-export const JobDetails = () => {
+export const JobDetails = (props) => {
     const id = useParams();
     const loading = "Loading...";
     const [job, setJob] = React.useState(null);
     const [distanceMin, setDistanceMin] = React.useState(5);
     const [distanceHs, setDistanceHs] = React.useState(null);
     const [openModal, setOpenModal] = useState(false);
-    const [timeCalculated, setTimeCalculated] = useState(false);
-    const [rating, setRating] = useState();
+    const [rating, setRating] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [notificationMessage, setNotificationMessage] = useState("");
+    const [timeCalculated, setTimeCalculated] = useState(false)
 
     console.log(window.localStorage.getItem("workerId"))
     const [getJobById] = useLazyQuery(
@@ -159,12 +158,13 @@ export const JobDetails = () => {
 
         console.log("the id is ", id)
         requestBudget({variables:{input:mutationInput}})
-        setBudgetRequestSent(true);
-
+        setOpenModal(false);
+        setOpenSnackbar(true);
     }
 
     return (
         <div>
+            <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={'Request sent to worker successfully'}/>
             <Modal
                 open={openModal}
                 onClose={() => setOpenModal(false)}
@@ -187,10 +187,6 @@ export const JobDetails = () => {
                                     <textarea className="form-control" id="job-description" onChange={getDescription} rows="3" placeholder="Describe your Job as detailed as possible..."/>
                                 </div>
 
-                                {budgetRequestSent && <div className="alert alert-success mt-2" role="alert">
-                                    Request sent successfully! Please close this window.
-                                </div>}
-
                             </div>
                             <hr/>
                         </div>
@@ -211,7 +207,7 @@ export const JobDetails = () => {
                       <div className="row">
                           <div className="col-md-7">
                               <h2>{job?.title || loading}</h2>
-                              <img src={"https://arquitecturaproxima.com/wp-content/uploads/2015/02/shop-page-header1.jpg"} className="img-fluid col-10 mt-2" alt=""/>
+                              <img src={props.profileImage? props.profileImage : profile} className="img-fluid col-10 mt-2 w-50" alt=""/>
                           </div>
                           <div className="col-md-5 mt-4">
                               <div className="row justify-content-center mb-3">

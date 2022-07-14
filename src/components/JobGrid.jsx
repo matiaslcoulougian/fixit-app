@@ -2,10 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {JobResultCard} from "./JobResultCard";
 import {GET_ME, GET_USER_TIME} from "../queries/queries";
 import {useLazyQuery} from "@apollo/client";
-
+import profile from './no-profile.png'
 
 export const JobGrid = (props) =>{
-    const imgSource = "https://www.plumbingbyjake.com/wp-content/uploads/2015/11/VIGILANT-plumber-fixing-a-sink-shutterstock_132523334-e1448389230378.jpg";
     const falseRating = "5.0";
     const falseTimeDist = "30 min";
     let userAddress = "";
@@ -47,7 +46,7 @@ export const JobGrid = (props) =>{
                     props.list.map((item) => (
                         <div className="col>">
                             <JobResultCard
-                                imgSrc={imgSource} // hardocoded
+                                imgSrc= {props.profileImage? props.profileImage : profile} // hardocoded
                                 jobTitle={item.title}
                                 jobType={item.type}
                                 jobId={item.id}
