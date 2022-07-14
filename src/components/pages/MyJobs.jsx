@@ -5,7 +5,7 @@ import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import {UPDATE_JOB_POSTS} from "../../queries/mutations";
 import BackButton from "../BackButton";
-import {Modal} from "@mui/material";
+import {capitalize, Modal} from "@mui/material";
 
 
 
@@ -402,9 +402,15 @@ export const MyJobs = () => {
                                                                         >
 
                                                                             {item.title}
-
-                                                                            <span><button onClick={() => handlePencilClick(item)} className={"btn btn-primary"}  disabled={!editMode}><i
-                                                                                className="bi bi-pencil"></i></button></span>
+                                                                            <span>
+                                                                                <span
+                                                                                    className="badge rounded-pill bg-secondary m-auto">{capitalize(item.type)}
+                                                                                </span>
+                                                                                <span>          </span>
+                                                                                <button onClick={() => handlePencilClick(item)} className={"btn btn-primary"}  disabled={!editMode}>
+                                                                                    <i className="bi bi-pencil"></i>
+                                                                                </button>
+                                                                            </span>
                                                                         </div>
                                                                     );
                                                                 }}

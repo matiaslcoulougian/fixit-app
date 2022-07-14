@@ -23,6 +23,7 @@ export const Home = () => {
         }
         }
     );
+    const [menu, setMenu] = useState(true);
     const [getPostsByType] = useLazyQuery(
         GET_POSTS_BY_TYPE,{
             onCompleted: async (data) => {
@@ -30,6 +31,7 @@ export const Home = () => {
                 list = data.getPostsByType;
                 console.log("list", list);
                 setRealList(list);
+                setMenu(false)
                 window.localStorage.setItem("realList", JSON.stringify(list));
                 return data;
             },
@@ -76,6 +78,7 @@ export const Home = () => {
     }
 
     async function fetchJobs(fromCard, typeInCard) {
+        setMenu(false);
         console.log("fetching jobs");
         let searchedType;
         if(!fromCard) searchedType = searchBarRef.current.getText();
@@ -89,7 +92,7 @@ export const Home = () => {
         });
     }
 
-    const goToLandingJobs = () => {setRealList([])}
+    const goToLandingJobs = () => {setMenu(true)}
 
     const TopSearchBanner = () => {
         return(
@@ -97,20 +100,20 @@ export const Home = () => {
                 <h1 className="ml-3 mt-3">What are you looking for?</h1>
                 <div className="row">
                     <div className="col-9">
-                    <div className="input-group mb-3 col-6">
-                        <JobSearchBar ref={searchBarRef} style={{width: "880px"}}/>
+                    <div className="input-group mb-3 col-5">
+                        <JobSearchBar ref={searchBarRef} style={{width: "965px"}}/>
                     </div>
                     </div>
 
                     <div className="dropdown mb-3 col-3">
-                        <button className="btn btn-outline-secondary me-4" type="button" id="button-addon2" onClick={() => fetchJobs(false, "-")} >Search</button>
+                        <button className="btn btn-outline-secondary mr-5" type="button" id="button-addon2" onClick={() => fetchJobs(false, "-")} >Search</button>
 
-                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                        <button className="btn btn-secondary dropdown-toggle ms-2" type="button" id="dropdownMenu2"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             Sort By
                         </button>
 
-                        <button className="btn btn-outline-secondary ms-4" type="button" id="button-addon2" onClick={goToLandingJobs} >Menu</button>
+                        <button className="btn btn-outline-secondary ms-2" type="button" id="button-addon2" onClick={goToLandingJobs} >Menu</button>
 
                         <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
                             <li>
@@ -156,7 +159,7 @@ export const Home = () => {
         <div>
             <NavBar firstName={firstName} />
             <TopSearchBanner />
-            {realList.length === 0 ? <HomePageJobsCardGroup callback={fetchJobs}/> :<JobGrid list={realList}/>}
+            {menu ? <HomePageJobsCardGroup callback={fetchJobs}/> :<JobGrid list={realList}/>}
             
         </div>
     );
