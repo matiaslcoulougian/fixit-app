@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {GET_BUDGET_BY_WORKER} from "../../../queries/queries";
+import {GET_BUDGET_BY_WORKER, GET_BUDGET_IMAGE_URLS} from "../../../queries/queries";
 import {useLazyQuery, useMutation} from "@apollo/client";
 import { addDays } from 'date-fns'
 import 'react-date-range/dist/styles.css'
@@ -26,6 +26,8 @@ const BudgetRequestsCard = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [notificationMessage, setNotificationMessage] = useState("");
     const [budgetTime, setBudgetTime] = useState('');
+    const [imageUrls, setImageUrls] = useState([]);
+
     function filterPending() {
         let tempList = [];
         for (const budget of budgetList) {
@@ -49,13 +51,27 @@ const BudgetRequestsCard = () => {
 
     );
 
+    const [getBudgetImageUrls] = useLazyQuery(
+        GET_BUDGET_IMAGE_URLS, {
+            onCompleted: (res) => {
+                console.log("IMAGES FOUND!")
+                console.log("res", res)
+                setImageUrls(res.getBudgetImageUrls.imageUrls);
+            },
+            onError: (err) => {
+                console.log(err)
+            }
+        }
+    )
+
     useEffect(() => {
         getBudgetByWorker()
         if(budgetList) filterPending()
     }, [budgetList, refresh]);
 
-    const handleBudgetClick = (budget) => {
-        setFocusBudget(budget)
+    const handleBudgetClick = async (budget) => {
+        await getBudgetImageUrls({variables: {input: {budgetId: budget.id}}});
+        setFocusBudget(budget);
         let time = calculateTime(budget.time)
         const lastIndex = time.lastIndexOf(" ");
         time = time.substring(0, lastIndex);
@@ -65,7 +81,7 @@ const BudgetRequestsCard = () => {
 
     return (
         <div>
-            <OpenBudgetModal focusBudget={focusBudget} range={range} setRange={setRange} setRefresh={setRefresh} setOpenModal={setOpenModal} setNotificationMessage={setNotificationMessage} setOpenSnackbar={setOpenSnackbar} setBudgetRejected={setBudgetRejected} openModal={openModal} budgetRejected={budgetRejected} budgetResponded={budgetResponded} time={budgetTime}/>
+            <OpenBudgetModal focusBudget={focusBudget} range={range} setRange={setRange} setRefresh={setRefresh} setOpenModal={setOpenModal} setNotificationMessage={setNotificationMessage} setOpenSnackbar={setOpenSnackbar} setBudgetRejected={setBudgetRejected} openModal={openModal} budgetRejected={budgetRejected} budgetResponded={budgetResponded} time={budgetTime} imageUrls={imageUrls}/>
             <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={notificationMessage}/>
             <div className="card">
             <h3 className="card-header">Budget Requests</h3>
@@ -74,7 +90,7 @@ const BudgetRequestsCard = () => {
                 <div className="list-group">
 
                     {pendingBudgets?.slice(0,3).map((budget) => {
-                        return(<div className="list-group-item list-group-item-action" role="button" onClick={() => handleBudgetClick(budget)} aria-current="true">
+                        return(<div className="list-group-item list-group-item-action" role="button" onClick={ async () => await handleBudgetClick(budget)} aria-current="true">
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-1">{budget.job.title}</h5>
                                 <small>{calculateDays(budget.createdAt) === 0 ? 'Today' :  calculateDays(budget.createdAt) + ' days ago'}</small>

@@ -177,7 +177,6 @@ export const Dashboard = () => {
                             <h3 className="card-header">Money Made</h3>
                             <div className="card-body">
                                 <h3 className="card-title text-center">{me && `$${me.balance}`}</h3>
-                                <p className="card-text">[Card with earnings list, eg Job x +$150]</p>
                                 <a href="#" className="btn btn-primary">See full list</a>
                             </div>
                         </div>
@@ -198,7 +197,6 @@ export const Dashboard = () => {
             <h1>Your Dashboard</h1>
             <NewJobModal/>
             <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={notificationMessage}/>
-
         </div>
         </div>
   );

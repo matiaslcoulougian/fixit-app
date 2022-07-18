@@ -43,8 +43,10 @@ export const LoginForm = () =>{
                 console.log(token)
                 const firstName = res.login.user.firstName
                 const role = res.login.user.role
+                const id = res.login.user.id
                 window.localStorage.setItem('token', token)
                 window.localStorage.setItem('firstName', firstName)
+                window.localStorage.setItem('userId', id)
                 window.localStorage.setItem('userRole', role)
                 if (res.login.user.role === "customer") navigate('/home')
                 else navigate('/dashboard')

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {NavBar} from "../NavBar";
 import {useParams} from "react-router-dom";
 import {useLazyQuery, useMutation} from "@apollo/client";
@@ -11,7 +11,17 @@ import {Modal} from "@mui/material";
 import LoaderSpinner from "../LoaderSpinner";
 import profile from './no-profile.png'
 import {BudgetNotification} from "../BudgetNotification";
-// Display de los datos del job clickeado
+
+const S3 = require('aws-sdk/clients/s3');
+
+const config = {bucketName: process.env.REACT_APP_BUCKET_NAME,
+    region: process.env.REACT_APP_REGION,
+    accessKeyId: process.env.REACT_APP_ACCESS_ID,
+    secretAccessKey: process.env.REACT_APP_ACCESS_KEY,
+};
+
+const s3 = new S3(config);
+
 export const JobDetails = (props) => {
     const id = useParams();
     const loading = "Loading...";
@@ -22,6 +32,9 @@ export const JobDetails = (props) => {
     const [rating, setRating] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [timeCalculated, setTimeCalculated] = useState(false)
+    const [files, setFiles] = useState([])
+
+    const userId = window.localStorage.getItem('userId');
 
     console.log(window.localStorage.getItem("workerId"))
     const [getJobById] = useLazyQuery(
@@ -142,7 +155,6 @@ export const JobDetails = (props) => {
         return (<div>No entro</div>);
     }
     const navBarName = window.localStorage.getItem('firstName');
-    const [budgetRequestSent, setBudgetRequestSent] = useState(false);
     const [requestDescription, setRequestDescription] = useState();
 
     const getDescription = (e) => {
@@ -151,13 +163,26 @@ export const JobDetails = (props) => {
 
     console.log("product details id: ", id);
 
-    function handleSendBudget() {
+    const handleFileEvent = (e) => {
+        const files = Array.prototype.slice.call(e.target.files)
+        setFiles(files);
+        console.log(files)
+    }
+
+    const handleSendBudget = () => {
+        const fileNames = [];
+        for(const file of files){
+            const fileName = `${userId}/${job.id}/${file.name}`
+            s3.upload({Bucket: process.env.REACT_APP_BUCKET_NAME, Key: fileName, Body: file}, function(err, data) {
+                console.log(err, data);
+            });
+            fileNames.push(fileName);
+        }
         let mutationInput = {
             jobId: id.jobId,
             description: requestDescription,
-            imageKeys: ["one", "two", "three"]
+            imageKeys: fileNames
         }
-
         console.log("the id is ", id)
         requestBudget({variables:{input:mutationInput}})
         setOpenModal(false);
@@ -185,15 +210,25 @@ export const JobDetails = (props) => {
                             <div className="container">
 
                                 <div className="mt-3">
-                                    <label className="form-label" htmlFor="job-description">Description of the Job</label>
+                                    <label className="form-label" htmlFor="job-description">Description of the Job (*)</label>
                                     <textarea className="form-control" id="job-description" onChange={getDescription} rows="3" placeholder="Describe your Job as detailed as possible..."/>
+                                </div>
+                                <br/>
+                                <div>
+                                    <label className="form-label"> Upload Images </label>
+                                    <br/>
+                                    <input type="file"
+                                           multiple
+                                           accept='image/png, image/*'
+                                           onChange={handleFileEvent}
+                                    />
                                 </div>
 
                             </div>
                             <hr/>
                         </div>
                         <div className="modal-footer border-0 pt-0">
-                            <button type="button" className="btn btn-primary" disabled={budgetRequestSent} onClick={handleSendBudget}>Send Request</button>
+                            <button type="button" className="btn btn-primary" disabled={!requestDescription} onClick={handleSendBudget}>Send Request</button>
                         </div>
                     </div>
                 </div>
@@ -221,7 +256,7 @@ export const JobDetails = (props) => {
                                   <h5 className="text-center">{rating>=0 ? (<span>{rating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</h5>
                                   {timeCalculated && <ShowTime min={distanceMin} hs={distanceHs}/>}
                                   {/* <h6 className="text-center">{simplifyTime}</h6> */}
-                                  <button className="btn btn-lg btn-primary mt-4 w-75" onClick={ () => setOpenModal(true)} disabled={localStorage.getItem("userRole") === "worker" || budgetRequestSent}>Ask for Budget</button>
+                                  <button className="btn btn-lg btn-primary mt-4 w-75" onClick={ () => setOpenModal(true)} disabled={localStorage.getItem("userRole") === "worker"}>Ask for Budget</button>
                               </div>
                           </div>
                       </div>

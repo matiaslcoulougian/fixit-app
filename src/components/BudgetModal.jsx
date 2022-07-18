@@ -1,12 +1,12 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import format from "date-fns/format";
 import {Modal} from "@mui/material";
 import {DateRangeComp} from "./DateRangeComp";
 import {useMutation} from "@apollo/client";
 import {REJECT_BUDGET, RESPOND_BUDGET} from "../queries/mutations";
+import {ImageSlider} from "./ImageSlider.tsx";
 
 export const OpenBudgetModal = (props) => {
-
     const [estimatedPrice, setEstimatedPrice] = useState();
     const [addedComments, setAddedComments] = useState();
 
@@ -64,13 +64,17 @@ export const OpenBudgetModal = (props) => {
         props.setOpenSnackbar(true)
     }
 
+    useEffect(function (){
+        console.log('asddasasdasdasdsdasda ' + props.focusBudget)
+    })
+
     return(<Modal
         open={props.openModal}
         onClose={() => props.setOpenModal(false)}
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
     >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-dialog-scrollable">
             <div className="modal-content">
                 <div className="modal-header border-0 pb-0">
                     <h5 className="modal-title" id="modal-title">Budget Request</h5>
@@ -98,6 +102,11 @@ export const OpenBudgetModal = (props) => {
                             <div className="mt-3">
                                 <label className="form-label" htmlFor="job-time">Time away from you</label>
                                 <div id="job-description" rows="3">{props.time}</div>
+                            </div>
+
+                            <div className="mt-3">
+                                <label className="form-label" htmlFor="job-time">Images</label>
+                                {props.imageUrls && <ImageSlider imageUrls={props.imageUrls}/>}
                             </div>
 
                         </div>

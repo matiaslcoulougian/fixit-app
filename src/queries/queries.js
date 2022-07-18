@@ -130,3 +130,11 @@ export const GET_WORKER_POSTS = gql`
     }
     
 `;
+
+export const GET_BUDGET_IMAGE_URLS = gql`
+     query GetBudgetImageUrls($input: GetBudgetImageUrlsInput!) {
+             getBudgetImageUrls(input: $input){
+             imageUrls
+            }
+        }
+`;
