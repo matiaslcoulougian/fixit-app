@@ -41,7 +41,7 @@ export const GET_POST_BY_ID = gql`
 
 
 export const GET_BUDGET_BY_CUSTOMER = gql`
-    query GetBudgetByCustomer($input: GetBudgetByCustomerInput!){
+    query GetBudgetByCustomer($input: GetBudgetByStatusInput!){
         getBudgetByCustomer(input: $input){
             id
             job{
@@ -49,7 +49,6 @@ export const GET_BUDGET_BY_CUSTOMER = gql`
                     firstName
                     lastName
                     id
-                
                 }
                 title
                 type
@@ -78,6 +77,8 @@ export const GET_BUDGET_BY_WORKER = gql`
             customer {
                 firstName
                 lastName
+                lat
+                lon
             }
         }
     }

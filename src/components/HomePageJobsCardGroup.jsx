@@ -25,9 +25,9 @@ const HomePageJobsCardGroup = (props) => {
 
 const HomeJobCard = (props) => {
     return(
-    <div class="col" role={"button"} onClick={() => props.callback(true, props.title.toLowerCase().replaceAll(" ", "_"))}>
-        <div class="card">
-        <img src={props.src} class="card-img-top" alt={"job_"+props.title}/>
+    <div className="col" role={"button"} onClick={() => props.callback(true, props.title.toLowerCase().replaceAll(" ", "_"))}>
+        <div class="card h-100">
+        <img src={props.src} class="card-img-top h-100" alt={"job_"+props.title}/>
         <div class="card-body">
             <h5 class="card-title text-center">{props.title}</h5>
         </div>

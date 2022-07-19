@@ -3,8 +3,6 @@ import LoaderSpinner from "./LoaderSpinner";
 
 export const ImageSlider = (props) => {
     useEffect(() => {
-        console.log("asdasd propsas d", props.imageUrls)
-        console.log(props.imageUrls.slice(1))
     })
     const firstUrl = props.imageUrls[0];
     const urls = props.imageUrls.slice(1);

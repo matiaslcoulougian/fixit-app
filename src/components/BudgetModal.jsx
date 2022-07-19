@@ -5,11 +5,11 @@ import {DateRangeComp} from "./DateRangeComp";
 import {useMutation} from "@apollo/client";
 import {REJECT_BUDGET, RESPOND_BUDGET} from "../queries/mutations";
 import {ImageSlider} from "./ImageSlider.tsx";
+import {Map} from "./Map";
 
 export const OpenBudgetModal = (props) => {
     const [estimatedPrice, setEstimatedPrice] = useState();
     const [addedComments, setAddedComments] = useState();
-
     const [rejectBudget] = useMutation(
         REJECT_BUDGET, {
             onCompleted: (res) => {
@@ -96,8 +96,12 @@ export const OpenBudgetModal = (props) => {
                             </div>
 
                             <div className="mt-3">
-                                <label className="form-label" htmlFor="job-time"><h5>Time away from you</h5></label>
-                                <div id="job-description" rows="3">{props.time}</div>
+                                <label> <h5>Customer Location </h5></label>
+                                {props.focusBudget && <Map lat={Number(props.focusBudget?.customer?.lat)} lon={Number(props.focusBudget?.customer?.lon)}/>}
+                            </div>
+
+                            <div className="mt-3">
+                                <div id="job-description" rows="3">Approximated time: {props.time} away from you</div>
                             </div>
 
                             <div className="mt-3">

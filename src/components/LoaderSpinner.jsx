@@ -1,7 +1,7 @@
 import {TailSpin} from "react-loader-spinner";
 import React from "react";
 
-const LoaderSpinner = (props) => {
+const LoaderSpinner = () => {
 
     return(
         <div className={"d-flex justify-content-center"}>
