@@ -24,7 +24,6 @@ const s3 = new S3(config);
 
 export const JobDetails = (props) => {
     const id = useParams();
-    const loading = "Loading...";
     const [job, setJob] = React.useState(null);
     const [distanceMin, setDistanceMin] = React.useState(5);
     const [distanceHs, setDistanceHs] = React.useState(null);
@@ -33,7 +32,8 @@ export const JobDetails = (props) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [timeCalculated, setTimeCalculated] = useState(false)
     const [files, setFiles] = useState([])
-
+    const [loading, setLoading] = useState()
+    const [showSpinner, setShowSpinner] = useState(true)
     const userId = window.localStorage.getItem('userId');
 
     console.log(window.localStorage.getItem("workerId"))
@@ -85,7 +85,18 @@ export const JobDetails = (props) => {
 
     useEffect(() => {
         getJobById()
+        loaderHandler()
     },[]);
+
+    const loaderHandler = () => {
+        setLoading(true)
+        setTimeout(() => {
+            setLoading(false)
+            setShowSpinner(false);
+        }, 1000)
+
+    };
+
 
     const simplifyTime = () => {
 
@@ -244,13 +255,14 @@ export const JobDetails = (props) => {
                       <div className="row">
                           <div className="col-md-6">
                               <h2>{job?.title || loading}</h2>
-                              <img src={props.profileImage? props.profileImage : profile} className="img-fluid col-10 mt-2 w-50" alt=""/>
+                              {showSpinner && <LoaderSpinner style={"col-10 mt-5 ml-5 row-5"}/>}
+                              {!showSpinner && <img src={job?.worker.profileUrl? job?.worker.profileUrl : profile} className="img-fluid col-10 mt-2 ml-5 w-50" alt=""/>}
                           </div>
                           <div className="col-md-5 mt-4">
-                              <div className="row justify-content-center mb-3">
-                                  <div className=""><h2 className="text-center"><span className="badge bg-info">{job ? capitalize(job.type) : loading}</span></h2></div>
+                              <div className="row justify-content-center mb-5">
+                                  <div className=""><h2 className="text-center"><span className="badge bg-info">{job ? capitalize(job.type.replace("_", " ")) : loading}</span></h2></div>
                               </div>
-                              <div className="row justify-content-center">
+                              <div className="row justify-content-center mb-5">
                                   <h4 className="text-center">{job?.worker.firstName+" "+job?.worker.lastName || loading}</h4>
 
                                   <h5 className="text-center">{rating>=0 ? (<span>{rating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</h5>

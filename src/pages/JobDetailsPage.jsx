@@ -5,7 +5,7 @@ import {JobDetails} from "../components/pages/JobDetails";
 export const JobDetailsPage = (props) => {
     return(
         <div className="bg-light">
-            <JobDetails job={props.job}/>
+            <JobDetails job={props.job} />
         </div>
     );
 

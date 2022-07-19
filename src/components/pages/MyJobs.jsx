@@ -1,12 +1,12 @@
 import {React, useCallback, useEffect, useRef, useState} from 'react';
 import {NavBar} from "../NavBar";
 import {GET_ME, GET_WORKER_POSTS} from "../../queries/queries";
-import {useLazyQuery, useMutation, useQuery} from "@apollo/client";
+import {useLazyQuery, useMutation} from "@apollo/client";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import {UPDATE_JOB_POSTS} from "../../queries/mutations";
 import BackButton from "../BackButton";
 import {capitalize, Modal} from "@mui/material";
-
+import "../styles/MyJobs.css"
 
 
 
@@ -328,14 +328,12 @@ export const MyJobs = () => {
         <EditJobModal />
         <NavBar isWorker={true} firstName={localStorage.getItem('firstName')}/>
         <div className={"container"}>
-            <h1>Active Jobs</h1>
-            {/*<div className={"container"}>*/}
-            {/*    <h2>Active Jobs</h2>*/}
+            <br/>
+            <h1>Current Jobs</h1>
+            <br/>
 
-            {/*<div className={"btn btn-primary"} onClick={logColumns}>Log Columns</div>*/}
-            <button disabled={editMode} className={"btn btn-primary me-1"} onClick={enterEditMode}>Edit</button>
+            <button disabled={editMode} className={"btn btn-primary jobs-button"} onClick={enterEditMode}>Edit</button>
             {editMode && <div className={"btn btn-primary ms-1"} onClick={exitEditMode}>Save</div>}
-
             <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
                 <DragDropContext
                     onDragEnd={result => onDragEnd(result, columns, setColumns)}
@@ -404,7 +402,7 @@ export const MyJobs = () => {
                                                                             {item.title}
                                                                             <span>
                                                                                 <span
-                                                                                    className="badge rounded-pill bg-secondary m-auto">{capitalize(item.type)}
+                                                                                    className="badge rounded-pill bg-secondary m-auto">{capitalize(item.type.replace("_", " "))}
                                                                                 </span>
                                                                                 <span>          </span>
                                                                                 <button onClick={() => handlePencilClick(item)} className={"btn btn-primary"}  disabled={!editMode}>
@@ -428,7 +426,8 @@ export const MyJobs = () => {
                     })}
                 </DragDropContext>
             </div>
-            <BackButton marginTop={"mt-2"}/>
+            <BackButton className="jobs-button"/>
+
         </div>
     </div>
   );

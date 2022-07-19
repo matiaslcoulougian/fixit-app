@@ -278,7 +278,7 @@ const budgetCard = (budget, handleClick, status, buttonLabel) =>{
     return(<div className={"list-group-item"}>
         {handleClick && <button className="btn btn-primary button-card" onClick={() => handleClick(budget, status)}> {buttonLabel} </button>}
         <div>{"Title: " + budget.job.title}</div>
-        <div>{"Type: " + budget.job.type}</div>
+        <div>{"Type: " + budget.job.type.replace("_", " ")}</div>
         <div>{"Worker: " + budget.job.worker.firstName + " " + budget.job.worker.lastName}</div>
         <div>{"Description: " + budget.description}</div>
     </div>)

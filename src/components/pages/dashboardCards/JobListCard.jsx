@@ -84,7 +84,7 @@ const JobListCard = () => {
                             (<div className={"d-flex justify-content-center"}><div className="spinner-border" role="status">
                             <span className="visually-hidden">Loading...</span> </div> </div>)
                             :
-                            selectedJobs.map((job) => <div className={"list-group-item d-flex justify-content-between align-items-start"}>{`${job.title}`}<span class="badge rounded-pill bg-primary">{capitalize(job.type)}</span></div>)
+                            selectedJobs.map((job) => <div className={"list-group-item d-flex justify-content-between align-items-start"}>{`${job.title}`}<span class="badge rounded-pill bg-primary">{capitalize(job.type.replace("_", " "))}</span></div>)
                         }
                     </div>
 

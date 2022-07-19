@@ -6,23 +6,45 @@ import "../styles/Dashboard.css";
 import {useNavigate} from "react-router-dom";
 import {NavBar} from "../NavBar";
 import JobListCard from "./dashboardCards/JobListCard";
-import {handleLog, Redirect} from "../../Redirect";
+import {Redirect} from "../../Redirect";
 import RatingCard from "./dashboardCards/RatingCard";
 import BudgetRequestsCard from "./dashboardCards/BudgetRequestsCard";
 import {Modal} from "@mui/material";
 import {GET_ME} from "../../queries/queries";
 import {BalanceCard} from "./dashboardCards/BalanceCard";
 import {BudgetNotification} from "../BudgetNotification";
+import {ProfileModal} from "../ProfileModal";
 
 export const Dashboard = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [notificationMessage, setNotificationMessage] = useState("");
     const navigate = useNavigate()
+    const [openProfileModal, setOpenProfileModal] = useState(false)
+    const [me, setMe] = useState();
+    const [refresh, setRefresh] = useState(true)
 
     async function logout(){
         window.localStorage.clear();
         navigate(-1);
     }
+
+    const [getMe] = useLazyQuery(
+        GET_ME, {
+            onCompleted:  (res) => {
+                console.log(res.getMe)
+                console.log('got meeeeeeeeeee')
+                setMe(res.getMe);
+            },
+            onError: (err) => {
+                console.log(err);
+            }
+        }
+    );
+
+    useEffect( async () => {
+        await getMe();
+        setRefresh(false)
+    }, [refresh]);
 
     const NewJobModal = () => {
 
@@ -31,8 +53,6 @@ export const Dashboard = () => {
         const [type, setType] = React.useState('');
         const [jobCreationSuccessful, setJobCreationSuccessful] = React.useState(false);
         const [openModal, setOpenModal] = useState(false);
-        const [me, setMe] = useState();
-
         const searchBarRef = useRef();
 
 
@@ -44,22 +64,6 @@ export const Dashboard = () => {
             setDescription(e.target.value);
 
         };
-
-        const [getMe] = useLazyQuery(
-            GET_ME, {
-                onCompleted:  (res) => {
-                    console.log(res.getMe)
-                    setMe(res.getMe);
-                },
-                onError: (err) => {
-                    console.log(err);
-                }
-            }
-        );
-
-        useEffect( async () => {
-            await getMe();
-        }, []);
 
         const [createJobPost] = useMutation(
             CREATE_JOB_POST, {
@@ -187,10 +191,11 @@ export const Dashboard = () => {
 
   return (
       <div>
-        <NavBar isWorker={true} firstName={window.localStorage.getItem("firstName")}/>
+        <NavBar isWorker={true} firstName={window.localStorage.getItem("firstName")} setOpenProfileModal={setOpenProfileModal}/>
         <div className="container mt-3">
             <h1>Your Dashboard</h1>
             <NewJobModal/>
+            {me && <ProfileModal openModal={openProfileModal} setOpenModal={setOpenProfileModal} me={me}/>}
             <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={notificationMessage}/>
         </div>
         </div>

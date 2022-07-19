@@ -46,8 +46,8 @@ export const NavBar = (props) => {
                         </a>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             {!props.isWorker && <li><a className="dropdown-item" href="/hired">Hired Services</a></li>}
-                            <li><a className="dropdown-item" href="/profile">My Profile</a></li>
-                            <li><a className="dropdown-item" href="/settings">Settings</a></li>
+                            {props.isWorker && <li><a className="dropdown-item" onClick={() => props.setOpenProfileModal(true)}>Profile Picture</a></li>}
+                            <li><a className="dropdown-item">Settings</a></li>
                         </ul>
                     </li>
 

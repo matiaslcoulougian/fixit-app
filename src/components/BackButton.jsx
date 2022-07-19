@@ -10,7 +10,7 @@ const BackButton = (props) => {
 
     return (
         <div>
-            <button onClick={goBack} className={`btn btn-primary ${props.marginTop} ${props.marginLeft}`}><span><i className="bi bi-arrow-left"></i> Back</span></button>
+            <button onClick={goBack} className={`btn btn-primary ${props.marginTop} ${props.marginLeft} ${props.className}`}><span><i className="bi bi-arrow-left"></i> Back</span></button>
         </div>
     );
 };

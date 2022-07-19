@@ -11,6 +11,7 @@ export const GET_POSTS_BY_TYPE = gql`
                 firstName
                 lastName
                 address
+                profileUrl
             }
         }
     }
@@ -34,6 +35,7 @@ export const GET_POST_BY_ID = gql`
                 firstName
                 lastName
                 address
+                profileUrl
             }
         }
     }
@@ -116,6 +118,7 @@ export const GET_ME = gql`
             email
             role
             balance
+            profileUrl
         }
     }
 `;

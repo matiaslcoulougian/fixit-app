@@ -140,3 +140,11 @@ export const PAY_BUDGET = gql`
         }
     }
 `;
+
+export const ADD_WORKER_IMAGE = gql`
+    mutation AddWorkerImage($input: AddWorkerImageInput!) {
+        addWorkerImage(input: $input){
+            ok
+        }
+    }
+`;
