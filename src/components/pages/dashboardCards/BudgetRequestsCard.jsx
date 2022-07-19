@@ -30,21 +30,12 @@ const BudgetRequestsCard = () => {
     const [imageUrls, setImageUrls] = useState([]);
     const navigate = useNavigate()
 
-    function filterPending() {
-        let tempList = [];
-        for (const budget of budgetList) {
-            if(budget.status === "PENDING") tempList.push(budget);
-        }
-        setPendingBudgets(tempList);
-        console.log("tempList", tempList)
-    }
-
     const [getBudgetByWorker, {loading}] = useLazyQuery(
         GET_BUDGET_BY_WORKER, {
             onCompleted: (res) => {
                 console.log("WORKED!")
                 console.log("res", res)
-                setBudgetList(res.getBudgetByWorker)
+                setPendingBudgets(res.getBudgetByWorker)
             },
             onError: (err) => {
                 console.log(err)
@@ -67,8 +58,7 @@ const BudgetRequestsCard = () => {
     )
 
     useEffect(() => {
-        getBudgetByWorker()
-        if(budgetList) filterPending()
+        getBudgetByWorker({variables: {input: {status: "PENDING"}}});
     }, [budgetList, refresh]);
 
     const handleBudgetClick = async (budget) => {
@@ -125,7 +115,7 @@ function calculateDays(date){
     return Math.floor(difference / (1000 * 3600 * 24));
 }
 
-function calculateTime(time){
+export function calculateTime(time){
     if(!time) return null;
     const toNum = Number(time)
     //if (toNum === 0) return null;

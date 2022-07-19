@@ -104,10 +104,10 @@ export const OpenBudgetModal = (props) => {
                                 <div id="job-description" rows="3">Approximated time: {props.time} away from you</div>
                             </div>
 
-                            <div className="mt-3">
+                            {props.imageUrls.length > 0 && <div className="mt-3">
                                 <label className="form-label" htmlFor="job-time"><h5>Images</h5></label>
-                                {props.imageUrls && <ImageSlider imageUrls={props.imageUrls}/>}
-                            </div>
+                                <ImageSlider imageUrls={props.imageUrls}/>
+                            </div>}
 
                         </div>
                         <hr/>

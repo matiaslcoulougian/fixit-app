@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import LoaderSpinner from "./LoaderSpinner";
+import "../components/styles/ImageSlider.css"
 
 export const ImageSlider = (props) => {
     useEffect(() => {
@@ -11,7 +11,7 @@ export const ImageSlider = (props) => {
 
     return (
         <div id={"budget-carousel"} className={"carousel slider"} data-bs-ride={"carousel"}>
-            <div className={"carousel-inner"}>
+            <div className="carousel-inner">
                 <div className={"carousel-item active"}>
                     <img src={firstUrl} alt={"..."} className="d-block w-100"></img>
                 </div>

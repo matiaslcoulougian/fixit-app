@@ -64,15 +64,19 @@ export const GET_BUDGET_BY_CUSTOMER = gql`
 `;
 
 export const GET_BUDGET_BY_WORKER = gql`
-    query GetBudgetByWorker{
-        getBudgetByWorker{
+    query GetBudgetByWorker($input: GetBudgetByStatusInput!){
+        getBudgetByWorker(input: $input){
             id
             description
             status 
             createdAt
             time
+            firstDateFrom
+            firstDateTo
+            amount
             job {
                 title
+                type
             }
             customer {
                 firstName
