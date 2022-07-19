@@ -6,6 +6,7 @@ import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import {BudgetNotification} from "../../BudgetNotification";
 import {OpenBudgetModal} from "../../BudgetModal";
+import {useNavigate} from "react-router-dom";
 
 const BudgetRequestsCard = () => {
 
@@ -27,6 +28,7 @@ const BudgetRequestsCard = () => {
     const [notificationMessage, setNotificationMessage] = useState("");
     const [budgetTime, setBudgetTime] = useState('');
     const [imageUrls, setImageUrls] = useState([]);
+    const navigate = useNavigate()
 
     function filterPending() {
         let tempList = [];
@@ -107,7 +109,7 @@ const BudgetRequestsCard = () => {
 
                 {pendingBudgets?.length > 3 && <h4 className="card-text mt-1 ms-2">And {pendingBudgets?.length-3} more...</h4>}
 
-                <button className="btn btn-primary mt-2">See full list</button>
+                <button className="btn btn-primary mt-2" onClick={() => navigate('/my-budgets')}>See full list</button>
             </div>
         </div>
         </div>

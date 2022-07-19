@@ -64,10 +64,6 @@ export const OpenBudgetModal = (props) => {
         props.setOpenSnackbar(true)
     }
 
-    useEffect(function (){
-        console.log('asddasasdasdasdsdasda ' + props.focusBudget)
-    })
-
     return(<Modal
         open={props.openModal}
         onClose={() => props.setOpenModal(false)}
@@ -137,8 +133,8 @@ export const OpenBudgetModal = (props) => {
 
                     </div>
                     <div className="modal-footer border-0 pt-0">
-                        <button type="button" className="btn btn-secondary" id='reject-button' disabled={props.budgetRejected || props.budgetResponded} onClick={handleRejectBudget} >Decline</button>
-                        <button type="button" className="btn btn-primary" id="respond-button" disabled={props.budgetRejected || props.budgetResponded} onClick={handleRespondBudget}>Send</button>
+                        <button type="button" className="btn btn-secondary" id='reject-button' onClick={handleRejectBudget} >Decline</button>
+                        <button type="button" className="btn btn-primary" id="respond-button"  disabled={!estimatedPrice || !addedComments || !props.range} onClick={handleRespondBudget}>Send</button>
                     </div>
 
 

@@ -11,6 +11,7 @@ import {JobDetailsPage} from "./pages/JobDetailsPage";
 import {MyJobsPage} from "./pages/MyJobsPage";
 import ListTest from "./components/pages/ListTest";
 import HiredPage from "./pages/HiredPage";
+import MyBudgetsPage from "./pages/MyBudgetsPage";
 
 const Auth = () => window.localStorage.getItem('token') ? <Outlet/> : <Navigate to={"/"}/>
 const ClientAuth = () => {
@@ -50,6 +51,7 @@ export function App() {
                     <Route element={<WorkerAuth/>}>
                         <Route exact path="/dashboard" element={<DashboardPage />} />
                         <Route exact path="/my-jobs" element={<MyJobsPage />} />
+                        <Route exact path="/my-budgets" element={<MyBudgetsPage />} />
                     </Route>
 
                 </Route>
