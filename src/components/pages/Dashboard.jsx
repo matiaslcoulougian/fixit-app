@@ -11,6 +11,7 @@ import RatingCard from "./dashboardCards/RatingCard";
 import BudgetRequestsCard from "./dashboardCards/BudgetRequestsCard";
 import {Modal} from "@mui/material";
 import {GET_ME} from "../../queries/queries";
+import {BalanceCard} from "./dashboardCards/BalanceCard";
 import {BudgetNotification} from "../BudgetNotification";
 
 export const Dashboard = () => {
@@ -173,13 +174,7 @@ export const Dashboard = () => {
 
 
                         <div className="col-md-6">
-                            <div className="card">
-                            <h3 className="card-header">Money Made</h3>
-                            <div className="card-body">
-                                <h3 className="card-title text-center">{me && `$${me.balance}`}</h3>
-                                <a href="#" className="btn btn-primary">See full list</a>
-                            </div>
-                        </div>
+                            {me && <BalanceCard me={me}/>}
                         </div>
 
                     </div>

@@ -85,23 +85,23 @@ export const OpenBudgetModal = (props) => {
                         <div className="container">
 
                             <div className="mt-3">
-                                <label className="form-label" htmlFor="job-title">Job</label>
+                                <label className="form-label" htmlFor="job-title"><h5>Job</h5></label>
                                 <div id="job-title" rows="3">{props.focusBudget?.job.title}</div>
                             </div>
 
 
                             <div className="mt-3">
-                                <label className="form-label" htmlFor="job-description">Description of the Job</label>
+                                <label className="form-label" htmlFor="job-description"><h5>Description of the Job</h5></label>
                                 <div id="job-description" rows="3">{props.focusBudget?.description}</div>
                             </div>
 
                             <div className="mt-3">
-                                <label className="form-label" htmlFor="job-time">Time away from you</label>
+                                <label className="form-label" htmlFor="job-time"><h5>Time away from you</h5></label>
                                 <div id="job-description" rows="3">{props.time}</div>
                             </div>
 
                             <div className="mt-3">
-                                <label className="form-label" htmlFor="job-time">Images</label>
+                                <label className="form-label" htmlFor="job-time"><h5>Images</h5></label>
                                 {props.imageUrls && <ImageSlider imageUrls={props.imageUrls}/>}
                             </div>
 

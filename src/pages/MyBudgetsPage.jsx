@@ -1,5 +1,5 @@
 import React from 'react';
-import MyBudgets from "../components/pages/MyBudgets";
+import { MyBudgets } from "../components/pages/MyBudgets";
 
 const MyBudgetsPage = (props) => {
     return (
