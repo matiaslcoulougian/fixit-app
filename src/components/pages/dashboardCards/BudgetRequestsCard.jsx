@@ -124,9 +124,10 @@ function calculateDays(date){
 }
 
 function calculateTime(time){
+    if(!time) return null;
     const toNum = Number(time)
-    if (toNum === 0) return null;
-    else if (toNum < 60) return 'Less than one minute away'
+    //if (toNum === 0) return null;
+    if (toNum < 60) return 'Less than one minute away'
     else if (toNum < 3600) return `${(time/60).toFixed(0)} minutes away`
     else {
         const hours = ((time/60)/60).toFixed(0)

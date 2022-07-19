@@ -8,43 +8,36 @@ export const ImageSlider = (props) => {
     })
     const firstUrl = props.imageUrls[0];
     const urls = props.imageUrls.slice(1);
-    return (<div id="carousel-budget" className="carousel slide" data-mdb-ride="carousel">
-        <div className="carousel-inner">
-            <div className="carousel-item active">
-                <img src={firstUrl} className="d-block w-100" alt="..."/>
+
+    
+
+    return (
+        <div id={"budget-carousel"} className={"carousel slider"} data-bs-ride={"carousel"}>
+            <div className={"carousel-inner"}>
+                <div className={"carousel-item active"}>
+                    <img src={firstUrl} alt={"..."} className="d-block w-100"></img>
+                </div>
+
+                {urls.map((url) => {
+                    return(<div className={"carousel-item"}>
+                        <img src={url} alt={"..."} className="d-block w-100"></img>
+                    </div>)
+                })}
             </div>
-            <div className="carousel-item">
-                <img src={urls[0]} className="d-block w-100" alt="..."/>
-            </div>
-            <div className="carousel-item">
-                <img src={urls[1]} className="d-block w-100" alt="..."/>
-            </div>
+
+            <a href="#budget-carousel" className={"carousel-control-prev"} role="button" data-bs-slide="prev">
+                <span className={"carousel-control-prev-icon"} aria-hidden="true"></span>
+                <span className={"visually-hidden"}>Previous</span>
+            </a>
+
+            <a href="#budget-carousel" className={"carousel-control-next"} role="button" data-bs-slide="next">
+                <span className={"carousel-control-next-icon"} aria-hidden="true"></span>
+                <span className={"visually-hidden"}>Next</span>
+            </a>
+
         </div>
-        <button
-            className="carousel-control-prev"
-            type="button"
-            data-mdb-target="#carousel-budget"
-            data-mdb-slide="prev"
-        >
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
-        </button>
-        <button
-            className="carousel-control-next"
-            type="button"
-            data-mdb-target="#carousel-budget"
-            data-mdb-slide="next"
-        >
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
-        </button>
-    </div>)
+
+    );
+
 }
 
-// const ShowImage = (url) => {
-//     return(
-//         <div className="carousel-item">
-//             <img src={url} className="d-block w-100" alt="..."/>
-//         </div>
-//     )
-// }
