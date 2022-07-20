@@ -8,6 +8,7 @@ import {BudgetNotification} from "../BudgetNotification";
 import {addDays} from "date-fns";
 import {calculateTime} from "./dashboardCards/BudgetRequestsCard";
 import { useLocation } from 'react-router-dom';
+import { Rating } from '@mui/material';
 
 export const RatingsPage = () => {
 
@@ -41,7 +42,8 @@ export const RatingsPage = () => {
             <div className='list-group-item'>
                 <div>
                     <div className="row">
-                    <h4><span>{stars}<i className="bi bi-star-fill "></i><i className="bi bi-star-fill "></i></span></h4>
+                    <Rating name="read-only" value={stars} readOnly />
+                    <div>{comment}</div>
                     </div>
                 </div>
 
@@ -64,24 +66,34 @@ export const RatingsPage = () => {
         </div>)
     }
 
+    
+
 
     return(
-        <div>
+        <div className='bg-light'>
             <NavBar firstName={localStorage.getItem("firstName")}/>
             <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
             <div className={"container bg-light"} >
-                <div className={"row"}>
+                
                     <h1>My Reviews</h1>
-                    <div className={"card"}>
-                        <div className="list-group">
-                            {ratings?.length === 0 ? (<h4 className="no-budget">No reviews yet...</h4>): (ratings?.map((rating) => {
-                                return ReviewCard(rating.stars, rating.comment);
-                            }))}
+
+                    <div className="col-10 mx-auto justify-content-center">
+                        <div className={"card"}>
+                            <div className="card-body">
+                                <div className="list-group">
+                                    {ratings?.length === 0 ? (<h4 className="no-budget">No reviews yet...</h4>): (ratings?.map((rating) => {
+                                        return ReviewCard(rating.stars, rating.comment);
+                                    }))}
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
 
                     
-                </div>
+
+                    
+                
             </div>
         </div>
     );
