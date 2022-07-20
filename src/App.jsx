@@ -54,6 +54,7 @@ export function App() {
                         <Route exact path="/my-jobs" element={<MyJobsPage />} />
                         <Route exact path="/my-budgets" element={<MyBudgetsPage />} />
                         <Route exact path="/my-ratings" element={<RatingsPage />} />
+                        <Route exact path="/balance" element={<BalancesPage />} />
                     </Route>
 
                 </Route>
