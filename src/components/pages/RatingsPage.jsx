@@ -52,8 +52,8 @@ export const RatingsPage = () => {
             <NavBar firstName={localStorage.getItem("firstName")}/>
             <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
             <div className={"container bg-light"} >
-                    <h1>My Reviews</h1>
-                    <div className="col-12 mx-auto justify-content-center">
+                    <h1 className="col-10 mx-auto justify-content-center mb-4">My Reviews</h1>
+                    <div className="col-10 mx-auto justify-content-center">
                         <div className={"card"}>
                             <div className="card-body">
                                 <div className="list-group">

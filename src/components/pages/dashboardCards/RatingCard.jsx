@@ -37,7 +37,7 @@ const RatingCard = (props) => {
                 <h3 className="card-header">My Rating</h3>
                 <div className="card-body">
                     <h3 className="card-title text-center">{!loading ? (<span>{averageRating}<i className="bi bi-star-fill "></i></span>) : <LoaderSpinner/>}</h3>
-                    <p className="card-text text-center">{jobsDone === 1 ? <span>{jobsDone} job done </span> : <span> {jobsDone} reviews </span>}</p>
+                    <p className="card-text text-center">{jobsDone === 1 ? <span>{jobsDone} review </span> : <span> {jobsDone} reviews </span>}</p>
                     <button onClick={() => navigate('/my-ratings',{state: {workerId: props.workerId}})} className="btn btn-primary">See reviews</button>
                 </div>
             </div>

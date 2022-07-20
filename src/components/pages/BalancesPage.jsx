@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import {GET_BUDGET_BY_WORKER, GET_BUDGET_IMAGE_URLS, GET_WORKER_RATINGS} from '../../queries/queries';
+import {GET_BUDGET_BY_WORKER} from '../../queries/queries';
 import {NavBar} from "../NavBar";
 import BackButton from '../BackButton';
-import {OpenBudgetModal} from "../BudgetModal";
-import {BudgetNotification} from "../BudgetNotification";
-import {addDays} from "date-fns";
-import {calculateTime} from "./dashboardCards/BudgetRequestsCard";
-import { useLocation } from 'react-router-dom';
-import { Rating } from '@mui/material';
 
 export const BalancesPage = () => {
 
     const [paidBudgets, setPaidBudgets] = useState();
-    const [refresh, setRefresh] = useState(false);
 
     const [getBudgetByWorker] = useLazyQuery(
         GET_BUDGET_BY_WORKER, {
@@ -21,7 +14,7 @@ export const BalancesPage = () => {
                 console.log(res)
                 setPaidBudgets(res.getBudgetByWorker);
                 return res;
-            }, 
+            },
             onError(err) {
                 console.log(err);
             }
@@ -31,17 +24,14 @@ export const BalancesPage = () => {
     useEffect(async () => {
         let retrievedBudgets = await getBudgetByWorker({variables: { input: {status: "PAID"} } }); //el formato de la query con el input hay que hacerlo
         console.log("retrieved", retrievedBudgets);
-        // setPaidBudgets(retrievedBudgets.getBudgetByWorker);
-        // setRefresh(false)
-        
+
     }, [paidBudgets])
 
 
-    
+
 
     const BudgetCard = (budget) => {
         return(<div className={"list-group-item"}>
-
             <div className="row">
                 <div className="col-6">
                     <div>{"Title: " + budget.job.title}</div>
@@ -51,29 +41,18 @@ export const BalancesPage = () => {
                 </div>
                 <div className="col-6 text-end">
                     <div className='d-flex flex-row align-items-center justify-content-end'>
-                        <h2><div className="badge bg-success text-wrap mt-3" >+ ${budget.amount}</div></h2>
+                        <h2><div style={{display:"inline-block", width:"7.5rem"}} className="badge bg-success text-wrap mt-3 " >+ ${budget.amount}</div></h2>
                     </div>
                 </div>
             </div>
-
-
-
-            
-        
         </div>)
     }
-
-    
-
-
     return(
         <div className='bg-light'>
             <NavBar firstName={localStorage.getItem("firstName")}/>
             <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
             <div className={"container bg-light"} >
-                
-                    <h1>My Earnings</h1>
-
+                    <h1 className="col-10 mx-auto justify-content-center mb-4">My Earnings</h1>
                     <div className="col-10 mx-auto justify-content-center">
                         <div className={"card"}>
                             <div className="card-body">
@@ -86,11 +65,6 @@ export const BalancesPage = () => {
                             
                         </div>
                     </div>
-
-                    
-
-                    
-                
             </div>
         </div>
     );

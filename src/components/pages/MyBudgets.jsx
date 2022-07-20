@@ -119,7 +119,7 @@ export const MyBudgets = () => {
                     <div className={"row pb-4"}>
                         <h2>Active Services</h2>
                         <div className="list-group" >
-                            {respondedBudgets?.length === 0 ? (<h4 className="no-budget">No budgets yet...</h4>): (respondedBudgets?.map((budget) => {
+                            {acceptedBudgets?.length === 0 ? (<h4 className="no-budget">No budgets yet...</h4>): (acceptedBudgets?.map((budget) => {
                                 return BudgetCard(budget);
                             }))}
                         </div>

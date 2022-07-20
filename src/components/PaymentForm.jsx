@@ -56,6 +56,7 @@ export const PaymentForm = (props) => {
 export const ConfirmedBudgetModal = (props) => {
     const [stars, setStars] = useState();
     const [comment, setComment] = useState();
+    const [lockModal, setLockModal] = useState(false);
 
     const mercadopago = useMercadopago.v2('TEST-c984a881-04f0-424a-838c-4378da9aa7d7', {
         locale: 'es-AR' // The most common are: 'pt-BR', 'es-AR' and 'en-US'
@@ -87,6 +88,7 @@ export const ConfirmedBudgetModal = (props) => {
 
     async function initiatePayment(stars, comment, focusBudget){
         if (mercadopago) {
+            setLockModal(true);
             await finishBudget({variables: {input: {budgetId: focusBudget.id}}})
             await rateWorker({
                 variables: {
@@ -98,6 +100,7 @@ export const ConfirmedBudgetModal = (props) => {
                 }
             })
         }
+        props.setRefresh(true)
     }
 
     function createCheckoutButton(preferenceId) {
@@ -117,15 +120,21 @@ export const ConfirmedBudgetModal = (props) => {
     return(
         <Modal
             open={props.openConfirmedModal}
-            onClose={() => props.setOpenConfirmedModal(false)}
+            onClose={(_, reason) => {
+                if (reason !== "backdropClick") {
+                    props.setOpenConfirmedModal(false);
+                }
+            }}
             aria-labelledby="parent-modal-title"
             aria-describedby="parent-modal-description"
+            class="confirmed-modal"
+            disableBackdropClick
         >
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header border-0 pb-0">
                         <h5 className="modal-title" id="modal-title">Finish Service</h5>
-                        <button type="button" className="btn-close" onClick={() => props.setOpenConfirmedModal(false)} data-bs-dismiss="modal" aria-label="Close"/>
+                        {!lockModal && <button type="button" className="btn-close" onClick={() => props.setOpenConfirmedModal(false)} data-bs-dismiss="modal" aria-label="Close"/>}
 
                     </div>
 
@@ -171,10 +180,6 @@ export const ConfirmedBudgetModal = (props) => {
                                     <label className="form-label" htmlFor="job-description">Add a Comment</label>
                                     <div><textarea onChange={(e) => setComment(e.target.value)}></textarea></div>
                                 </div>
-
-                                {props.budgetFinished && <div className="alert alert-success mt-2" role="alert">
-                                    Job Finished Successfully! Please close this window.
-                                </div>}
 
 
                             </div>

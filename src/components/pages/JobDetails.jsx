@@ -32,12 +32,11 @@ export const JobDetails = (props) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [timeCalculated, setTimeCalculated] = useState(false)
     const [files, setFiles] = useState([])
-    const [loading, setLoading] = useState()
     const [showSpinner, setShowSpinner] = useState(true)
     const userId = window.localStorage.getItem('userId');
 
     console.log(window.localStorage.getItem("workerId"))
-    const [getJobById] = useLazyQuery(
+    const [getJobById, {loading}] = useLazyQuery(
         GET_POST_BY_ID, {
         variables: {
             id: id.jobId
@@ -85,17 +84,17 @@ export const JobDetails = (props) => {
 
     useEffect(() => {
         getJobById()
-        loaderHandler()
+        // loaderHandler()
     },[]);
 
-    const loaderHandler = () => {
-        setLoading(true)
-        setTimeout(() => {
-            setLoading(false)
-            setShowSpinner(false);
-        }, 1000)
-
-    };
+    // const loaderHandler = () => {
+    //     setLoading(true)
+    //     setTimeout(() => {
+    //         setLoading(false)
+    //         setShowSpinner(false);
+    //     }, 1000)
+    //
+    // };
 
 
     const simplifyTime = () => {
@@ -254,12 +253,16 @@ export const JobDetails = (props) => {
                       </div>
                       <div className="row">
                           <div className="col-md-6">
-                              <h2>{job?.title || loading}</h2>
-                              {showSpinner && <LoaderSpinner style={"col-10 mt-5 ml-5 row-5"}/>}
-                              {!showSpinner && <img src={job?.worker.profileUrl? job?.worker.profileUrl : profile} className="img-fluid col-10 mt-2 ml-5 w-50" alt=""/>}
+                              <div className="row justify-content-center mb-1">
+                                  <h2>{job?.title || loading}</h2>
+                              </div>
+                              <div className="row justify-content-center mb-5">
+                                {loading && <LoaderSpinner style={"col-10 mt-5 ml-5 row-5"}/>}
+                                {!loading && <img src={job?.worker.profileUrl? job?.worker.profileUrl : profile} className="img-thumbnail col-10 mt-2 ml-5 w-50" alt=""/>}
+                              </div>
                           </div>
                           <div className="col-md-5 mt-4">
-                              <div className="row justify-content-center mb-5">
+                              <div className="row justify-content-center mb-3 mt-5">
                                   <div className=""><h2 className="text-center"><span className="badge bg-info">{job ? capitalize(job.type.replace("_", " ")) : loading}</span></h2></div>
                               </div>
                               <div className="row justify-content-center mb-5">
@@ -272,7 +275,7 @@ export const JobDetails = (props) => {
                               </div>
                           </div>
                       </div>
-                      <div className="row mt-5">
+                      <div className="row mt-2">
                           <hr className="w-75 mx-auto"/>
                           <h3>Job Description</h3>
                           <div className="col-md-10">

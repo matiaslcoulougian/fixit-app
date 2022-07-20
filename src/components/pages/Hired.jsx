@@ -207,7 +207,7 @@ const Hired = (props) => {
             <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={notificationMessage}/>
             <RespondedBudgetModal/>
             <DeclinedBudgetModal openModal={openDeclineModal} setOpenModal={setOpenDeclineModal} budgetId={focusBudget?.id} setNotificationMessage={setNotificationMessage} setOpenSnackbar={setOpenSnackbar} setRefresh={setRefresh}/>
-            <ConfirmedBudgetModal openConfirmedModal={openConfirmedModal} setOpenConfirmedModal={setOpenConfirmedModal} focusBudget={focusBudget} budgetFinished={budgetFinished}/>
+            <ConfirmedBudgetModal openConfirmedModal={openConfirmedModal} setOpenConfirmedModal={setOpenConfirmedModal} focusBudget={focusBudget} budgetFinished={budgetFinished} setRefresh={setRefresh}/>
             <NavBar firstName={localStorage.getItem("firstName")}/>
             <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
 
