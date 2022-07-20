@@ -52,7 +52,7 @@ export const NavBar = (props) => {
                     </li>
 
                     <li className="nav-item ms-2 d-md-inline">
-                        <a className="btn btn-secondary" onClick={logout}>Log out</a>
+                        <a className="btn btn-secondary" onClick={async () => logout()}>Log out</a>
                     </li>
                 </ul>
             </div>

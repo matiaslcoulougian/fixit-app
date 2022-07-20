@@ -13,6 +13,7 @@ export const MyBudgets = () => {
     const [pendingBudgets, setPendingBudgets] = useState();
     const [respondedBudgets, setRespondedBudgets] = useState();
     const [acceptedBudgets, setAcceptedBudgets] = useState();
+    const [rejectedBudgets, setRejectedBudgets] = useState();
     const [refresh, setRefresh] = useState(true);
     const [getBudgetByWorker] = useLazyQuery(
         GET_BUDGET_BY_WORKER, {
@@ -57,9 +58,11 @@ export const MyBudgets = () => {
         let incomingBudgets = await getBudgetByWorker({variables: { input: {status: "PENDING"} } }); //el formato de la query con el input hay que hacerlo
         let responded = await getBudgetByWorker({variables: { input: {status: "RESPONDED"} }});
         let confirmedBudgets = await getBudgetByWorker({variables: { input: {status: "ACCEPTED"} }});
+        let rejectedBudgetsResponse = await getBudgetByWorker({variables: { input: {status: "CLOSED"} }});
         setPendingBudgets(incomingBudgets.data.getBudgetByWorker);
         setRespondedBudgets(responded.data.getBudgetByWorker);
         setAcceptedBudgets(confirmedBudgets.data.getBudgetByWorker);
+        setRejectedBudgets(rejectedBudgetsResponse.data.getBudgetByWorker)
         setRefresh(false)
     }, [refresh])
 
@@ -82,6 +85,7 @@ export const MyBudgets = () => {
             <div>{"Description: " + budget.description}</div>
             {budget.status !== "PENDING" && <div>{"Date range: " + budget.firstDateFrom + " - " + budget.firstDateTo}</div>}
             {budget.status !== "PENDING" && <div>{"Price: $" + budget.amount}</div>}
+            {budget.status === "CLOSED" && budget.declineMessage && <div>{"Decline reason: " + budget.declineMessage}</div>}
         </div>)
     }
 
@@ -115,11 +119,20 @@ export const MyBudgets = () => {
                     <div className={"row pb-4"}>
                         <h2>Active Services</h2>
                         <div className="list-group" >
-                            {acceptedBudgets?.length === 0 ? (<h4 className="no-budget">No budgets yet...</h4>): (respondedBudgets?.map((budget) => {
+                            {respondedBudgets?.length === 0 ? (<h4 className="no-budget">No budgets yet...</h4>): (respondedBudgets?.map((budget) => {
                                 return BudgetCard(budget);
                             }))}
                         </div>
 
+                    </div>
+
+                    <div className={"row pb-4"}>
+                        <h2>Rejected Services</h2>
+                        <div className="list-group" >
+                                {rejectedBudgets?.length === 0 ? (<h4 className="no-budget">No budgets rejected yet...</h4>): (rejectedBudgets?.map((budget) => {
+                                return BudgetCard(budget);
+                            }))}
+                        </div>
                     </div>
             </div>
         </div>
