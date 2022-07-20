@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
-import {GET_BUDGET_BY_WORKER, GET_BUDGET_IMAGE_URLS, GET_WORKER_RATINGS} from '../../queries/queries';
+import {GET_WORKER_RATINGS} from '../../queries/queries';
 import {NavBar} from "../NavBar";
 import BackButton from '../BackButton';
-import {OpenBudgetModal} from "../BudgetModal";
-import {BudgetNotification} from "../BudgetNotification";
-import {addDays} from "date-fns";
-import {calculateTime} from "./dashboardCards/BudgetRequestsCard";
 import { useLocation } from 'react-router-dom';
 import { Rating } from '@mui/material';
 
 export const RatingsPage = () => {
 
-    const [pendingBudgets, setPendingBudgets] = useState();
     const [refresh, setRefresh] = useState(true);
     const [ratings, setRatings] = useState();
     const {state} = useLocation();
@@ -51,33 +46,14 @@ export const RatingsPage = () => {
 
         );
     }
-    
-
-    const BudgetCard = (budget, handleClick, buttonLabel, status) => {
-        return(<div className={"list-group-item"}>
-            {handleClick && <button className="btn btn-primary button-card" onClick={() => handleClick(budget)}> {buttonLabel} </button>}
-            <div>{"Title: " + budget.job.title}</div>
-            <div>{"Type: " + budget.job.type.replace("_", " ")}</div>
-            <div>{"Rating: " + budget.job.type.replace("_", " ")}</div>
-            <div>{"Comment: " + budget.customer.firstName + " " + budget.customer.lastName}</div>
-            
-            {budget.status !== "PENDING" && <div>{"Date range: " + budget.firstDateFrom + " - " + budget.firstDateTo}</div>}
-            {budget.status !== "PENDING" && <div>{"Price: $" + budget.amount}</div>}
-        </div>)
-    }
-
-    
-
 
     return(
         <div className='bg-light'>
             <NavBar firstName={localStorage.getItem("firstName")}/>
             <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
             <div className={"container bg-light"} >
-                
                     <h1>My Reviews</h1>
-
-                    <div className="col-10 mx-auto justify-content-center">
+                    <div className="col-12 mx-auto justify-content-center">
                         <div className={"card"}>
                             <div className="card-body">
                                 <div className="list-group">
@@ -89,11 +65,6 @@ export const RatingsPage = () => {
                             
                         </div>
                     </div>
-
-                    
-
-                    
-                
             </div>
         </div>
     );
