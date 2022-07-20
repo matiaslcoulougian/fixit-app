@@ -29,7 +29,6 @@ export const JobGrid = (props) =>{
             }
         }
         );
-
     return(
         <div className="container mt-3">
 

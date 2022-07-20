@@ -75,6 +75,7 @@ export const GET_BUDGET_BY_WORKER = gql`
             time
             firstDateFrom
             firstDateTo
+            declineMessage
             amount
             job {
                 title

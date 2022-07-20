@@ -9,6 +9,7 @@ import {ConfirmedBudgetModal} from "../PaymentForm";
 import {BudgetNotification} from "../BudgetNotification";
 //import {DeclinedBudgetModal} from "./DeclinedBudgetModal";
 import "../../components/styles/Hired.css"
+import {DeclinedBudgetModal} from "./DeclinedBudgetModal";
 
 const Hired = (props) => {
 
@@ -22,7 +23,7 @@ const Hired = (props) => {
     const [refresh, setRefresh] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [notificationMessage, setNotificationMessage] = useState('');
-
+    const [openDeclineModal, setOpenDeclineModal] = useState(false)
     const [getBudgetByCustomer] = useLazyQuery(
         GET_BUDGET_BY_CUSTOMER, {
             onCompleted: (res) => {
@@ -34,18 +35,6 @@ const Hired = (props) => {
             }
         }
     );
-
-    const [closeBudget] = useMutation(
-        REJECT_BUDGET, {
-            onCompleted: (res) => {
-                console.log("CLOSED!");
-                setBudgetDeclined(true)
-            },
-            onError: (err) => {
-                console.log(err)
-            }
-        }
-    )
 
     const [confirmBudget] = useMutation(
         CONFIRM_BUDGET, {
@@ -107,12 +96,8 @@ const Hired = (props) => {
     }
 
     function handleRejection() {
-        closeBudget({variables: {input: {budgetId: focusBudget.id}}})
-        setRefresh(true)
-        //setOpenDeclineModal(true)
-        setNotificationMessage('Budget declined successfully')
-        setOpenSnackbar(true)
         setOpenRespondedModal(false)
+        setOpenDeclineModal(true)
     }
 
     function handleFinished(stars, comment) {
@@ -221,7 +206,7 @@ const Hired = (props) => {
         <div>
             <BudgetNotification openSnackbar={openSnackbar} setOpenSnackbar={setOpenSnackbar} notificationMessage={notificationMessage}/>
             <RespondedBudgetModal/>
-            {/*<DeclinedBudgetModal openModal={false} setOpenModal={false}/>*/}
+            <DeclinedBudgetModal openModal={openDeclineModal} setOpenModal={setOpenDeclineModal} budgetId={focusBudget?.id} setNotificationMessage={setNotificationMessage} setOpenSnackbar={setOpenSnackbar} setRefresh={setRefresh}/>
             <ConfirmedBudgetModal openConfirmedModal={openConfirmedModal} setOpenConfirmedModal={setOpenConfirmedModal} focusBudget={focusBudget} budgetFinished={budgetFinished}/>
             <NavBar firstName={localStorage.getItem("firstName")}/>
             <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
