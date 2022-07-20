@@ -17,6 +17,15 @@ export const GET_POSTS_BY_TYPE = gql`
     }
 `;
 
+export const GET_WORKER_RATINGS = gql`
+    query GetWorkerRatings($input: GetWorkerRatingsInput!){
+        getWorkerRatings(input: $input){
+            stars
+            comment
+        }
+    }
+`;
+
 
 
 

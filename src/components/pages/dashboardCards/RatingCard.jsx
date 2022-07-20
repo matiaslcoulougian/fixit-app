@@ -2,11 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {useLazyQuery} from "@apollo/client";
 import {GET_RATING_AVERAGE} from "../../../queries/queries";
 import LoaderSpinner from "../../LoaderSpinner";
+import { useNavigate } from 'react-router-dom';
 
 const RatingCard = (props) => {
 
     const [averageRating, setAverageRating] = useState();
     const [jobsDone, setJobsDone] = useState();
+    const navigate = useNavigate();
 
     const [getWorkerAvgRating, {loading}] = useLazyQuery(
         GET_RATING_AVERAGE, {
@@ -38,7 +40,7 @@ const RatingCard = (props) => {
                     <p className="card-text text-center">{jobsDone === 1 ? <span>{jobsDone} job done </span> : <span> {jobsDone} jobs done </span>}</p>
                     <p>ir al codigo, esta implementado pero comentado</p>
                     {/* <p className="card-text text-center">{commentsMade === 1 ? <span>{commentsMade} comments made </span> : <span> {commentsMade} comments made </span>}</p> */}
-                    <a href="#" className="btn btn-primary">See reviews</a>
+                    <button onClick={() => navigate('/my-ratings',{state: {workerId: props.workerId}})} className="btn btn-primary">See reviews</button>
                 </div>
             </div>
         </div>
