@@ -17,7 +17,7 @@ export const NavBar = (props) => {
 
     async function logout() {
         window.localStorage.clear();
-        navigate(-1)
+        navigate("/")
     }
 
     return (
@@ -34,9 +34,7 @@ export const NavBar = (props) => {
 
             <div className="collapse navbar-collapse justify-content-end align-end" id="main-nav">
                 <ul className="navbar-nav">
-                    <li className="nav-item pe-2">
-                        <a className="nav-link" href="/">Notifications</a>
-                    </li>
+                    
 
 
                     <li className="nav-item dropdown">
