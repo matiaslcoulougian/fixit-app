@@ -13,6 +13,7 @@ import ListTest from "./components/pages/ListTest";
 import HiredPage from "./pages/HiredPage";
 import MyBudgetsPage from "./pages/MyBudgetsPage";
 import { RatingsPage } from './components/pages/RatingsPage';
+import { BalancesPage } from './components/pages/BalancesPage';
 
 const Auth = () => window.localStorage.getItem('token') ? <Outlet/> : <Navigate to={"/"}/>
 const ClientAuth = () => {

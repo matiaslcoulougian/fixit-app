@@ -13,15 +13,14 @@ import { Rating } from '@mui/material';
 export const BalancesPage = () => {
 
     const [paidBudgets, setPaidBudgets] = useState();
-    const [refresh, setRefresh] = useState(true);
-    const {state} = useLocation();
-    const {workerId} = state;
+    const [refresh, setRefresh] = useState(false);
 
-    const [getWorkerRatings] = useLazyQuery(
-        GET_WORKER_RATINGS, {
+    const [getBudgetByWorker] = useLazyQuery(
+        GET_BUDGET_BY_WORKER, {
             onCompleted: (res) => {
                 console.log(res)
-                return res.getWorkerRatings;
+                setPaidBudgets(res.getBudgetByWorker);
+                return res;
             }, 
             onError(err) {
                 console.log(err);
@@ -30,38 +29,37 @@ export const BalancesPage = () => {
     );
 
     useEffect(async () => {
-        let retrievedRatings = await getWorkerRatings({variables: { input: {workerId: workerId} } }); //el formato de la query con el input hay que hacerlo
-        setRatings(retrievedRatings.data.getWorkerRatings);
-        setRefresh(false)
+        let retrievedBudgets = await getBudgetByWorker({variables: { input: {status: "PAID"} } }); //el formato de la query con el input hay que hacerlo
+        console.log("retrieved", retrievedBudgets);
+        // setPaidBudgets(retrievedBudgets.getBudgetByWorker);
+        // setRefresh(false)
         
-    }, [refresh])
+    }, [paidBudgets])
 
-    const ReviewCard = (stars, comment) => {
-        return(
-            <div className='list-group-item'>
-                <div>
-                    <div className="row">
-                    <Rating name="read-only" value={stars} readOnly />
-                    <div>{comment}</div>
-                    </div>
-                </div>
 
-            </div>
-
-        );
-    }
     
 
-    const BudgetCard = (budget, handleClick, buttonLabel, status) => {
+    const BudgetCard = (budget) => {
         return(<div className={"list-group-item"}>
-            {handleClick && <button className="btn btn-primary button-card" onClick={() => handleClick(budget)}> {buttonLabel} </button>}
-            <div>{"Title: " + budget.job.title}</div>
-            <div>{"Type: " + budget.job.type.replace("_", " ")}</div>
-            <div>{"Rating: " + budget.job.type.replace("_", " ")}</div>
-            <div>{"Comment: " + budget.customer.firstName + " " + budget.customer.lastName}</div>
+
+            <div className="row">
+                <div className="col-6">
+                    <div>{"Title: " + budget.job.title}</div>
+                    <div>{"Type: " + budget.job.type.replace("_", " ")}</div>
+                    <div>{"Date: " + budget.dateAgreed}</div>
+                    <div>{"Client: " + budget.customer.firstName + " " + budget.customer.lastName}</div>
+                </div>
+                <div className="col-6 text-end">
+                    <div className='d-flex flex-row align-items-center justify-content-end'>
+                        <h2><div className="badge bg-success text-wrap mt-3" >+ ${budget.amount}</div></h2>
+                    </div>
+                </div>
+            </div>
+
+
+
             
-            {budget.status !== "PENDING" && <div>{"Date range: " + budget.firstDateFrom + " - " + budget.firstDateTo}</div>}
-            {budget.status !== "PENDING" && <div>{"Price: $" + budget.amount}</div>}
+        
         </div>)
     }
 
@@ -74,14 +72,14 @@ export const BalancesPage = () => {
             <BackButton marginLeft={"ms-3"} marginTop={"mt-4"}/>
             <div className={"container bg-light"} >
                 
-                    <h1>My Reviews</h1>
+                    <h1>My Earnings</h1>
 
                     <div className="col-10 mx-auto justify-content-center">
                         <div className={"card"}>
                             <div className="card-body">
                                 <div className="list-group">
-                                    {ratings?.length === 0 ? (<h4 className="no-budget">No reviews yet...</h4>): (ratings?.map((rating) => {
-                                        return ReviewCard(rating.stars, rating.comment);
+                                    {paidBudgets?.length === 0 ? (<h4 className="no-budget">No earnings yet...</h4>): (paidBudgets?.map((budget) => {
+                                        return BudgetCard(budget);
                                     }))}
                                 </div>
                             </div>
